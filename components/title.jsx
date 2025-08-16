@@ -4,7 +4,7 @@ import React from "react";
 export default function Title({ children, className, ...props }) {
   return (
     <h1
-      className={cn("text-5xl text-secondary font-bold capitalize", className)}
+      className={cn("text-5xl text-secondary font-semibold capitalize", className)}
       {...props}
     >
       {children}

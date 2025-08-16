@@ -12,6 +12,7 @@ module.exports = {
         "primary-dark": "var(--primary-dark)",
         secondary: "var(--secondary)",
         accent: "var(--accent)",
+        text: "var(--text)",
         background: "var(--background)",
         foreground: "var(--foreground)",
         shapeBg: "var(--shape-bg)",

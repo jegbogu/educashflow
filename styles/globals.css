@@ -1,38 +1,104 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root{
-  --primary: #A866FA;
+:root {
+  --primary: #a866fa;
   --primary-dark: #4d4278;
   --secondary: #0f1632;
   --background: #fff;
   --text: #0f1632;
   --shape-bg: #2874ec0d;
-  --accent: #F6F8FA;
+  --accent: #f6f8fa;
 }
-*{
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-.navbar{
+.navbar {
   @apply flex gap-4 justify-end items-center p-6 text-lg text-white;
 }
 
-.howItWorks{
+.img {
+  @apply max-w-[500px] w-full h-auto;
+}
+
+.img img{
+  width: 100%;
+}
+.howItWorks {
   @apply flex items-center gap-4 justify-center;
 }
 
-.howItWorks >div{
-  @apply border border-primary rounded-lg p-4 space-y-4 shadow-md;
+.howItWorks > div {
+  @apply flex flex-col justify-around border border-primary rounded-lg p-4 space-y-4 shadow-md text-center max-w-80 w-full md:h-96;
 }
 
-.howItWorks > div .card-title{
-  @apply text-primary font-semibold text-lg;
+.howItWorks > div .card-title {
+  @apply text-text font-semibold text-xl;
+}
+
+.works-icon{
+  @apply w-fit p-4 self-center flex rounded-xl bg-primary;
+}
+
+.works-icon img{
+  width: 2.6rem;
+  text-align: center;
+}
+
+.landing-features {
+  @apply flex gap-8 items-center text-white text-lg font-light;
+}
+.landing-features > span {
+  @apply flex items-center gap-4;
+}
+.landing-features img {
+  width: 2rem;
+}
+
+.carousel {
+  @apply flex items-center gap-4 ;
+}
+
+.carousel .carousel-item{
+  @apply flex justify-between items-center gap-8 md:h-96;
+}
+.carousel-item .carousel-img{
+  @apply max-w-[400px] w-full;
+}
+.carousel-item img{
+  width: 100%;
+}
+
+.carousel .testimonial{
+  @apply space-y-4;
+}
+
+.testimonial blockquote{
+  @apply text-text text-lg font-light;
+}
+footer{
+  @apply bg-secondary text-white;
+}
+footer > a{
+  @apply capitalize;
+}
+
+footer .links-groups{
+  @apply grid grid-cols-3 w-full;
+}
+
+.links-groups h5{
+  @apply text-lg font-normal mb-4;
+}
+
+.links-groups ul{
+  @apply flex flex-col gap-3 font-light;
 }
