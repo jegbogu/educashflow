@@ -1,0 +1,19 @@
+import React from "react";
+
+export default function Plus({ ...props }) {
+  return (
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 26 26"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M11.1756 11.1775V0.236328H14.8226V11.1775H25.7638V14.8246H14.8226V25.7657H11.1756V14.8246H0.234375V11.1775H11.1756Z"
+        fill="#0f1632"
+      />
+    </svg>
+  );
+}

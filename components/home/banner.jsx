@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Banner() {
   return (
-    <section className="max-w-7xl m-auto lg:h-[80vh] flex items-center justify-between gap-4">
+    <section className="max-w-7xl m-auto lg:min-h-[80vh] flex items-center justify-between gap-4 px-4">
       <div className="space-y-8">
         <h1 className="capitalize text-7xl font-bold text-white leading-normal">
           answer
@@ -17,7 +17,7 @@ export default function Banner() {
           <br /> winning points you can spend in your wallet
         </p>
         <Button size="lg">Register Now </Button>
-        <div className="landing-features">
+        <div className="landing-features pb-4">
           <span>
             <span>
               <Image

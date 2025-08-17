@@ -64,17 +64,19 @@
 }
 
 .carousel {
-  @apply flex items-center gap-4 ;
+  @apply  w-full;
 }
 
 .carousel .carousel-item{
-  @apply flex justify-between items-center gap-8 md:h-96;
+  @apply flex justify-between items-center gap-8 md:h-96 w-full p-2;
 }
 .carousel-item .carousel-img{
-  @apply max-w-[400px] w-full;
+  @apply max-w-[400px] size-full object-center ;
 }
 .carousel-item img{
   width: 100%;
+  border-radius: 1rem;
+  object-fit: cover
 }
 
 .carousel .testimonial{

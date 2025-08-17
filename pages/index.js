@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/navbar";
 import Banner from "@/components/home/banner";
 import HowItWorks from "@/components/home/how-it-works";
 import Testimonials from "@/components/home/testimonials";
+import Faqs from "@/components/home/faq";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       </div>
       <HowItWorks />
       <Testimonials />
+      <Faqs />
     </>
   );
 }
