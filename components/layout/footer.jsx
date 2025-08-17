@@ -6,8 +6,8 @@ export default function Footer() {
   return (
     <footer className="">
       <section className="max-w-7xl mx-auto p-4 py-8">
-        <div className="flex">
-          <div className="max-w-72 w-full">
+        <div className="flex flex-col md:flex-row">
+          <div className="max-w-72 w-full min-h-32">
             <h4 className="text-xl">QuiWallet</h4>
           </div>
           <div className="links-groups">
@@ -72,7 +72,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="flex gap-8 mt-16 font-light">
+        <div className="flex flex-col sm:flex-row gap-4 mt-16 font-light">
           <p className="italic">
             &copy; {new Date().getFullYear()} QuiWallet. All rights reserved.
           </p>

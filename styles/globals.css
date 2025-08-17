@@ -19,6 +19,7 @@
   padding: 0;
   list-style: none;
   font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
 }
 
 .navbar {
@@ -29,32 +30,39 @@
   @apply max-w-[500px] w-full h-auto;
 }
 
-.img img{
+.img img {
   width: 100%;
 }
 .howItWorks {
-  @apply flex items-center gap-4 justify-center;
+  @apply flex items-center gap-4 justify-center w-full overflow-x-scroll px-4;
 }
 
 .howItWorks > div {
-  @apply flex flex-col justify-around border border-primary rounded-lg p-4 space-y-4 shadow-md text-center max-w-80 w-full md:h-96;
+  @apply border border-primary rounded-lg p-4 space-y-4 shadow-md text-center max-w-80 min-w-60 h-auto items-stretch w-full md:h-96;
+}
+
+.howItWorks .card {
+  @apply flex flex-col justify-center;
 }
 
 .howItWorks > div .card-title {
   @apply text-text font-semibold text-xl;
 }
 
-.works-icon{
+.works-icon {
   @apply w-fit p-4 self-center flex rounded-xl bg-primary;
 }
 
-.works-icon img{
+.works-icon img {
   width: 2.6rem;
   text-align: center;
 }
 
 .landing-features {
-  @apply flex gap-8 items-center text-white text-lg font-light;
+  @apply gap-8 items-center text-white text-lg font-light pb-4 hidden lg:flex;
+}
+.landing-features.sm{
+  @apply  pb-4 flex lg:hidden;
 }
 .landing-features > span {
   @apply flex items-center gap-4;
@@ -64,43 +72,58 @@
 }
 
 .carousel {
-  @apply  w-full;
+  @apply w-full;
 }
 
-.carousel .carousel-item{
+.carousel .carousel-item {
   @apply flex justify-between items-center gap-8 md:h-96 w-full p-2;
 }
-.carousel-item .carousel-img{
-  @apply max-w-[400px] size-full object-center ;
+.carousel-item .carousel-img {
+  @apply max-w-[400px] size-full object-center hidden lg:block;
 }
-.carousel-item img{
+.carousel-item img {
   width: 100%;
   border-radius: 1rem;
-  object-fit: cover
+  object-fit: cover;
 }
 
-.carousel .testimonial{
+.carousel .testimonial {
   @apply space-y-4;
 }
 
-.testimonial blockquote{
+.testimonial blockquote {
   @apply text-text text-lg font-light;
 }
-footer{
+footer {
   @apply bg-secondary text-white;
 }
-footer > a{
+footer > a {
   @apply capitalize;
 }
 
-footer .links-groups{
-  @apply grid grid-cols-3 w-full;
+footer .links-groups {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full gap-4 gap-y-8;
 }
 
-.links-groups h5{
+.links-groups h5 {
   @apply text-lg font-normal mb-4;
 }
 
-.links-groups ul{
+.links-groups ul {
   @apply flex flex-col gap-3 font-light;
+}
+
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  opacity: 0.2;
+  filter: blur(5px);
+  animation: fadeIn 2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 0.2; transform: scale(.9); }
 }

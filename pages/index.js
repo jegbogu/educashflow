@@ -5,6 +5,8 @@ import Banner from "@/components/home/banner";
 import HowItWorks from "@/components/home/how-it-works";
 import Testimonials from "@/components/home/testimonials";
 import Faqs from "@/components/home/faq";
+import Reward from "@/components/home/reward";
+import CssParticles from "@/components/particles";
 
 export default function Home() {
   return (
@@ -15,12 +17,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="bg-gradient-to-r from-[#0b1220] via-[#1a1f3c] to-primary-dark">
+      <div className="relative bg-gradient-to-r from-[#0b1220] via-[#1a1f3c] to-primary-dark">
         <Navbar />
+        <CssParticles />
         <Banner />
       </div>
       <HowItWorks />
       <Testimonials />
+      <Reward />
       <Faqs />
     </>
   );

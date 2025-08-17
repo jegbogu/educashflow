@@ -1,12 +1,28 @@
 import React from "react";
 import { Button } from "./button";
 import Image from "next/image";
+import { useSpring, animated } from "@react-spring/web";
 
 export default function Banner() {
+  const springs = useSpring({
+    from: { x: -700 },
+    to: { x: 0 },
+  });
+
+  const features = useSpring({
+    from: { x: -700 },
+    to: { x: 0 },
+    delay: 500,
+  });
+
+  const img = useSpring({
+    from: { x: 400 },
+    to: { x: 0 },
+  });
   return (
-    <section className="max-w-7xl m-auto lg:min-h-[80vh] flex items-center justify-between gap-4 px-4">
-      <div className="space-y-8">
-        <h1 className="capitalize text-7xl font-bold text-white leading-normal">
+    <section className="max-w-7xl m-auto lg:min-h-[80vh] flex flex-col lg:flex-row items-center justify-between gap-4 px-4">
+      <animated.div className="space-y-8 w-full" style={{ ...springs }}>
+        <h1 className="capitalize text-5xl md:text-7xl md:leading-normal font-bold text-white leading-normal">
           answer
           <br />
           Questions <br />
@@ -17,7 +33,7 @@ export default function Banner() {
           <br /> winning points you can spend in your wallet
         </p>
         <Button size="lg">Register Now </Button>
-        <div className="landing-features pb-4">
+        <animated.div className="landing-features" style={{ ...features }}>
           <span>
             <span>
               <Image
@@ -52,9 +68,9 @@ export default function Banner() {
             </span>
             Instant Wallet Point
           </span>
-        </div>
-      </div>
-      <div className="img">
+        </animated.div>
+      </animated.div>
+      <animated.div className="img my-12 lg:my-0" style={{ ...img }}>
         <Image
           src="home-img.svg"
           width={400}
@@ -62,7 +78,43 @@ export default function Banner() {
           alt="home image"
           className="w-full h-full object-cover"
         />
-      </div>
+      </animated.div>
+      <animated.div className="sm landing-features" style={{ ...features }}>
+        <span>
+          <span>
+            <Image
+              src={"secure.svg"}
+              width={50}
+              height={50}
+              alt="landing icon"
+            />
+          </span>
+          Secure <br /> Registration
+        </span>
+        <span>
+          <span>
+            <Image
+              src={"coupon.svg"}
+              width={50}
+              height={50}
+              alt="landing icon"
+            />
+          </span>
+          Coupon Activated
+          <br /> Quizzes
+        </span>
+        <span>
+          <span>
+            <Image
+              src={"wallet.svg"}
+              width={50}
+              height={50}
+              alt="landing icon"
+            />
+          </span>
+          Instant Wallet Point
+        </span>
+      </animated.div>
     </section>
   );
 }
