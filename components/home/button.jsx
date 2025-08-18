@@ -1,8 +1,8 @@
 import { cva } from "class-variance-authority";
 import React from "react";
-import { cn } from "@/lib/utils"; // optional helper for merging classes
+import { cn } from "@/lib/utils";
 
-// Define button variants with cva
+
 const buttonVariants = cva(
   "inline-flex items-center text-white justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
   {

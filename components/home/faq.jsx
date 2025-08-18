@@ -44,7 +44,7 @@ export default function Faqs() {
   ];
   return (
     <section className="max-w-7xl mx-auto my-16 py-8">
-      <div className="flex flex-col gap-4 md:flex-row md:justify-between p-4">
+      <div className="flex flex-col gap-8 md:flex-row md:justify-between p-4">
         <div>
           <Title className="leading-normal">
             Frequently Asked

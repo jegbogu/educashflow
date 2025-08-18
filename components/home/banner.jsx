@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "./button";
 import Image from "next/image";
 import { useSpring, animated } from "@react-spring/web";
+import style from '@/styles/Home.module.css'
 
 export default function Banner() {
   const springs = useSpring({
@@ -20,9 +21,9 @@ export default function Banner() {
     to: { x: 0 },
   });
   return (
-    <section className="max-w-7xl m-auto lg:min-h-[80vh] flex flex-col lg:flex-row items-center justify-between gap-4 px-4">
-      <animated.div className="space-y-8 w-full" style={{ ...springs }}>
-        <h1 className="capitalize text-5xl md:text-7xl md:leading-normal font-bold text-white leading-normal">
+    <section className={style.banner}>
+      <animated.div className="space-y-8 w-full my-8" style={{ ...springs }}>
+        <h1 className={style.bTitle}>
           answer
           <br />
           Questions <br />

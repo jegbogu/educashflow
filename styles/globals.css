@@ -22,9 +22,7 @@
   overflow-x: hidden;
 }
 
-.navbar {
-  @apply flex gap-4 justify-end items-center p-6 text-lg text-white;
-}
+
 
 .img {
   @apply max-w-[500px] w-full h-auto;
@@ -34,7 +32,7 @@
   width: 100%;
 }
 .howItWorks {
-  @apply flex items-center gap-4 justify-center w-full overflow-x-scroll px-4;
+  @apply flex flex-col md:flex-row items-center gap-4 justify-center w-full overflow-x-scroll px-4;
 }
 
 .howItWorks > div {
@@ -49,6 +47,9 @@
   @apply text-text font-semibold text-xl;
 }
 
+.howItWorks span{
+  @apply rotate-90 md:rotate-0;
+}
 .works-icon {
   @apply w-fit p-4 self-center flex rounded-xl bg-primary;
 }
@@ -62,7 +63,7 @@
   @apply gap-8 items-center text-white text-lg font-light pb-4 hidden lg:flex;
 }
 .landing-features.sm{
-  @apply  pb-4 flex lg:hidden;
+  @apply  pb-4 flex lg:hidden text-sm;
 }
 .landing-features > span {
   @apply flex items-center gap-4;
@@ -117,7 +118,7 @@ footer .links-groups {
 .particle {
   position: absolute;
   border-radius: 50%;
-  background: white;
+  background: var(--primary);
   opacity: 0.2;
   filter: blur(5px);
   animation: fadeIn 2s ease-out forwards;
@@ -126,4 +127,18 @@ footer .links-groups {
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0); }
   to { opacity: 0.2; transform: scale(.9); }
+}
+
+
+.phone{
+  @apply p-4 shadow-lg shadow-primary space-y-4;
+}
+
+
+.phone > div{
+  @apply flex items-center gap-4 p-4 shadow-xl bg-accent rounded-lg capitalize;
+}
+
+.phone p{
+  font-weight: 600;
 }
