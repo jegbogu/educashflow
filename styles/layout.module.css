@@ -1,0 +1,47 @@
+.navbar {
+  @apply gap-4 hidden sm:flex sm:justify-end items-center p-6 text-lg text-white max-w-7xl mx-auto;
+}
+
+.mobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  color: white;
+}
+
+.burger {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 25px;
+  cursor: pointer;
+}
+
+.burger > span {
+  height: 2px;
+  background: white;
+  border-radius: 5px;
+}
+
+.mobileContainer {
+  @apply z-10 min-h-10 w-full sm:hidden;
+}
+.mobileContainer section {
+  @apply fixed w-full;
+}
+.mobileContainer h4 {
+  @apply text-xl font-normal;
+}
+
+.mobileContainer nav {
+  @apply relative grid gap-4 grid-rows-[0fr] sm:hidden p-4 bg-accent text-text font-medium opacity-0 select-none transition-all duration-300;
+}
+
+.mobileContainer nav.active {
+  @apply opacity-100 grid-rows-[1fr];
+}
+
+.mobileContainer.scrolled {
+  @apply bg-white shadow-md fixed top-0 left-0 text-text;
+}
