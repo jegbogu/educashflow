@@ -8,15 +8,15 @@ export default function Reward() {
   return (
     <section className="relative w-full">
       {/* background stripes */}
-      <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-7">
+      {/* <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-7">
         <div className="col-span-3 bg-accent"></div>
-        <div className="col-span-4 bg-secondary"></div>
-      </div>
+        <div className="col-span-4 bg-secondary p-4"></div>
+      </div> */}
 
       {/* content sits above */}
-      <div className="relative grid md:grid-cols-7 grid-cols-1">
+      <div className="relative grid md:grid-cols-7 grid-cols-1 bg-acc">
         {/* Left side content */}
-        <div className="col-span-3 w-full">
+        <div className="col-span-3 w-full p-4">
           <div className="max-w-md mx-auto px-2 py-4">
             <Title className={"my-4"}>Reward & Wallet</Title>
             <div className="space-y-4">
@@ -67,11 +67,11 @@ export default function Reward() {
 
         {/* Right side content */}
         <div className="col-span-4 w-full p-6 overflow-hidden">
-          <Title className="text-white leading-normal mb-4">
+          <Title className="text-white leading-normal my-4">
             What We Do Differently <br /> From The Others
           </Title>
           <div className="w-full">
-            <DashboardImg />
+            <Image src="dashboard.svg" width={900} height={900} />
           </div>
         </div>
       </div>

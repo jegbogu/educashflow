@@ -73,11 +73,11 @@
 }
 
 .carousel {
-  @apply w-full;
+  @apply w-full h-auto;
 }
 
 .carousel .carousel-item {
-  @apply flex justify-between items-center gap-8 md:h-96 w-full p-2;
+  @apply flex justify-between items-center gap-8 w-full p-2;
 }
 .carousel-item .carousel-img {
   @apply max-w-[400px] size-full object-center hidden lg:block;
