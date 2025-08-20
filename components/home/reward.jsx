@@ -8,10 +8,10 @@ export default function Reward() {
   return (
     <section className="relative w-full">
       {/* background stripes */}
-      {/* <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-7">
+      <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-7">
         <div className="col-span-3 bg-accent"></div>
         <div className="col-span-4 bg-secondary p-4"></div>
-      </div> */}
+      </div>
 
       {/* content sits above */}
       <div className="relative grid md:grid-cols-7 grid-cols-1 bg-acc">
