@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Title from "../title";
-import Plus from "../plus";
+import Plus from "../icons/plus";
 
 export default function Faqs() {
   const [active, setActive] = useState({ id: null, open: false });

@@ -1,7 +1,7 @@
 import React from "react";
 import Title from "../title";
 import Image from "next/image";
-import Rightarrow from "../arrow";
+import Rightarrow from "../icons/arrow";
 
 export default function HowItWorks() {
   return (
