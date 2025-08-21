@@ -4,6 +4,7 @@ import Image from "next/image";
 import Quotes from "../Quotes";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import BgSvg from "../layout/bg";
 
 export default function Testimonials() {
   const [sliderRef] = useKeenSlider(
@@ -77,6 +78,7 @@ export default function Testimonials() {
 
   return (
     <section className="max-w-7xl mx-auto my-16 py-4 space-y-16 px-4">
+      
       <div className="">
         <Title className={"leading-normal"}>
           Hear From Our Satisfied

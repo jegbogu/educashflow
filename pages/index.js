@@ -7,6 +7,7 @@ import Testimonials from "@/components/home/testimonials";
 import Faqs from "@/components/home/faq";
 import Reward from "@/components/home/reward";
 import CssParticles from "@/components/particles";
+import BgSvg from "@/components/layout/bg";
 
 export default function Home() {
   return (
@@ -22,10 +23,16 @@ export default function Home() {
         <CssParticles />
         <Banner />
       </div>
-      <HowItWorks />
-      <Testimonials />
-      <Reward />
-      <Faqs />
+      <div className="relative">
+        <HowItWorks />
+
+        <div className="w-full absolute top-24 -z-10">
+          <BgSvg />
+        </div>
+        <Testimonials />
+        <Reward />
+        <Faqs />
+      </div>
     </>
   );
 }
