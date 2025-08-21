@@ -79,6 +79,13 @@ export default function Footer() {
           <Link href={"#"}>Terms of Service</Link>
           <Link href={"#"}>Privacy Policy</Link>
         </div>
+       <a href="https://www.mediaplur.com/" target="_blank"><div class="flex items-center space-x-2">
+  <p>Designed by Mediaplur</p>
+  <span>
+    <img src="logo.webp" alt="Logo" class="w-19 h-8"/>
+  </span>
+</div></a>
+
       </section>
     </footer>
   );

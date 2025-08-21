@@ -9,7 +9,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="w-[30%] mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 bg-white shadow-md">
+    <div className="w-[30%] mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
       {/* Header */}
       <h1 className="text-center text-2xl font-bold text-gray-800">Login</h1>
 
