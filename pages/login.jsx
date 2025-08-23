@@ -100,7 +100,7 @@ export default function Login() {
       {/* Register button */}
       <div className="flex justify-center">
         <button className="bg-white text-secondary border-2 border-gray-200 p-2 rounded-md w-1/2 mt-5 hover:bg-gray-50 hover:border-secondary transition">
-          Register
+        <Link href="/register">Register</Link>  
         </button>
       </div>
     </div>

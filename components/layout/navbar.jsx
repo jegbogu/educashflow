@@ -55,7 +55,8 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <Button size="sm">Sign Up</Button>
+              <Button size="sm">
+                <Link href="/register">Sign Up</Link></Button>
             </li>
             <li>
               <Button size="sm">
