@@ -1,23 +1,32 @@
 import { useState, useRef } from "react";
 import MailIcon from "@/components/icons/mailicon";
+import { useRouter } from "next/router";
 import UserIcon from "@/components/icons/user";
 import LockIcon from "@/components/icons/lockicon";
 import EyeIcon from "@/components/icons/eyeicon";
 import EyeOffIcon from "@/components/icons/eyeofficon";
 import Link from "next/link";
+import Spinner from "@/components/icons/spinner";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(null);
 
+  //after clicking on register
+  const router = useRouter()
+  const [finalReg, setFinalReg] = useState(null)
+   const [loading, setLoading] = useState(false);
+
   //this is for all fields check, when a user clicks submit, it checks all the fields
   const [showNoUsername, setShowNoUsername] = useState(false)
   const [showNoemail, setshowNoemail] = useState(false)
   const [showNopassword, setshowNopassword] = useState(false)
+  const [showNofullname, setshowNofullname] = useState(false)
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const usernameRef = useRef();
   const emailRef = useRef()
+  const fullnameRef = useRef()
 
   function checkPassword() {
     const enteredPassword = passwordRef.current.value;
@@ -32,17 +41,105 @@ export default function Register() {
     }
   }
   async function submitHandler(event){
+
+setLoading(true)
+
     event.preventDefault()
     const enteredPassword = passwordRef.current.value;
     const enteredemail = emailRef.current.value;
     const enteredUsername = usernameRef.current.value;
-    if(!enteredPassword && !enteredemail && !enteredUsername ){
+    const enteredfullname =  fullnameRef.current.value
+    if(!enteredPassword && !enteredemail && !enteredUsername && !enteredfullname){
+ setshowNofullname(<p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
+text-red-700">Fullname is required</p>)
  setShowNoUsername(<p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
 text-red-700">Username is required</p>)
  setshowNoemail(<p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
 text-red-700">Email is required</p>)
  setshowNopassword(<p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
 text-red-700">Password is required</p>)
+    }
+
+    //this is for fullname
+    if(enteredfullname.trim().length<5){
+       setshowNofullname(<p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
+text-red-700">Fullname must be more than 5 characters</p>)
+    }else{
+       setshowNofullname(<p className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100
+text-green-700">Correct Fullname</p>)
+    }
+
+//this is for username
+    if(enteredUsername.trim().length<3){
+       setShowNoUsername(<p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
+text-red-700">Username  must be more than 3 characters</p>)
+    }else{
+ setShowNoUsername(<p className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100
+text-green-700">Correct Username</p>)
+    }
+
+// this is for email
+    if(enteredemail.trim().length<5){
+       setshowNoemail(<p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
+text-red-700">Email  must be more than 5 characters</p>)
+    }else{
+       setshowNoemail(<p className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100
+text-green-700">Correct Email </p>)
+    } 
+
+   // Define the regex once
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+
+// Check password
+if (!passwordRegex.test(enteredPassword)) {
+  setshowNopassword(
+    <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
+      Password must be at least 8 characters long, and include an uppercase, 
+      a lowercase, a number, and a special character.
+    </p>
+  );
+}else{
+   setshowNopassword(
+    <p className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100 text-green-700">
+      Correct Password  
+    </p>
+  );
+}
+//sending the data to the backend
+ const data = {
+      fullname: enteredfullname,
+      username: enteredUsername,
+      email: enteredemail,
+      password: enteredPassword,
+    };
+
+   
+    
+    const response = await fetch(
+      "http://localhost:3000/api/register",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+   
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    let newPostData = await response.json();
+   
+    if (!response.ok) {
+      setFinalReg(<p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
+text-red-700">{newPostData.message}</p>)
+   setLoading(false); // Reset if error
+    }else{
+      
+      setFinalReg( <p className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100 text-green-700">
+     {newPostData.message}
+    </p>)
+     await new Promise((resolve) => setTimeout(resolve, 3000));
+    router.push('/login')
     }
   }
 
@@ -53,6 +150,29 @@ text-red-700">Password is required</p>)
 
       <form className="mt-6 space-y-5" onSubmit={submitHandler}>
         {/* Email */}
+        <div>
+          <label
+            htmlFor="fullname"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Full Name
+          </label>
+          <div className="relative mt-1">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+              <UserIcon className="w-5 h-5" />
+            </span>
+            <input
+              type="text"
+              name="fullname"
+              id="fullname"
+              ref={fullnameRef}
+              placeholder="Enter your fullname"
+              className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
+            />
+            
+          </div>
+          <div>{showNofullname}</div>
+        </div>
         <div>
           <label
             htmlFor="username"
@@ -176,7 +296,8 @@ text-red-700">Password is required</p>)
             </p>
           )}
           {passwordMatch === false && (
-            <p className="text-red-600 text-sm mt-1">
+            <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
+text-red-700">
               ❌ Passwords do not match
             </p>
           )}
@@ -184,11 +305,20 @@ text-red-700">Password is required</p>)
 
         {/* Sign up button */}
         <button
-          type="submit"
-          className="bg-secondary text-white p-2 rounded-md w-full mt-4 hover:bg-secondary/90 transition"
-        >
-          Sign Up
-        </button>
+      type="submit"
+      disabled={loading} // Prevent multiple clicks
+     
+      className={`p-2 rounded-md w-full mt-4 transition flex items-center justify-center 
+        ${loading ? "bg-secondary/70 cursor-not-allowed" : "bg-secondary hover:bg-secondary/90 text-white"}`}
+    >
+      {loading ? (
+        // Spinner
+         <Spinner className="w-5 h-5"/>
+      ) : (
+        "Sign Up"
+      )}
+    </button>
+    <div>{finalReg}</div>
       </form>
 
       {/* Divider */}
