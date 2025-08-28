@@ -30,14 +30,14 @@ export default function Login() {
         redirect: false,
         email: enteredEmail,
         password: enteredPassword,
-        role: "user", // only if your backend expects this
+        role: "admin", // only if your backend expects this
       });
 
       if (!result || result.error) {
         throw new Error("Invalid Username or Password");
       }
 
-      router.push("/dashboard");
+      router.push("/educashadmindashboard");
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -46,7 +46,7 @@ export default function Login() {
 
   return (
     <div className="w-[30%] mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
-      <h1 className="text-center text-2xl font-bold text-gray-800">Login</h1>
+      <h1 className="text-center text-2xl font-bold text-gray-800"> Admin Login</h1>
 
       <form className="mt-6 space-y-5" onSubmit={submitHandler}>
         {/* Email */}
