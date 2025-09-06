@@ -50,6 +50,11 @@ async function handler(req, res) {
       const { fullname, email } = req.body;
 
       await connectDB();
+      const userfullname = await Admin.findOne({fullname})
+      if(userfullname) return res.status(400).json({message:"Fulname already exist"})
+
+      const useremail = await Admin.findOne({email})
+      if(useremail) return res.status(400).json({message:"Email already exist"})
 
       // Generate unique password
       const plainPassword = generatePassword();

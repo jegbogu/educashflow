@@ -18,12 +18,17 @@ import bcrypt from "bcrypt"
             console.log("ROLE",{ email, password })
             const user = await Admin.findOne({ email })
             console.log("user",user)
+            if (!user) {
+                res.status(403).json({ message: 'not an Admin' })
+                return
+            }
             const validUser = await bcrypt.compare(password, user.password)
             console.log(validUser)
             if (!validUser) {
                 res.status(403).json({ message: 'not an Admin' })
                 return
             }
+            
             res.status(200).json(user);
         }
        
