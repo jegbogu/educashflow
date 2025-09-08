@@ -20,7 +20,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         try {
           const { email, password, role } = credentials
-          console.log("auth",{ email, password, role })
+     
           const response = await fetch('http://localhost:3000/api/login', {
             method: 'POST',
             body: JSON.stringify({ email, password, role}),
@@ -39,7 +39,7 @@ export const authOptions = {
             return user;
           } else return null;
         } catch (error) {
-          console.log(error.message)
+         
           return;
         }
        
@@ -61,8 +61,14 @@ export const authOptions = {
     },
 },
   jwt: {
-    secret: 'SECRET_HERE',
+    secret: ' ep&lqwaiFX$R',
     encryption: true,
+    maxAge: 60 * 60, // ⏰ 1 hour in seconds
+  },
+
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 60, // ⏰ 1 hour in seconds
   },
   pages:{
       signIn: "../../login"

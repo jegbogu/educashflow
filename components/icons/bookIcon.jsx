@@ -1,0 +1,20 @@
+import React from "react";
+
+export default function BookIcon({ className }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 6v12m8-12h-6a2 2 0 00-2 2v12a2 2 0 002-2h6a2 2 0 002-2V8a2 2 0 00-2-2zM4 6h6a2 2 0 012 2v12a2 2 0 01-2-2H4a2 2 0 01-2-2V8a2 2 0 012-2z"
+      />
+    </svg>
+  );
+}

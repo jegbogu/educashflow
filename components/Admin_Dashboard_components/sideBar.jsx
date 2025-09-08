@@ -1,6 +1,6 @@
 import UserIcon from "../icons/user";
 import { DashboardIcon, PaymentIcon, UsersIcon, CouponIcon, SettingsIcon } from "../icons/navBarIcon";
-import { useSession, signOut } from 'next-auth/react'; // Changed import here
+ 
 
  const menuItems = [
   { name: "Dashboard", icon: DashboardIcon },
@@ -10,8 +10,8 @@ import { useSession, signOut } from 'next-auth/react'; // Changed import here
   { name: "Settings", icon: SettingsIcon },
 ];
 
-export default function SideBar() {
-   const { data: session, status } = useSession();
+export default function SideBar(props) {
+ 
   return (
     <div className="bg-white w-full p-4 rounded-md mt-5 mb-5">
       <div>
@@ -29,13 +29,13 @@ export default function SideBar() {
       ))}
     </div>
 
-      <div className="mt-[300px]">
+      <div className="mt-[270px]">
         <div className="border-2 border-gray-400 w-[60px] p-2 rounded-full">
             <span><UserIcon className="w-10 h-10"/></span>
         </div>
         <div>
-            <p>{session.user.fullname}</p>
-            <p>{session.user.email}</p>
+            <p>{props.data.user.fullname}</p>
+          <p>{props.data.user.email}</p>
         </div>
       </div>
     </div>

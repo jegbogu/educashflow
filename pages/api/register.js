@@ -1,5 +1,6 @@
 import connectDB from "../../utils/connectmongo"
 import Register from '../../model/registerSchema'
+import Activity from '../../model/recentactivities'
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
 import nodemailer from "nodemailer"
@@ -121,10 +122,20 @@ async function handler(req, res) {
       });
 
       await newUser.save();
-      console.log("newUser", newUser)
+      
 
       // Send activation email
       await sendActivationEmail(email, newUser._id,fullname);
+
+       const newActivity = new Activity({
+        _id: new mongoose.Types.ObjectId(),
+        activity:"New user registered",
+        description:email,
+        createdAt: getFormattedDateTime()
+       
+      });
+
+      await newActivity.save();
 
       res.status(200).json({ message: "Registration successful, please check your email to activate your account" });
 

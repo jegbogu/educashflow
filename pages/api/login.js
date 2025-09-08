@@ -1,11 +1,22 @@
 import connectDB from "../../utils/connectmongo"
 import Register from '../../model/registerSchema'
 import Admin from '../../model/adminSchema'
- 
+ import Activity from '../../model/recentactivities'
 import bcrypt from "bcrypt"
+import mongoose from "mongoose"
  
  
-  
+//this is for date and time
+function getFormattedDateTime() {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
      
     
  async function handler(req,res){
@@ -13,17 +24,17 @@ import bcrypt from "bcrypt"
         try {
         await connectDB()
         const{email, password, role} = req.body
-        console.log("backend",{email, password,role})
+       
         if(role==='admin'){
             console.log("ROLE",{ email, password })
             const user = await Admin.findOne({ email })
-            console.log("user",user)
+           
             if (!user) {
                 res.status(403).json({ message: 'not an Admin' })
                 return
             }
             const validUser = await bcrypt.compare(password, user.password)
-            console.log(validUser)
+          
             if (!validUser) {
                 res.status(403).json({ message: 'not an Admin' })
                 return
@@ -44,6 +55,17 @@ import bcrypt from "bcrypt"
             res.status(403).json({message:'Password or Email is not correct'})
           return;
          }
+         //saving activities for record sake
+          const newActivity = new Activity({
+                 _id: new mongoose.Types.ObjectId(),
+                 activity:"A User logged in",
+                 description:email,
+                 createdAt: getFormattedDateTime()
+                
+               });
+         
+               await newActivity.save();
+
          res.status(200).json(user);
         
          
