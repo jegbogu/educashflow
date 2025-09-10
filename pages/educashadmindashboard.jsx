@@ -4,13 +4,14 @@ import QuickActions from "@/components/Admin_Dashboard_components/quickActions";
 import RecentActivity from "@/components/Admin_Dashboard_components/recentActivity";
 import SideBar from "@/components/Admin_Dashboard_components/sideBar";
 import Spinner from "@/components/icons/spinner";
-import { connect } from "mongoose";
+ 
 import { useSession } from 'next-auth/react';
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import connectDB from "@/utils/connectmongo";
 import Users from "../model/registerSchema"
+import Activity from '../model/recentactivities'
 
 export default function Dashboard(props) {
 
@@ -46,7 +47,7 @@ export default function Dashboard(props) {
   if (status !== "authenticated" || session?.user.role !== "admin") {
     return null;
   }
-
+//Overview component starts
 //this is to get the number of users
 const users = props.users
 const totalUsers = users.length
@@ -97,7 +98,10 @@ const overviewData = [
   {userRate:usersRate},
   {totalUsers:totalUsers}
 ]
- 
+//Overview component ends
+
+//this is for recent activities
+const allActivities = props.activities
 
   return (
     <div className="bg-gray-300 min-h-screen pl-5 pr-5 flex gap-5">
@@ -112,7 +116,7 @@ const overviewData = [
         <DashboardOverview overviewData={overviewData}/>
          <div className="flex items-stretch gap-3 mt-5">
   <div className="w-1/2 flex flex-col bg-white p-5 rounded-md">
-    <RecentActivity />
+    <RecentActivity allActivities={allActivities}/>
   </div>
 
   <div className="w-1/2 flex flex-col bg-white p-5 rounded-md">
@@ -128,11 +132,13 @@ const overviewData = [
 export async function getServerSideProps(){
   await connectDB()
   const users = await Users.find({}).lean()
+  const activities = await Activity.find({}).lean()
   
 
   return{
     props:{
-      users:JSON.parse(JSON.stringify(users))
+      users:JSON.parse(JSON.stringify(users)),
+      activities:JSON.parse(JSON.stringify(activities))
     }
   }
 }

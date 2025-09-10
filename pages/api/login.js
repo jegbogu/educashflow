@@ -26,14 +26,14 @@ function getFormattedDateTime() {
         const{email, password, role} = req.body
        
         if(role==='admin'){
-            console.log("ROLE",{ email, password })
+            
             const user = await Admin.findOne({ email })
            
             if (!user) {
                 res.status(403).json({ message: 'not an Admin' })
                 return
             }
-            const validUser = await bcrypt.compare(password, user.password)
+            const validUser = await bcrypt.compare(password.trim(), user.password)
           
             if (!validUser) {
                 res.status(403).json({ message: 'not an Admin' })
@@ -49,7 +49,7 @@ function getFormattedDateTime() {
             res.status(403).json({message:'Password or Email is not correct'})
             return;
          }
-         const validUser = await bcrypt.compare(password, user.password)
+         const validUser = await bcrypt.compare(password.trim(), user.password)
         //  console.log(validUser)
          if(!validUser){
             res.status(403).json({message:'Password or Email is not correct'})
