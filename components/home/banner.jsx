@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./button";
 import Image from "next/image";
 import { useSpring, animated } from "@react-spring/web";
 import style from '@/styles/Home.module.css'
+import UsersQuiz from "../UserQuiz/quiz";
+ 
 
-export default function Banner() {
+export default function Banner(props) {
+  const[modal, setModal] = useState(false)
   const springs = useSpring({
     from: { x: -700 },
     to: { x: 0 },
@@ -33,7 +36,12 @@ export default function Banner() {
           Register today, use your coupon, and start
           <br /> winning points you can spend in your wallet
         </p>
-        <Button size="lg">Register Now </Button>
+        <div>
+<Button size="lg">Register Now </Button> <button className="text-primary ml-3 border pt-4 pb-4 pr-[50px] pl-[50px] rounded-md font-bold" onClick={()=>{setModal(true)}} >Start Quiz</button>
+{modal && <UsersQuiz allQuestions={props.allQuestions} onClose={()=>{setModal(false)}} />}
+  
+        </div>
+        
         <animated.div className="landing-features" style={{ ...features }}>
           <span>
             <span>

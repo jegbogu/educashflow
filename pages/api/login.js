@@ -1,5 +1,6 @@
 import connectDB from "../../utils/connectmongo"
 import Register from '../../model/registerSchema'
+// import  Quiz from "../../model/quizCreation"
 import Admin from '../../model/adminSchema'
  import Activity from '../../model/recentactivities'
 import bcrypt from "bcrypt"
@@ -23,6 +24,10 @@ function getFormattedDateTime() {
     if(req.method === 'POST'){
         try {
         await connectDB()
+//        const Q =  await Quiz.deleteMany({
+//   question: { $regex: "^Hard Science Question ", $options: "i" }
+// })
+ 
         const{email, password, role} = req.body
        
         if(role==='admin'){

@@ -114,9 +114,9 @@ const handleUpload = async () => {
       correctAnswer,
     };
 
-    console.log("Quiz Created:", quizData);
+     
 
-    const response = await fetch("http://localhost:3000/api/quizCreation", {
+    const response = await fetch("/api/quizCreation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(quizData),
@@ -233,7 +233,8 @@ const handleUpload = async () => {
   accept=".csv"
   onChange={handleFileChange}
   ref={fileInputRef}
-  className="mt-2"
+  className="mt-2 rounded-md bg-gradient-to-r from-purple-500 to-indigo-500 px-5 py-2 text-sm font-medium text-white hover:opacity-90"
+  
 />
 
 {uploadMsg ? (

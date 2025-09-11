@@ -8,8 +8,18 @@ import Faqs from "@/components/home/faq";
 import Reward from "@/components/home/reward";
 import CssParticles from "@/components/particles";
 import BgSvg from "@/components/layout/bg";
+ 
+import connectDB from "@/utils/connectmongo";
+import Quiz from "../model/quizCreation"
+import UsersQuiz from "@/components/UserQuiz/quiz";
+import { useState } from "react";
 
-export default function Home() {
+export default function Home(props) {
+const[modal, setModal] = useState(true)
+//this for user quiz
+const allQuestions = props.quiz
+
+
   return (
     <>
       <Head>
@@ -21,7 +31,8 @@ export default function Home() {
       <div className="relative bg-gradient-to-r from-[#0b1220] via-[#1a1f3c] to-primary-dark">
         <Navbar />
         <CssParticles />
-        <Banner />
+        <Banner allQuestions={allQuestions} />
+        {modal && <UsersQuiz allQuestions={allQuestions} onClose={()=>{setModal(false)}} />}
       </div>
       <div className="relative">
         <HowItWorks />
@@ -35,4 +46,17 @@ export default function Home() {
       </div>
     </>
   );
+}
+export async function getServerSideProps(){
+  await connectDB()
+  const quiz = await Quiz.find({}).lean()
+  console.log("quiz",quiz)
+  
+
+  return{
+    props:{
+      quiz:JSON.parse(JSON.stringify(quiz))
+     
+    }
+  }
 }
