@@ -69,12 +69,12 @@ export default function UsersQuiz(props) {
   function optionClasses(isSelected) {
     if (quizLocked) {
       // Disabled style (still highlight the selected one clearly)
-      return `flex items-center space-x-2 border rounded-md p-5 mt-3 cursor-not-allowed ${
+      return `flex items-center space-x-2 border border-gray-500 rounded-md p-4 mt-3 cursor-not-allowed ${
         isSelected ? "bg-blue-50 border-blue-400 text-blue-700" : "opacity-50"
       }`;
     }
     // Interactive / hover style
-    return `flex items-center space-x-2 border rounded-md p-5 mt-3 cursor-pointer hover:bg-gray-500 hover:text-white hover:font-bold ${
+    return `flex items-center space-x-2 border rounded-md p-4 mt-3 cursor-pointer hover:bg-gray-500 hover:text-white hover:font-bold ${
       isSelected ? "ring-2 ring-blue-400" : ""
     }`;
   }
@@ -141,7 +141,7 @@ export default function UsersQuiz(props) {
           <div>
             <button
               type="button"
-              className="rounded-md bg-blue-900 w-full px-5 py-2 text-lg font-medium text-white hover:opacity-90"
+              className="rounded-md bg-blue-900 w-full px-5 py-2 text-md font-medium text-white hover:opacity-90"
               onClick={() => setUsernameModal(true)}
             >
               Access more questions and start winning real points and cash

@@ -50,7 +50,7 @@ const allQuestions = props.quiz
 export async function getServerSideProps(){
   await connectDB()
   const quiz = await Quiz.find({}).lean()
-  console.log("quiz",quiz)
+  
   
 
   return{

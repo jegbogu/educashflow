@@ -30,7 +30,7 @@ export default function Login() {
         redirect: false,
         email: enteredEmail,
         password: enteredPassword,
-        role: "user", // only if your backend expects this
+        role: "user",  
       });
 
       if (!result || result.error) {
@@ -52,14 +52,14 @@ export default function Login() {
         {/* Email */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email Address
+            Email Address or Username
           </label>
           <div className="relative mt-1">
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
               <MailIcon className="w-5 h-5" />
             </span>
             <input
-              type="email"
+              type="text"
               name="email"
               ref={emailInputRef}
               id="email"

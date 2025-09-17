@@ -6,7 +6,7 @@ import Spinner from "@/components/icons/spinner";
 import Usernavbar from "@/components/UserDashboard/usernavbar";
 import UserQuizzes from "@/components/UserDashboard/userquizzes";
  
-export default function Dashboard(){
+export default function Quizzes(){
 
      const { data: session, status } = useSession();
 const userData = session?.user
@@ -42,7 +42,7 @@ const userData = session?.user
         <div className="p-5">
             <Userheader userData={userData}/>
             <Usernavbar/>
-           
+            <UserQuizzes/>
         </div>
 )
 }

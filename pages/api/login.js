@@ -47,8 +47,13 @@ function getFormattedDateTime() {
             
             res.status(200).json(user);
         }
-       
-        const user = await Register.findOne({email}) 
+      
+        const user = await Register.findOne({
+  $or: [
+    { email: email },
+    { username: email }
+  ]
+});
         //  console.log(user)
          if(!user){
             res.status(403).json({message:'Password or Email is not correct'})

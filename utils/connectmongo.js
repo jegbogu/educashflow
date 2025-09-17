@@ -1,4 +1,4 @@
-require('dotenv').config()
+ 
 const mongoose = require('mongoose')
 const dbLink = `mongodb+srv://${process.env.NAME}:${process.env.PASSWORD}@cluster0.zvp7krc.mongodb.net/${process.env.DB}`
  

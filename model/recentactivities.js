@@ -28,4 +28,8 @@ const ActivitySchema = new Schema({
    
 })
 
-module.exports = models.Activity || mongoose.model('Activity', ActivitySchema)
+ 
+
+const Activity = models.Activity || mongoose.model("Activity", ActivitySchema);
+
+export default Activity;
