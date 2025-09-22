@@ -44,6 +44,65 @@ export default function Dashboard() {
   if (status !== "authenticated" || session?.user.role !== "user") {
     return null;
   }
+
+  const quizzes = [
+    {
+      title: "World Geography Masters",
+      difficulty: "Medium",
+      subject: "Geography",
+      duration: "15 mins",
+      questions: "20 questions",
+      points: "+250 pts",
+      accuracy: "85%",
+      completed: true,
+      buttonText: "Retry",
+    },
+    {
+      title: "Science Fundamentals",
+      difficulty: "Easy",
+      subject: "Science",
+      duration: "10 mins",
+      questions: "15 questions",
+      points: "+100 pts",
+      buttonText: "Start",
+    },
+    {
+      title: "Advanced Mathematics",
+      difficulty: "Hard",
+      subject: "Math",
+      duration: "30 mins",
+      questions: "25 questions",
+      points: "+500 pts",
+      buttonText: "Start",
+    },
+  ];
+  const activities = [
+    {
+      title: "Daily Goal Bonus",
+      timeAgo: "1 day ago",
+      amount: "+$4.00",
+      status: "completed",
+    },
+    {
+      title: "Daily Goal Bonus",
+      timeAgo: "1 day ago",
+      amount: "+$4.00",
+      status: "completed",
+    },
+    {
+      title: "Advanced Math Quiz",
+      timeAgo: "2 days ago",
+      amount: "+$4.00",
+      status: "completed",
+    },
+    {
+      title: "Advanced Math Quiz",
+      timeAgo: "2 days ago",
+      amount: "+$4.00",
+      status: "completed",
+    },
+  ];
+
   return (
     <div className="p-5">
       <Userheader userData={userData} />
@@ -97,7 +156,7 @@ export default function Dashboard() {
                 </div>
                 <div className={styles.sectionContent}>
                   <div className={styles.couponNotice}>
-                    <p className={styles.couponText}>
+                    <p className="">
                       Get more from every game. Purchase a coupon to increase
                       your earnings.
                     </p>
@@ -124,37 +183,20 @@ export default function Dashboard() {
 
               {/* Quiz Categories */}
               <div className={styles.quizCategories}>
-                <QuizCard
-                  title="World Geography Masters"
-                  difficulty="Medium"
-                  subject="Geography"
-                  duration="15 mins"
-                  questions="20 questions"
-                  points="+250 pts"
-                  accuracy="85%"
-                  completed={true}
-                  buttonText="Retry"
-                />
-
-                <QuizCard
-                  title="Science Fundamentals"
-                  difficulty="Easy"
-                  subject="Science"
-                  duration="10 mins"
-                  questions="15 questions"
-                  points="+100 pts"
-                  buttonText="Start"
-                />
-
-                <QuizCard
-                  title="Advanced Mathematics"
-                  difficulty="Hard"
-                  subject="Math"
-                  duration="30 mins"
-                  questions="25 questions"
-                  points="+500 pts"
-                  buttonText="Start"
-                />
+                {quizzes.map((quiz, index) => (
+                  <QuizCard
+                    key={index}
+                    title={quiz.title}
+                    difficulty={quiz.difficulty}
+                    subject={quiz.subject}
+                    duration={quiz.duration}
+                    questions={quiz.questions}
+                    points={quiz.points}
+                    accuracy={quiz.accuracy}
+                    completed={quiz.completed}
+                    buttonText={quiz.buttonText}
+                  />
+                ))}
               </div>
             </div>
 
@@ -226,30 +268,15 @@ export default function Dashboard() {
                     </div>
 
                     <div className={styles.activityList}>
-                      <ActivityItem
-                        title="Daily Goal Bonus"
-                        timeAgo="1 day ago"
-                        amount="+$4.00"
-                        status="completed"
-                      />
-                      <ActivityItem
-                        title="Daily Goal Bonus"
-                        timeAgo="1 day ago"
-                        amount="+$4.00"
-                        status="completed"
-                      />
-                      <ActivityItem
-                        title="Advanced Math Quiz"
-                        timeAgo="2 days ago"
-                        amount="+$4.00"
-                        status="completed"
-                      />
-                      <ActivityItem
-                        title="Advanced Math Quiz"
-                        timeAgo="2 days ago"
-                        amount="+$4.00"
-                        status="completed"
-                      />
+                      {activities.map((activity, index) => (
+                        <ActivityItem
+                          key={index}
+                          title={activity.title}
+                          timeAgo={activity.timeAgo}
+                          amount={activity.amount}
+                          status={activity.status}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>

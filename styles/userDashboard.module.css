@@ -88,6 +88,12 @@
 .badgeCompleted {
   @apply bg-green-100 text-green-800;
 }
+.badgeFailed {
+  @apply bg-red-100 text-red-800;
+}
+.badgePending {
+  @apply bg-neutral-200 text-neutral-800;
+}
 
 /* Progress Bar */
 .progressContainer {
@@ -156,6 +162,9 @@
 .couponText {
   @apply text-sm text-yellow-800 mb-3;
 }
+.btn {
+  @apply px-4 py-2 text-sm font-medium flex gap-2 items-center justify-center w-full bg-black mt-2 rounded-lg text-white;
+}
 
 .btnPrimary {
   @apply bg-black text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors flex items-center gap-1;
@@ -182,7 +191,7 @@
 }
 
 .quizCard {
-  @apply bg-white rounded-lg border shadow-sm p-4 ;
+  @apply bg-white rounded-lg border shadow-sm p-4;
 }
 
 .quizCardHeader {
@@ -283,7 +292,7 @@
 }
 
 .activityList {
-  @apply space-y-4;
+  @apply space-y-4 mb-4;
 }
 
 .activityItem {
@@ -299,5 +308,250 @@
 }
 
 .activityAmount {
-  @apply text-sm font-semibold text-green-600;
+  @apply text-sm font-semibold;
+}
+
+.tasksPage {
+  @apply mx-auto max-w-4xl space-y-6;
+}
+
+.completionCount {
+  @apply ml-auto text-sm text-gray-600;
+}
+
+.bonusEarningsCard {
+  @apply bg-white rounded-lg border shadow-sm p-6;
+}
+
+.bonusTitle {
+  @apply text-lg font-semibold mb-2;
+}
+
+.bonusAmount {
+  @apply text-2xl font-bold text-purple-600 mb-4;
+}
+
+.taskCards {
+  @apply space-y-4;
+}
+
+.taskCard {
+  @apply bg-white rounded-lg border shadow-sm p-6;
+}
+
+.taskCompleted {
+  @apply bg-green-50 border-green-200;
+}
+
+.taskHeader {
+  @apply flex items-center justify-between mb-3;
+}
+
+.taskTitle {
+  @apply font-semibold;
+}
+
+.taskReward {
+  @apply text-green-600 font-semibold;
+}
+
+.taskStatus {
+  @apply flex items-center gap-1 text-sm;
+}
+
+.statusPending {
+  @apply text-gray-600;
+}
+
+.statusClaimed {
+  @apply text-green-600;
+}
+
+.statusIcon {
+  @apply h-4 w-4;
+}
+
+.taskDescription {
+  @apply text-sm text-gray-600 mb-4;
+}
+
+.taskProgress {
+  @apply flex justify-between items-center text-sm mb-2;
+}
+
+.progressText {
+  @apply text-gray-600;
+}
+
+.progressCount {
+  @apply font-medium;
+}
+
+.taskMessage {
+  @apply text-center;
+}
+
+.taskMessage p {
+  @apply text-gray-600;
+}
+
+/* Earnings Page */
+.earningsPage {
+  @apply mx-auto max-w-7xl space-y-6 mt-6;
+}
+
+.balanceCards {
+  @apply grid gap-4;
+}
+
+@media (min-width: 768px) {
+  .balanceCards {
+    @apply grid-cols-2;
+  }
+}
+
+.balanceCard {
+  @apply rounded-lg p-6 text-white;
+}
+
+.balanceAvailable {
+  @apply bg-green-50 text-green-700;
+}
+
+.balanceMonthly {
+  @apply bg-blue-50 text-blue-700;
+}
+
+.balanceHeader {
+  @apply flex items-center justify-between mb-2;
+}
+
+.balanceCurrency {
+  @apply text-lg font-normal;
+}
+
+.balanceTrendIcon {
+  @apply h-4 w-4;
+}
+
+.balanceCard .balance-amount {
+  @apply text-3xl font-bold text-white mb-2;
+}
+
+.balanceCard .balanceRate {
+  @apply text-sm opacity-90;
+}
+
+.balanceCard .balanceGrowth {
+  @apply text-sm flex items-center gap-1 justify-start;
+}
+
+/* Coupons Page */
+.couponsPage {
+  @apply mx-auto max-w-7xl space-y-6 mt-6;
+}
+
+.currentCoupon {
+  @apply space-y-4;
+}
+
+.currentCouponTitle {
+  @apply text-lg font-semibold mb-4;
+}
+
+.couponStatus {
+  @apply bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center justify-between;
+}
+
+.couponInfo {
+  @apply flex-1;
+}
+
+.couponText {
+  @apply text-sm text-blue-800;
+}
+
+.couponQuizzes {
+  @apply flex items-center gap-2;
+}
+
+.quizzesLeft {
+  @apply text-sm font-medium text-blue-800;
+}
+
+.plansTitle {
+  @apply text-xl font-bold text-gray-900 mb-6;
+}
+
+.plansGrid {
+  @apply grid gap-6 mb-6 relative;
+}
+
+@media (min-width: 768px) {
+  .plansGrid {
+    @apply grid-cols-2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .plansGrid {
+    @apply grid-cols-3;
+  }
+}
+
+.planCard {
+  @apply bg-white rounded-lg border shadow-sm p-6 relative overflow-visible;
+}
+
+.planCardPopular {
+  @apply border-2 border-blue-500;
+}
+
+.planBadge {
+  @apply absolute -top-2.5 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium;
+}
+
+.planHeader {
+  @apply mb-6;
+}
+
+.planName {
+  @apply text-xl font-bold text-gray-900 mb-2;
+}
+
+.planPrice {
+  @apply text-3xl font-bold text-gray-900;
+}
+
+.planFeatures {
+  @apply space-y-3 mb-6;
+}
+
+.featureItem {
+  @apply flex items-center gap-2;
+}
+
+.featureItem::before {
+  content: "•";
+  @apply text-gray-400;
+}
+
+.featureText {
+  @apply text-sm text-gray-600;
+}
+
+.planButton {
+  @apply w-full px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2;
+}
+
+.planButtonBasic {
+  @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+}
+
+.planButtonPremium {
+  @apply bg-gray-900 text-white hover:bg-gray-800;
+}
+
+.buttonIcon {
+  @apply h-4 w-4;
 }

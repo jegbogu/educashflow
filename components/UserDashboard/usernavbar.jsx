@@ -39,7 +39,7 @@ export default function Usernavbar() {
           rewards and earn faster
         </p>
 
-        <button className="bg-black text-white rounded-[15px] pt-2 pb-2 pl-4 pr-4 mt-5 ml-[45%]">
+        <button className="bg-black text-white rounded-lg pt-2 pb-2 pl-4 pr-4 mt-5 ml-[45%]">
           Buy coupon
         </button>
       </div>
