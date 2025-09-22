@@ -1,0 +1,303 @@
+.dashboard {
+  @apply min-h-screen py-4;
+}
+
+.dashboardContainer {
+  @apply mx-auto max-w-7xl;
+}
+
+.statsGrid {
+  @apply mb-6 grid gap-4;
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    @apply grid-cols-3;
+  }
+}
+
+.mainGrid {
+  @apply grid gap-6;
+}
+
+@media (min-width: 1024px) {
+  .mainGrid {
+    @apply grid-cols-3;
+  }
+}
+
+.leftColumn {
+  @apply space-y-6 bg-white rounded-lg border shadow-sm p-6;
+}
+
+@media (min-width: 1024px) {
+  .leftColumn {
+    @apply col-span-2;
+  }
+}
+
+.rightColumn {
+  @apply space-y-6;
+}
+
+.statsCard {
+  @apply bg-white rounded-lg border shadow-sm;
+}
+
+.statsCardHeader {
+  @apply p-6 pb-3;
+}
+
+.statsCardTitleRow {
+  @apply flex items-center justify-between;
+}
+
+.statsCardTitle {
+  @apply text-sm font-medium text-gray-600;
+}
+
+.statsCardContent {
+  @apply px-6 pb-6;
+}
+
+/* Badges */
+.badge {
+  @apply px-2 py-1 text-xs font-medium rounded;
+}
+
+.badgeActive {
+  @apply bg-black text-white;
+}
+
+.badgeDefault {
+  @apply bg-gray-100 text-gray-800;
+}
+
+.badgeEasy {
+  @apply bg-green-100 text-green-800;
+}
+
+.badgeMedium {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.badgeHard {
+  @apply bg-red-100 text-red-800;
+}
+
+.badgeCompleted {
+  @apply bg-green-100 text-green-800;
+}
+
+/* Progress Bar */
+.progressContainer {
+  @apply w-full bg-gray-200 rounded-full h-2;
+}
+
+.progressBar {
+  @apply bg-black h-2 rounded-full transition-all duration-300 ease-in-out;
+}
+
+/* Time Remaining */
+.timeRemaining {
+  @apply flex items-center gap-2 text-sm text-gray-600 mb-3;
+}
+
+.timeIcon {
+  @apply h-4 w-4;
+}
+
+/* Progress Section */
+.progressSection {
+  @apply space-y-2;
+}
+
+.progressLabel {
+  @apply flex justify-between text-sm;
+}
+
+/* Stats */
+.statNumber {
+  @apply text-3xl font-bold;
+}
+
+.statDescription {
+  @apply text-sm text-gray-600;
+}
+
+.statTotal {
+  @apply text-xs text-gray-600 mt-1;
+}
+
+.sectionCard {
+  @apply bg-white rounded-lg border shadow-sm;
+}
+
+.sectionHeader {
+  @apply p-6 pb-4 flex items-center gap-2;
+}
+
+.sectionIcon {
+  @apply h-5 w-5;
+}
+
+.sectionTitle {
+  @apply text-lg font-semibold leading-normal;
+}
+
+.sectionContent {
+  @apply px-6 pb-6;
+}
+
+.couponNotice {
+  @apply bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex justify-between items-center gap-4 max-sm:flex-col;
+}
+
+.couponText {
+  @apply text-sm text-yellow-800 mb-3;
+}
+
+.btnPrimary {
+  @apply bg-black text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors flex items-center gap-1;
+}
+
+.btnSecondary {
+  @apply bg-transparent text-black border px-4 py-2 rounded text-sm font-medium hover:bg-black hover:text-white transition-colors flex items-center gap-1;
+}
+
+.btnDisabled {
+  @apply w-full bg-gray-100 text-gray-400 px-4 py-2 rounded text-sm font-medium cursor-not-allowed;
+}
+
+.btnGhost {
+  @apply text-gray-600 hover:text-gray-900 text-xs font-medium;
+}
+
+.btnIcon {
+  @apply h-4 w-4;
+}
+
+.quizCategories {
+  @apply space-y-4;
+}
+
+.quizCard {
+  @apply bg-white rounded-lg border shadow-sm p-4 ;
+}
+
+.quizCardHeader {
+  @apply flex items-center justify-between mb-3 max-sm:flex-col max-sm:items-start gap-2;
+}
+
+.quizCardTitle {
+  @apply font-semibold mb-1;
+}
+
+.quizCardMeta {
+  @apply flex items-center gap-4 text-sm text-gray-600;
+}
+
+.quizCardSubject {
+  @apply flex items-center gap-1;
+}
+
+.subjectIcon {
+  @apply h-4 w-4;
+}
+
+.quizCardAccuracy {
+  @apply mt-2 text-sm;
+}
+
+.balanceRow {
+  @apply flex justify-between items-start mb-6;
+}
+
+.balanceItem {
+  @apply flex-1;
+}
+
+.balanceRight {
+  @apply text-right;
+}
+
+.balanceLabel {
+  @apply text-sm font-medium text-gray-600;
+}
+
+.balanceAmount {
+  @apply text-2xl font-bold;
+}
+
+.balanceAvailable {
+  @apply text-green-600;
+}
+
+.balanceMonthly {
+  @apply text-blue-600;
+}
+
+.balanceRate {
+  @apply text-xs text-gray-600;
+}
+
+.balanceGrowth {
+  @apply text-xs text-green-600 flex items-center gap-1 justify-end;
+}
+
+.growthIcon {
+  @apply h-3 w-3;
+}
+
+.withdrawalSection {
+  @apply mb-6;
+}
+
+.withdrawalHeader {
+  @apply flex justify-between items-center mb-2;
+}
+
+.withdrawalTitle {
+  @apply text-sm font-medium;
+}
+
+.withdrawalMin {
+  @apply text-xs text-gray-600;
+}
+
+.withdrawalNeeded {
+  @apply text-xs text-gray-600 mb-2;
+}
+
+/* Activity */
+.activitySection {
+  @apply mt-6;
+}
+
+.activityHeader {
+  @apply flex justify-between items-center mb-4;
+}
+
+.activityTitle {
+  @apply font-semibold;
+}
+
+.activityList {
+  @apply space-y-4;
+}
+
+.activityItem {
+  @apply flex justify-between items-center bg-neutral-50 rounded-lg p-4;
+}
+
+.activityTime {
+  @apply text-xs text-gray-600;
+}
+
+.activityRight {
+  @apply text-right space-y-1;
+}
+
+.activityAmount {
+  @apply text-sm font-semibold text-green-600;
+}
