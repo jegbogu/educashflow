@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { X, Upload } from "lucide-react";
-import { quizConfig } from "../../config/quizConfig "; // adjust path if needed
+import { quizConfig } from "../../config/quizConfig "
 
 export default function CreateQuizModal({ onClose }) {
   const questionRef = useRef();
@@ -11,12 +11,12 @@ export default function CreateQuizModal({ onClose }) {
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [category, setCategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
   const [level, setLevel] = useState("");
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
-const [uploading, setUploading] = useState(false);
-const [uploadMsg, setUploadMsg] = useState("");
-
+  const [uploading, setUploading] = useState(false);
+  const [uploadMsg, setUploadMsg] = useState("");
 
   // Handlers
   const handleOptionChange = (index, value) => {
@@ -25,81 +25,79 @@ const [uploadMsg, setUploadMsg] = useState("");
     setOptions(newOptions);
   };
 
-  
-const handleFileChange = (e) => {
-  const f = e.target.files?.[0] || null;
-  setUploadMsg("");
-  if (!f) {
-    setFile(null);
-    return;
-  }
+  const handleCategoryChange = (value) => {
+    setCategory(value);
+    setSubcategory(""); // reset subcategory when category changes
+  };
 
-  // basic CSV guard (browsers can label CSV oddly, so check name too)
-  const looksCsv =
-    f.type === "text/csv" ||
-    f.type === "application/vnd.ms-excel" ||
-    f.name.toLowerCase().endsWith(".csv");
-
-  if (!looksCsv) {
-    setUploadMsg("Selected file is not a CSV.");
-    setFile(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-    return;
-  }
-
-  setFile(f);
-};
-
-const handleUpload = async () => {
-  try {
+  const handleFileChange = (e) => {
+    const f = e.target.files?.[0] || null;
     setUploadMsg("");
-    if (!file) {
-      setUploadMsg("Please choose a CSV file first.");
+    if (!f) {
+      setFile(null);
       return;
     }
 
-    setUploading(true);
+    const looksCsv =
+      f.type === "text/csv" ||
+      f.type === "application/vnd.ms-excel" ||
+      f.name.toLowerCase().endsWith(".csv");
 
-    const formData = new FormData();
-    formData.append("file", file);
-  
+    if (!looksCsv) {
+      setUploadMsg("Selected file is not a CSV.");
+      setFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
 
-    const res = await fetch("http://localhost:3000/api/upload-csv", {
-      method: "POST",
-      body: formData,
-    });
+    setFile(f);
+  };
 
-    let data = {};
+  const handleUpload = async () => {
     try {
-      data = await res.json();
-    } catch (_) {}
+      setUploadMsg("");
+      if (!file) {
+        setUploadMsg("Please choose a CSV file first.");
+        return;
+      }
 
-    if (!res.ok) {
-      setUploadMsg(data?.message || "CSV upload failed.");
-      return;
+      setUploading(true);
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("http://localhost:3000/api/upload-csv", {
+        method: "POST",
+        body: formData,
+      });
+
+      let data = {};
+      try {
+        data = await res.json();
+      } catch (_) {}
+
+      if (!res.ok) {
+        setUploadMsg(data?.message || "CSV upload failed.");
+        return;
+      }
+
+      const inserted = data?.rows_inserted ?? "";
+      const failed = data?.rows_failed ?? "";
+      setUploadMsg(
+        data?.message ||
+          `Upload complete.${inserted !== "" ? ` Inserted: ${inserted}.` : ""}${
+            failed !== "" ? ` Failed: ${failed}.` : ""
+          }`
+      );
+
+      setFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (err) {
+      setUploadMsg(err?.message || "Upload error.");
+    } finally {
+      setUploading(false);
     }
-
-    // Success message (supports your backend’s response shape)
-    const inserted = data?.rows_inserted ?? "";
-    const failed = data?.rows_failed ?? "";
-    setUploadMsg(
-      data?.message ||
-        `Upload complete.${inserted !== "" ? ` Inserted: ${inserted}.` : ""}${
-          failed !== "" ? ` Failed: ${failed}.` : ""
-        }`
-    );
-
-    // Reset file and input
-    setFile(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  } catch (err) {
-    setUploadMsg(err?.message || "Upload error.");
-  } finally {
-    setUploading(false);
-  }
-};
-
-   
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,12 +107,11 @@ const handleUpload = async () => {
     const quizData = {
       question: enteredQuestion,
       category,
+      subcategory,
       level,
       options,
       correctAnswer,
     };
-
-     
 
     const response = await fetch("/api/quizCreation", {
       method: "POST",
@@ -127,13 +124,11 @@ const handleUpload = async () => {
     if (newPostData.success === true) {
       alert(newPostData.message);
 
-      // ✅ Reset controlled fields
       setCategory("");
+      setSubcategory("");
       setLevel("");
       setOptions(["", "", "", ""]);
       setCorrectAnswer(null);
-
-      // ✅ Reset uncontrolled field
       if (questionRef.current) questionRef.current.value = "";
     } else {
       alert(newPostData.message || "Something went wrong");
@@ -153,35 +148,6 @@ const handleUpload = async () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Question */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Question</label>
-            <input
-              type="text"
-              name="question"
-              ref={questionRef}
-              placeholder="Enter question..."
-              className="w-full rounded-md border border-gray-200 bg-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-
-          {/* Category Dropdown */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Category</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-md border border-gray-200 bg-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              <option value="">Select Category</option>
-              {quizConfig.categories.map((cat, idx) => (
-                <option key={idx} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
-
           {/* Level Dropdown */}
           <div>
             <label className="block text-sm font-medium mb-1">Level</label>
@@ -197,6 +163,58 @@ const handleUpload = async () => {
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* Category Dropdown */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Category</label>
+            <select
+              value={category}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              className="w-full rounded-md border border-gray-200 bg-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="">Select Category</option>
+              {quizConfig.categories.map((cat, idx) => (
+                <option key={idx} value={cat.name}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Subcategory Dropdown */}
+          {category && (
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Sub-Category
+              </label>
+              <select
+                value={subcategory}
+                onChange={(e) => setSubcategory(e.target.value)}
+                className="w-full rounded-md border border-gray-200 bg-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="">Select Sub-Category</option>
+                {quizConfig.categories
+                  .find((c) => c.name === category)
+                  ?.subcategories.map((sub, idx) => (
+                    <option key={idx} value={sub}>
+                      {sub}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          )}
+
+          {/* Question */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Question</label>
+            <input
+              type="text"
+              name="question"
+              ref={questionRef}
+              placeholder="Enter question..."
+              className="w-full rounded-md border border-gray-200 bg-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
           </div>
 
           {/* Multiple Choice Options */}
@@ -227,38 +245,37 @@ const handleUpload = async () => {
             </p>
           </div>
 
-           {/* Bulk Import & Submit */}
-<input
-  type="file"
-  accept=".csv"
-  onChange={handleFileChange}
-  ref={fileInputRef}
-  className="mt-2 rounded-md bg-gradient-to-r from-purple-500 to-indigo-500 px-5 py-2 text-sm font-medium text-white hover:opacity-90"
-  
-/>
+          {/* Bulk Import & Submit */}
+          <input
+            type="file"
+            accept=".csv"
+            onChange={handleFileChange}
+            ref={fileInputRef}
+            className="mt-2 rounded-md bg-gradient-to-r from-purple-500 to-indigo-500 px-5 py-2 text-sm font-medium text-white hover:opacity-90"
+          />
 
-{uploadMsg ? (
-  <div className="mt-2 text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-md px-3 py-2">
-    {uploadMsg}
-  </div>
-) : null}
+          {uploadMsg ? (
+            <div className="mt-2 text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-md px-3 py-2">
+              {uploadMsg}
+            </div>
+          ) : null}
 
-<div className="flex justify-end items-center gap-3 pt-4">
-  <button
-    type="button"
-    onClick={handleUpload}
-    disabled={!file || uploading}
-    className="flex items-center gap-2 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-60"
-  >
-    <Upload className="w-4 h-4" />
-    {uploading ? "Uploading..." : "Bulk Import"}
-  </button>
-  <button
-    type="submit"
-    className="rounded-md bg-gradient-to-r from-purple-500 to-indigo-500 px-5 py-2 text-sm font-medium text-white hover:opacity-90"
-  >
-    Generate
-  </button>
+          <div className="flex justify-end items-center gap-3 pt-4">
+            <button
+              type="button"
+              onClick={handleUpload}
+              disabled={!file || uploading}
+              className="flex items-center gap-2 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-60"
+            >
+              <Upload className="w-4 h-4" />
+              {uploading ? "Uploading..." : "Bulk Import"}
+            </button>
+            <button
+              type="submit"
+              className="rounded-md bg-gradient-to-r from-purple-500 to-indigo-500 px-5 py-2 text-sm font-medium text-white hover:opacity-90"
+            >
+              Generate
+            </button>
           </div>
         </form>
       </div>

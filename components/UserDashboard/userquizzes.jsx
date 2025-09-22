@@ -1,7 +1,9 @@
 import Playingquiz from "./playingquiz";
 import ProgressBar from "./progressBar";
 
-export default function UserQuizzes(){
+export default function UserQuizzes(props){
+
+ 
     return(
         <div className="border-gray-300 border rounded-md mt-5 p-5">
             <div className="flex gap-5 ">
@@ -28,7 +30,7 @@ export default function UserQuizzes(){
                
             </div>
             <div>
-                    <Playingquiz/>
+                    <Playingquiz quiz={props.quiz}/>
                 </div>
         </div>
     )

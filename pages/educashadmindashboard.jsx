@@ -64,14 +64,21 @@ function calculatePercentageChange(current, previous) {
   return change >= 0 ? `+${change.toFixed(1)}%` : `${change.toFixed(1)}%`;
 }
 
-/**
+ /**
  * Get percentage change for current month vs last month
  */
 function getCurrentVsLastMonthGrowth(users) {
   // Count users per month (YYYY-MM)
   const counts = users.reduce((acc, u) => {
-    const [day, month, yearTime] = u.createdAt.split("-");
-    const [year] = yearTime.split(" ");
+    if (!u.createdAt) return acc;
+
+    // Ensure it's a Date object
+    const d = new Date(u.createdAt);
+    if (isNaN(d)) return acc;
+
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // 01-12
+
     const key = `${year}-${month}`;
     acc[key] = (acc[key] || 0) + 1;
     return acc;
@@ -92,6 +99,7 @@ function getCurrentVsLastMonthGrowth(users) {
 
   return calculatePercentageChange(current, previous);
 }
+
 
 const usersRate =  getCurrentVsLastMonthGrowth(users);
 const overviewData = [

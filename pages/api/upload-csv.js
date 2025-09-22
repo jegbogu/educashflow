@@ -64,6 +64,7 @@ export default async function handler(req, res) {
 
       const question = (row.question || "").trim();
       const category = (row.category || "Science").trim();
+      const subcategory = (row.subcategory || "Biology").trim();
       const level = (row.level || "Advanced").trim();
       const caRaw = row.correctAnswer;
 
@@ -100,7 +101,7 @@ export default async function handler(req, res) {
         errors.push({ row: rowNum, message: "correctAnswer must be an integer 0..3" }); continue;
       }
 
-      docs.push({ question, category, level, options, correctAnswer });
+      docs.push({ question, category,subcategory, level, options, correctAnswer });
     }
 
     if (!docs.length) {

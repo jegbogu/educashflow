@@ -37,7 +37,7 @@ export default function Login() {
         throw new Error("Invalid Username or Password");
       }
 
-      router.push("/dashboard");
+      router.push("/quizzes");
     } catch (err) {
       setError(err.message);
       setLoading(false);

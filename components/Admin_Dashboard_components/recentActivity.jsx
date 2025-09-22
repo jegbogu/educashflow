@@ -1,5 +1,8 @@
 export default function RecentActivity(props){
-    const  recentActivities =   props.allActivities
+    
+    const  recentA =   props.allActivities
+    const recentActivities= recentA.slice(-5)
+     
 
      function timeAgo(dateString) {
   // Convert the string to a Date object (format: DD-MM-YYYY HH:mm:ss)

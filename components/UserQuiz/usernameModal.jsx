@@ -101,11 +101,14 @@ export default function UsernameModal(props) {
     setLoading(true);
     setServerMsg({ type: "", text: "" });
 
+    //random number to make the temporary email unique
+    const randomNum = Math.floor(Math.random()*2341300)+7672521
+    
     try {
       const data = {
         fullname: "nofullname",
         username: usernameRef.current.value.trim(),
-        email: "noemail@gmail.com",
+        email: `noemail@gmail.com${randomNum}`,
         password: passwordRef.current.value,
       };
 

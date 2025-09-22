@@ -21,6 +21,10 @@ const QuizSchema = new Schema({
     type: String,
     trim: true,
   },
+  subcategory: {
+    type: String,
+    trim: true,
+  },
   level: {
     type: String,
     trim: true,

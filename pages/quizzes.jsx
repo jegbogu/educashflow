@@ -5,8 +5,10 @@ import { useRouter } from "next/router";
 import Spinner from "@/components/icons/spinner";
 import Usernavbar from "@/components/UserDashboard/usernavbar";
 import UserQuizzes from "@/components/UserDashboard/userquizzes";
+import connectDB from "@/utils/connectmongo";
+import Quiz from "../model/quizCreation"
  
-export default function Quizzes(){
+export default function Quizzes(props){
 
      const { data: session, status } = useSession();
 const userData = session?.user
@@ -42,7 +44,76 @@ const userData = session?.user
         <div className="p-5">
             <Userheader userData={userData}/>
             <Usernavbar/>
-            <UserQuizzes/>
+            <UserQuizzes quiz={props.quiz}/>
         </div>
 )
+}
+
+export async function getServerSideProps(){
+  await connectDB()
+  const quizList = await Quiz.find({}).lean()
+  
+
+  const subcategories = [...new Set(quizList.map((el) => el.subcategory))];
+  const levels = [...new Set(quizList.map((el) => el.level))];
+
+const quizBeginner = subcategories.map((sub) => {
+  const found = quizList.filter((el) => el.subcategory === sub && el.level==levels[0]);
+  return {
+    subcategory: sub,
+    
+    quizzes: found.map((el) => ({
+      id: el._id,
+      category: el.category,
+      question: el.question,
+      options: el.options,
+      correctAnswer: el.correctAnswer,
+      level: el.level,
+      createdAt: el.createdAt
+    }))
+  };
+});
+const quizIntermediate = subcategories.map((sub) => {
+  const found = quizList.filter((el) => el.subcategory === sub && el.level==levels[1]);
+  return {
+    subcategory: sub,
+    
+    quizzes: found.map((el) => ({
+      id: el._id,
+      category: el.category,
+      question: el.question,
+      options: el.options,
+      correctAnswer: el.correctAnswer,
+      level: el.level,
+      createdAt: el.createdAt
+    }))
+  };
+});
+const quizAdvanced = subcategories.map((sub) => {
+  const found = quizList.filter((el) => el.subcategory === sub && el.level==levels[2]);
+  return {
+    subcategory: sub,
+    
+    quizzes: found.map((el) => ({
+      id: el._id,
+      category: el.category,
+      question: el.question,
+      options: el.options,
+      correctAnswer: el.correctAnswer,
+      level: el.level,
+      createdAt: el.createdAt
+    }))
+  };
+});
+
+const quiz = quizBeginner.concat(quizIntermediate,quizAdvanced)
+  
+  
+
+  return{
+    props:{
+      quiz:JSON.parse(JSON.stringify(quiz))
+     
+    }
+  }
 }
