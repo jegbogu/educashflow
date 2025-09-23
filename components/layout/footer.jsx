@@ -8,7 +8,7 @@ export default function Footer() {
       <section className="max-w-7xl mx-auto p-4 py-8">
         <div className="flex flex-col md:flex-row">
           <div className="max-w-72 w-full min-h-32">
-            <h4 className="text-xl">QuiWallet</h4>
+            <h4 className="text-xl">Educash Flow</h4>
           </div>
           <div className="links-groups">
             <div className="capitalize">
@@ -72,20 +72,24 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row gap-4 mt-16 font-light">
-          <p className="italic">
-            &copy; {new Date().getFullYear()} QuiWallet. All rights reserved.
-          </p>
-          <Link href={"#"}>Terms of Service</Link>
-          <Link href={"#"}>Privacy Policy</Link>
+        <div className="flex justify-between items-center mt-16">
+          <div className="flex flex-col sm:flex-row gap-4 font-light">
+            <p className="italic">
+              &copy; {new Date().getFullYear()} Educash Flow. All rights
+              reserved.
+            </p>
+            <Link href={"#"}>Terms of Service</Link>
+            <Link href={"#"}>Privacy Policy</Link>
+          </div>
+          <Link href="https://www.mediaplur.com/" target="_blank">
+            <div class=" flex items-center space-x-2">
+              <p>Designed by Mediaplur</p>
+              <span>
+                <img src="logo.webp" alt="Logo" class="w-19 h-8" />
+              </span>
+            </div>
+          </Link>
         </div>
-       <a href="https://www.mediaplur.com/" target="_blank"><div class="flex items-center space-x-2">
-  <p>Designed by Mediaplur</p>
-  <span>
-    <img src="logo.webp" alt="Logo" class="w-19 h-8"/>
-  </span>
-</div></a>
-
       </section>
     </footer>
   );

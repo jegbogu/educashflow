@@ -3,6 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "tw-animate-css";
 
 :root {
   --primary: #a866fa;

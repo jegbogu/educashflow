@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { quizConfig } from "../../config/quizConfig "
+import { quizConfig } from "../../config/quizConfig ";
+import { Play } from "lucide-react";
 
 /**
  * Input shape (from your GSSP concat or grouped build):
@@ -50,7 +51,6 @@ export default function Playingquiz({ quiz }) {
           count,
           minutes: (count * perQSeconds) / 60,
           points: count * ptsPerQ,
-     
         });
       }
     }
@@ -83,8 +83,12 @@ export default function Playingquiz({ quiz }) {
         lc(r.subcategory).includes(q) ||
         r.categories.some((c) => lc(c).includes(q));
 
-      const matchesSub = subCategoryFilter ? r.subcategory === subCategoryFilter : true;
-      const matchesCat = categoryFilter ? r.categories.includes(categoryFilter) : true;
+      const matchesSub = subCategoryFilter
+        ? r.subcategory === subCategoryFilter
+        : true;
+      const matchesCat = categoryFilter
+        ? r.categories.includes(categoryFilter)
+        : true;
       const matchesLvl = levelFilter ? r.level === levelFilter : true;
 
       return matchesSearch && matchesSub && matchesCat && matchesLvl;
@@ -190,7 +194,9 @@ export default function Playingquiz({ quiz }) {
 
       {/* Empty state */}
       {filtered.length === 0 && (
-        <div className="text-center text-gray-500 py-8">No quizzes match your filters.</div>
+        <div className="text-center text-gray-500 py-8">
+          No quizzes match your filters.
+        </div>
       )}
 
       {/* Cards: one per (subcategory, level) */}
@@ -200,22 +206,34 @@ export default function Playingquiz({ quiz }) {
             key={`${r.subcategory}__${r.level}__${i}`}
             className="border border-gray-200 rounded-md p-5 mt-5 shadow-sm"
           >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center max-sm:flex-col max-sm:items-start gap-4">
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <h3 className="text-lg font-semibold">{r.subcategory}</h3>
-                  <span className={`text-xs px-2 py-1 rounded ${levelBadgeClass(r.level)}`}>
+                  <span
+                    className={`text-xs px-2 py-1 rounded ${levelBadgeClass(
+                      r.level
+                    )}`}
+                  >
                     {r.level}
                   </span>
                 </div>
 
                 <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
-                    <img src="brain-illustration-1-svgrepo-com.svg" className="w-4 h-4" alt="" />
+                    <img
+                      src="brain-illustration-1-svgrepo-com.svg"
+                      className="w-4 h-4"
+                      alt=""
+                    />
                     <span>{r.categories.join(", ") || "Unknown"}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <img src="time-past-svgrepo-com.svg" className="w-4 h-4" alt="" />
+                    <img
+                      src="time-past-svgrepo-com.svg"
+                      className="w-4 h-4"
+                      alt=""
+                    />
                     <span>{r.minutes.toFixed(2)} mins</span>
                   </div>
                   <span>{r.count} questions</span>
@@ -223,8 +241,8 @@ export default function Playingquiz({ quiz }) {
                 </div>
               </div>
 
-              <button className="px-4 py-2 rounded-md bg-black text-white hover:opacity-90">
-                ▶ Start
+              <button className="px-4 py-2 gap-2 flex rounded-md bg-black text-white hover:opacity-90">
+                <Play /> Start
               </button>
             </div>
           </div>
@@ -252,7 +270,9 @@ export default function Playingquiz({ quiz }) {
                 key={`page-${p}`}
                 onClick={() => handlePageChange(p)}
                 className={`px-3 py-1 rounded-md ${
-                  currentPage === p ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
+                  currentPage === p
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
                 }`}
               >
                 {p}
