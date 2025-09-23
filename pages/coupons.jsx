@@ -86,65 +86,67 @@ export default function Coupons() {
   return (
     <div>
       <Userheader userData={userData} />
-      <Usernavbar />
-      <div className={styles.couponsPage}>
-        {/* Coupon Management */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
-            <ShoppingCart className={styles.sectionIcon} />
-            <h2 className="section-title">Coupon Management</h2>
-          </div>
-          <div className={styles.sectionContent}>
-            <div className={styles.currentCoupon}>
-              <h3 className={styles.currentCouponTitle}>Current Coupon:</h3>
-              <div className={styles.couponStatus}>
-                <div className={styles.couponInfo}>
-                  <span className={styles.couponText}>
-                    You are on a free plan buy a coupon to earn faster!
-                  </span>
-                </div>
-                <div className={styles.couponQuizzes}>
-                  <span className={styles.quizzesLeft}>0 quizzes left</span>
+      <div className="p-5">
+        <Usernavbar />
+        <div className={styles.couponsPage}>
+          {/* Coupon Management */}
+          <div className={styles.sectionCard}>
+            <div className={styles.sectionHeader}>
+              <ShoppingCart className={styles.sectionIcon} />
+              <h2 className="section-title">Coupon Management</h2>
+            </div>
+            <div className={styles.sectionContent}>
+              <div className={styles.currentCoupon}>
+                <h3 className={styles.currentCouponTitle}>Current Coupon:</h3>
+                <div className={styles.couponStatus}>
+                  <div className={styles.couponInfo}>
+                    <span className={styles.couponText}>
+                      You are on a free plan buy a coupon to earn faster!
+                    </span>
+                  </div>
+                  <div className={styles.couponQuizzes}>
+                    <span className={styles.quizzesLeft}>0 quizzes left</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Available Coupon Plans */}
-        <div className={styles.couponPlans}>
-          <h2 className={styles.plansTitle}>Available Coupon Plans</h2>
-          <div className={styles.plansGrid}>
-            {couponPlans.map((plan, index) => (
-              <div
-                key={index}
-                className={cn(
-                  styles.planCard,
-                  plan.popular && styles.planCardPopular
-                )}
-              >
-                {plan.popular && (
-                  <div className={styles.planBadge}>{plan.badgeText}</div>
-                )}
-                <div className={styles.planHeader}>
-                  <h3 className={styles.planName}>{plan.name}</h3>
-                  <div className={styles.planPrice}>{plan.price}</div>
-                </div>
-                <div className={styles.planFeatures}>
-                  {plan.features.map((feature, i) => (
-                    <div key={i} className={styles.featureItem}>
-                      <span className={styles.featureText}>{feature}</span>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  className={cn(styles.planButton, styles[plan.buttonStyle])}
+          {/* Available Coupon Plans */}
+          <div className={styles.couponPlans}>
+            <h2 className={styles.plansTitle}>Available Coupon Plans</h2>
+            <div className={styles.plansGrid}>
+              {couponPlans.map((plan, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    styles.planCard,
+                    plan.popular && styles.planCardPopular
+                  )}
                 >
-                  <ShoppingCart className={styles.buttonIcon} />
-                  Purchase
-                </button>
-              </div>
-            ))}
+                  {plan.popular && (
+                    <div className={styles.planBadge}>{plan.badgeText}</div>
+                  )}
+                  <div className={styles.planHeader}>
+                    <h3 className={styles.planName}>{plan.name}</h3>
+                    <div className={styles.planPrice}>{plan.price}</div>
+                  </div>
+                  <div className={styles.planFeatures}>
+                    {plan.features.map((feature, i) => (
+                      <div key={i} className={styles.featureItem}>
+                        <span className={styles.featureText}>{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    className={cn(styles.planButton, styles[plan.buttonStyle])}
+                  >
+                    <ShoppingCart className={styles.buttonIcon} />
+                    Purchase
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

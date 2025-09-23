@@ -104,8 +104,10 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="p-5">
+    <div>
       <Userheader userData={userData} />
+      <div className="p-5">
+
       <Usernavbar />
       <div className={styles.dashboard}>
         <div className={styles.dashboardContainer}>
@@ -284,6 +286,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

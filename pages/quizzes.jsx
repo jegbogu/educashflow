@@ -39,10 +39,12 @@ export default function Quizzes(props) {
     return null;
   }
   return (
-    <div className="p-5">
+    <div>
       <Userheader userData={userData} />
-      <Usernavbar />
-      <UserQuizzes quiz={props.quiz} />
+      <div className="p-5">
+        <Usernavbar />
+        <UserQuizzes quiz={props.quiz} />
+      </div>
     </div>
   );
 }
