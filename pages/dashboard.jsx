@@ -157,12 +157,12 @@ export default function Dashboard() {
               {/* Left Column */}
               <div className={styles.leftColumn}>
                 {/* Available Quizzes */}
-                <div className={styles.sectionCard}>
-                  <div className={styles.sectionHeader}>
+                <div className={cn(styles.sectionCard, "border-none")}>
+                  <div className={cn(styles.sectionHeader, "!p-0 !pb-2")}>
                     <BookOpen className={styles.sectionIcon} />
                     <h2 className={styles.sectionTitle}>Available Quizzes</h2>
                   </div>
-                  <div className={styles.sectionContent}>
+                  <div>
                     <div className={styles.couponNotice}>
                       <p className="">
                         Get more from every game. Purchase a coupon to increase
