@@ -38,3 +38,13 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+
+//important things to note
+1. Levels
+Levels are at 0 when a user registers
+Levels increase by the number of correct answers (correctCount): for each correct answer you get your level increases
+
+2. Points
+Points are at 0 when a user registers
+Points increases based on your membership : correctCount*quizConfig.perQuestionPoint
+correctCount is the number of right answers you got

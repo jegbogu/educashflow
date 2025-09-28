@@ -201,7 +201,11 @@ export default async function handler(req, res) {
       email,
       password: hashedPassword,
       activate: false,                 // boolean, not string
-      createdAt: new Date(),           // Date object
+      createdAt: new Date(),  
+      level: 0,
+      amountMade: 0,
+      points: 0,
+      membership:"Free plan",
       role: "user",
     });
 

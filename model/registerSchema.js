@@ -39,6 +39,18 @@ const registerSchema = new Schema({
     type: String,
     
   },
+  level:{
+    type:Number
+  },
+  amountMade:{
+    type:Number
+  },
+  points:{
+    type:Number
+  },
+  membership:{
+    type:String
+  },
   spaceOne: {
     type: String,
   },

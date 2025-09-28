@@ -137,14 +137,14 @@ export default function UsersQuiz(props) {
             />
           )}
 
-          {/* CTA to open username modal (optional) */}
+          {/* CTA to open username modal */}
           <div>
             <button
               type="button"
               className="rounded-md bg-blue-900 w-full px-5 py-2 text-md font-medium text-white hover:opacity-90"
               onClick={() => setUsernameModal(true)}
             >
-              Access more questions and start winning real points and cash
+              Access the real quiz and start winning real points and cash
             </button>
           </div>
 

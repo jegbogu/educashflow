@@ -52,16 +52,16 @@ export default function Userheader({ userData }) {
           <div className="flex gap-6 items-center">
             {/* Level Badge */}
             <div className="bg-yellow-300 px-3 py-1 rounded-full border text-yellow-900 font-medium">
-              Level 10
+             Level { userData.level}
             </div>
 
             {/* Balance Badge */}
             <div className="bg-green-300 px-3 py-1 rounded-full border text-green-900 font-medium">
-              $45.20
+              ${ userData.amountMade}
             </div>
 
             {/* Points */}
-            <p className="font-medium">45,678 pts</p>
+            <p className="font-medium">{ userData.points}pts</p>
 
             {/* Settings */}
             <button aria-label="Settings">
@@ -86,7 +86,7 @@ export default function Userheader({ userData }) {
             {/* User Info */}
             <div className="text-right ">
               <p className="font-semibold">{userData.username}</p>
-              <p className="text-sm text-gray-500">Premium Member</p>
+              <p className="text-sm text-gray-500">{userData.membership}</p>
             </div>
 
             {/* Profile Avatar */}
