@@ -111,7 +111,6 @@ export default function EarningsPage() {
             <h2 className={styles.sectionTitle}>Earnings & Withdrawals</h2>
           </div>
         </div>
-
         {/* Balance Cards */}
         <div className={styles.balanceCards}>
           <div className={cn(styles.balanceCard, styles.balanceAvailable)}>
@@ -135,7 +134,6 @@ export default function EarningsPage() {
             </div>
           </div>
         </div>
-
         {/* Withdrawal Progress */}
         <div className={styles.withdrawalSection}>
           <div className={styles.withdrawalHeader}>
@@ -153,7 +151,6 @@ export default function EarningsPage() {
             Minimum Not Reached
           </button>
         </div>
-
         {/* Recent Activity */}
         <div className={styles.activitySection}>
           <div className={styles.activityHeader}>
@@ -171,6 +168,16 @@ export default function EarningsPage() {
                 status={activity.status}
               />
             ))}
+          </div>
+        </div>
+        <div className={styles.couponSummary}>
+          <div>
+            <h3>$156.80</h3>
+            <p>Total Earned</p>
+          </div>
+          <div>
+            <h3>$12.00</h3>
+            <p>Pending Withdrawal</p>
           </div>
         </div>
       </div>

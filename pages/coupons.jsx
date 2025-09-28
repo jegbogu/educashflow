@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import styles from "@/styles/userDashboard.module.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Star } from "lucide-react";
 import Userheader from "@/components/UserDashboard/userheader";
 import Usernavbar from "@/components/UserDashboard/usernavbar";
 
@@ -121,22 +121,24 @@ export default function Coupons() {
                   key={index}
                   className={cn(
                     styles.planCard,
-                    plan.popular && styles.planCardPopular
+                    plan.popular && styles.planCardPopular, 'flex flex-col justify-between'
                   )}
                 >
                   {plan.popular && (
-                    <div className={styles.planBadge}>{plan.badgeText}</div>
+                    <div className={styles.planBadge}><Star className="w-4 h-4" />{plan.badgeText}</div>
                   )}
-                  <div className={styles.planHeader}>
-                    <h3 className={styles.planName}>{plan.name}</h3>
-                    <div className={styles.planPrice}>{plan.price}</div>
-                  </div>
-                  <div className={styles.planFeatures}>
-                    {plan.features.map((feature, i) => (
-                      <div key={i} className={styles.featureItem}>
-                        <span className={styles.featureText}>{feature}</span>
-                      </div>
-                    ))}
+                  <div>
+                    <div className={styles.planHeader}>
+                      <h3 className={styles.planName}>{plan.name}</h3>
+                      <div className={styles.planPrice}>{plan.price}</div>
+                    </div>
+                    <div className={styles.planFeatures}>
+                      {plan.features.map((feature, i) => (
+                        <div key={i} className={styles.featureItem}>
+                          <span className={styles.featureText}>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                   <button
                     className={cn(styles.planButton, styles[plan.buttonStyle])}
