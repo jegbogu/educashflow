@@ -40,7 +40,7 @@ export const quizConfig = {
 
 
   perPoint: 0.002,
-
+  constantNumberofQuestions:20,
   extraPointsBeginner:0, //Beginners get 0 extra points
   extraPointsIntermediate: 4, //Intermediate gets 4 extra points
   extraPointsAdvanced: 8 //Advanced get extra 8 points

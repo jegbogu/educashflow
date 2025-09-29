@@ -20,6 +20,23 @@ export default function Playingquiz({ quiz }) {
   const perQSeconds = Number(quizConfig?.perQuestionTime ?? 60);
   const ptsPerQ = Number(quizConfig?.pointsPerQuestion ?? 5);
 
+
+//setting points
+    let points;
+    if(session?.user?.membership==="Free plan"){
+      points = quizConfig.constantNumberofQuestions*quizConfig.perQuestionPoint
+    }
+    if(session?.user?.membership==="Basic Pack"){
+      points = quizConfig.constantNumberofQuestions*quizConfig.basicPointPerQuestion
+    }
+    if(session?.user?.membership==="Premium Pack"){
+      points = quizConfig.constantNumberofQuestions*quizConfig.premiumPointPerQuestion
+    }
+    if(session?.user?.membership==="Pro Pack"){
+      points = quizConfig.constantNumberofQuestions*quizConfig.proPointPerQuestion
+    }
+
+
   // 1) Flatten to rows = one card per (subcategory, level)
   const rows = useMemo(() => {
     const out = [];
@@ -117,6 +134,7 @@ export default function Playingquiz({ quiz }) {
 
     const key = `${row.subcategory}__${row.level}`;
     setLoadingKey(key);
+    
 
     // safer id
     const rid =
@@ -247,8 +265,17 @@ export default function Playingquiz({ quiz }) {
                       <img src="time-past-svgrepo-com.svg" className="w-4 h-4" alt="" />
                       <span>{r.minutes.toFixed(0)} mins</span>
                     </div>
-                    <span>20 questions</span>
-                    <span className="font-medium">+{r.points} pts</span>
+                    <span>{quizConfig.constantNumberofQuestions} questions</span>
+                    <span className="font-medium">
+  + {
+    points +
+    {
+      [quizConfig.levels[0]]: quizConfig.extraPointsBeginner* quizConfig.perQuestionPoint,
+      [quizConfig.levels[1]]: quizConfig.extraPointsIntermediate * quizConfig.perQuestionPoint,
+      [quizConfig.levels[2]]: quizConfig.extraPointsAdvanced * quizConfig.perQuestionPoint,
+    }[r.level]
+  } pts
+</span>
                   </div>
                 </div>
 
