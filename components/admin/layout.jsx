@@ -15,6 +15,7 @@ import {
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Logo from "../icons/logo";
 
 const menuItems = [
   {
@@ -123,13 +124,7 @@ export default function DashboardLayout({ children, onPageChange }) {
       >
         {/* Logo */}
         <div className={styles.sidebarLogo}>
-          <div className={styles.logoIcon}>
-            <div className={styles.logoDots}>
-              <div className={styles.dot}></div>
-              <div className={styles.dot}></div>
-              <div className={styles.dot}></div>
-            </div>
-          </div>
+            <Logo />
           <span className={styles.logoText}>EduCashflow</span>
         </div>
 
