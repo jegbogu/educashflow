@@ -27,7 +27,7 @@ const menuItems = [
   },
   { id: "payment", label: "Payment", icon: CreditCard, link: "payment" },
   { id: "users", label: "Users", icon: Users, link: "users" },
-  { id: "coupons", label: "Coupon", icon: Ticket, link: "ticket" },
+  { id: "coupons", label: "Coupon", icon: Ticket, link: "admincoupons" },
   { id: "settings", label: "Settings", icon: Settings, link: "settings" },
   {
     id: "quiz-builder",
