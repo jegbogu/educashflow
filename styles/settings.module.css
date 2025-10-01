@@ -1,0 +1,111 @@
+.settingsPage {
+  max-width: 800px;
+}
+
+.pageHeader {
+  margin-bottom: 32px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.pageDescription {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.settingsSections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.settingsSection {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.securitySection {
+  border: 2px solid #3b82f6;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.sectionIcon {
+  width: 20px;
+  height: 20px;
+  color: #3b82f6;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.formInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btnPrimary {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnPrimary:hover {
+  background: #7c3aed;
+}
+
+@media (max-width: 768px) {
+  .settingsPage {
+    max-width: 100%;
+  }
+
+  .settingsSections {
+    gap: 24px;
+  }
+
+  .settingsSection {
+    padding: 20px;
+  }
+}
