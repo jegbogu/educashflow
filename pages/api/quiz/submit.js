@@ -36,7 +36,16 @@ async function handler(req, res) {
       totalQuestions,
       correctCount,
 
+      userId,
+      quizId,
+      subcategory,
+      category,
+      level,
+      totalQuestions,
+      correctCount,
+
       answers,
+      finishedAt,
       finishedAt,
     } = req.body;
 
@@ -52,6 +61,10 @@ async function handler(req, res) {
       return res.status(404).json({ message: "User not found" });
     }
     //updating levles
+
+    const newUserlevel = user.level + correctCount;
+
+    //updating points
 
     const newUserlevel = user.level + correctCount;
 
@@ -179,6 +192,9 @@ async function handler(req, res) {
     return res.status(200).json({ message: "User fetched successfully", user });
   } catch (error) {
     console.error("Handler error:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
     return res
       .status(500)
       .json({ message: "Internal server error", error: error.message });
