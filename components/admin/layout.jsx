@@ -17,9 +17,13 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Logo from "../icons/logo";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { cn } from "@/lib/utils";
 =======
 >>>>>>> c0a7fbe (settings)
+=======
+import { cn } from "@/lib/utils";
+>>>>>>> 958fc23 (builder done;)
 
 const menuItems = [
   {
@@ -129,10 +133,14 @@ export default function DashboardLayout({ children, onPageChange }) {
         {/* Logo */}
         <div className={styles.sidebarLogo}>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Logo />
 =======
             <Logo />
 >>>>>>> c0a7fbe (settings)
+=======
+          <Logo />
+>>>>>>> 958fc23 (builder done;)
           <span className={styles.logoText}>EduCashflow</span>
         </div>
 

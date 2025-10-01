@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Register from "@/model/registerSchema";
+<<<<<<< HEAD
 import { quizConfig } from "@/config/quizConfig ";
 import Activity from "@/model/recentactivities";
 
@@ -16,6 +17,9 @@ function getFormattedDateTime() {
   return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 }
 
+=======
+import { quizConfig } from "@/config/quizConfig";
+>>>>>>> 958fc23 (builder done;)
 
 async function handler(req, res) {
   if (req.method !== "POST") {
@@ -132,6 +136,7 @@ async function handler(req, res) {
     //updating amountMade
     const newamountMade = user.points * quizConfig.perPoint;
 
+<<<<<<< HEAD
  const updatedUser = await Register.findByIdAndUpdate(
   userId, 
   { 
@@ -156,6 +161,20 @@ async function handler(req, res) {
          
                await newActivity.save();
  
+=======
+    const updatedUser = await Register.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          level: newUserlevel,
+          points: newUserPoints,
+          amountMade: newamountMade,
+        },
+      },
+      { new: true }
+    );
+
+>>>>>>> 958fc23 (builder done;)
     // Example: you could now save quiz results, etc.
     return res.status(200).json({ message: "User fetched successfully", user });
   } catch (error) {
