@@ -107,13 +107,6 @@
   border-radius: 0.5rem;
 }
 
-.searchInput:focus {
-  outline: none;
-  ring: 2px;
-  ring-color: #3b82f6;
-  border-color: transparent;
-}
-
 .filtersRight {
   display: flex;
   align-items: center;
