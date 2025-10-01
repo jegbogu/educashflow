@@ -1,6 +1,25 @@
 import mongoose from "mongoose";
 import Register from "@/model/registerSchema";
+<<<<<<< HEAD
+import { quizConfig } from "@/config/quizConfig ";
+import Activity from "@/model/recentactivities";
+
+
+//this is for date and time
+function getFormattedDateTime() {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
+
+=======
 import { quizConfig } from "@/config/quizConfig";
+>>>>>>> 958fc23 (builder done;)
 
 async function handler(req, res) {
   if (req.method !== "POST") {
@@ -117,6 +136,32 @@ async function handler(req, res) {
     //updating amountMade
     const newamountMade = user.points * quizConfig.perPoint;
 
+<<<<<<< HEAD
+ const updatedUser = await Register.findByIdAndUpdate(
+  userId, 
+  { 
+    $set: { 
+      level: newUserlevel, 
+      points: newUserPoints,
+       amountMade: newamountMade
+    } 
+  }, 
+  { new: true }
+);
+
+
+ //saving activities for record sake
+          const newActivity = new Activity({
+                 _id: new mongoose.Types.ObjectId(),
+                 activity:"A User just completed a quiz",
+                 description:`${user.username} || ${category} || ${subcategory}`,
+                 createdAt: getFormattedDateTime()
+                
+               });
+         
+               await newActivity.save();
+ 
+=======
     const updatedUser = await Register.findByIdAndUpdate(
       userId,
       {
@@ -129,6 +174,7 @@ async function handler(req, res) {
       { new: true }
     );
 
+>>>>>>> 958fc23 (builder done;)
     // Example: you could now save quiz results, etc.
     return res.status(200).json({ message: "User fetched successfully", user });
   } catch (error) {

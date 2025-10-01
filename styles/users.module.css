@@ -107,6 +107,19 @@
   border-radius: 0.5rem;
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+.searchInput:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #3b82f6;
+  border-color: transparent;
+}
+
+>>>>>>> ca184cd (users page)
+=======
+>>>>>>> a88572b (search input style)
 .filtersRight {
   display: flex;
   align-items: center;
