@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { X, Upload } from "lucide-react";
-import { quizConfig } from "../../config/quizConfig "
+import { quizConfig } from "../../config/quizConfig";
 
 export default function CreateQuizModal({ onClose }) {
   const questionRef = useRef();

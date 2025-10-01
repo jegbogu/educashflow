@@ -1,4 +1,4 @@
-import CreateQuizModal from "./creqteNewQuiz";
+import CreateQuizModal from "./createNewQuiz";
 import { useState } from "react";
 import styles from "@/styles/admin.module.css";
 import { BookOpen, TrendingUp, ActivityIcon, UsersIcon } from "lucide-react";

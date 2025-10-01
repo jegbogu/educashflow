@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import CountdownTimer from "../UserQuiz/countdownTimer";
-import { quizConfig } from "@/config/quizConfig ";
+import { quizConfig } from "@/config/quizConfig";
 
 /**
  * Props:
@@ -33,9 +33,15 @@ export default function Playingrealquiz({
   const startedRef = useRef(false);
   const completedRef = useRef(false);
   const terminatedRef = useRef(false);
-  useEffect(() => { startedRef.current = started; }, [started]);
-  useEffect(() => { completedRef.current = completed; }, [completed]);
-  useEffect(() => { terminatedRef.current = terminated; }, [terminated]);
+  useEffect(() => {
+    startedRef.current = started;
+  }, [started]);
+  useEffect(() => {
+    completedRef.current = completed;
+  }, [completed]);
+  useEffect(() => {
+    terminatedRef.current = terminated;
+  }, [terminated]);
 
   // ---- per-question state ----
   const [timerKey, setTimerKey] = useState(0);
@@ -57,7 +63,9 @@ export default function Playingrealquiz({
 
   // store answers for review
   const answersRef = useRef([]);
-  useEffect(() => { answersRef.current = []; }, [questions]);
+  useEffect(() => {
+    answersRef.current = [];
+  }, [questions]);
 
   // -------------- Fullscreen + Focus Guard --------------
   useEffect(() => {
@@ -65,7 +73,11 @@ export default function Playingrealquiz({
 
     const onVisibility = () => {
       // Only terminate if user leaves BEFORE completion
-      if (document.visibilityState !== "visible" && !completedRef.current && !terminatedRef.current) {
+      if (
+        document.visibilityState !== "visible" &&
+        !completedRef.current &&
+        !terminatedRef.current
+      ) {
         terminateQuiz();
       }
     };
@@ -78,7 +90,11 @@ export default function Playingrealquiz({
 
     const onFsChange = () => {
       // Exiting fullscreen is only terminal when not completed
-      if (!document.fullscreenElement && !completedRef.current && !terminatedRef.current) {
+      if (
+        !document.fullscreenElement &&
+        !completedRef.current &&
+        !terminatedRef.current
+      ) {
         terminateQuiz();
       }
     };
@@ -97,7 +113,9 @@ export default function Playingrealquiz({
 
   async function requestFullscreen() {
     const el = document.documentElement;
-    try { if (el.requestFullscreen) await el.requestFullscreen(); } catch {}
+    try {
+      if (el.requestFullscreen) await el.requestFullscreen();
+    } catch {}
   }
 
   function terminateQuiz() {
@@ -179,7 +197,9 @@ export default function Playingrealquiz({
 
     // Exit fullscreen after completion (review must remain visible)
     if (document.fullscreenElement && document.exitFullscreen) {
-      try { await document.exitFullscreen(); } catch {}
+      try {
+        await document.exitFullscreen();
+      } catch {}
     }
 
     const payload = answersRef.current;
@@ -197,7 +217,7 @@ export default function Playingrealquiz({
           level,
           totalQuestions: total,
           correctCount,
-         
+
           answers: payload.map((a) => ({
             id: a.id,
             userAnswer: a.userAnswer,
@@ -228,7 +248,8 @@ export default function Playingrealquiz({
         <div className="text-center space-y-4">
           <h1 className="text-2xl font-bold">Ready to start?</h1>
           <p className="max-w-md text-sm opacity-80">
-            The quiz will use fullscreen and will end if you leave the page, switch tabs, or exit fullscreen early.
+            The quiz will use fullscreen and will end if you leave the page,
+            switch tabs, or exit fullscreen early.
           </p>
           <button
             onClick={handleStart}
@@ -251,9 +272,15 @@ export default function Playingrealquiz({
         <div className="mb-6">
           <h2 className="text-xl font-semibold">Quiz Summary</h2>
           <div className="text-sm text-gray-600 mt-1">
-            <span className="mr-2">Category: <b>{category}</b></span>
-            <span className="mr-2">Subcategory: <b>{subcategory}</b></span>
-            <span>Level: <b>{level}</b></span>
+            <span className="mr-2">
+              Category: <b>{category}</b>
+            </span>
+            <span className="mr-2">
+              Subcategory: <b>{subcategory}</b>
+            </span>
+            <span>
+              Level: <b>{level}</b>
+            </span>
           </div>
         </div>
 
@@ -269,7 +296,9 @@ export default function Playingrealquiz({
             const userIdx = a.userAnswer;
             return (
               <div key={a.id} className="border rounded-md p-4">
-                <p className="font-medium mb-2">{i + 1}. {a.question}</p>
+                <p className="font-medium mb-2">
+                  {i + 1}. {a.question}
+                </p>
                 <ul className="space-y-1">
                   {a.options.map((opt, j) => {
                     const isCorrect = j === correctIdx;
@@ -281,11 +310,23 @@ export default function Playingrealquiz({
                       : "bg-white border-gray-200";
                     return (
                       <li key={j} className={`border rounded p-2 ${cls}`}>
-                        <span className="mr-2 font-semibold">{String.fromCharCode(65 + j)}.</span>
+                        <span className="mr-2 font-semibold">
+                          {String.fromCharCode(65 + j)}.
+                        </span>
                         {opt}
-                        {isCorrect && <span className="ml-2 text-green-700 font-semibold">Correct</span>}
-                        {isUser && !isCorrect && <span className="ml-2 text-red-700">Your choice</span>}
-                        {isUser && isCorrect && <span className="ml-2 text-green-700">Your choice ✓</span>}
+                        {isCorrect && (
+                          <span className="ml-2 text-green-700 font-semibold">
+                            Correct
+                          </span>
+                        )}
+                        {isUser && !isCorrect && (
+                          <span className="ml-2 text-red-700">Your choice</span>
+                        )}
+                        {isUser && isCorrect && (
+                          <span className="ml-2 text-green-700">
+                            Your choice ✓
+                          </span>
+                        )}
                       </li>
                     );
                   })}
@@ -323,7 +364,9 @@ export default function Playingrealquiz({
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3">
             <p className="font-bold text-[1.25rem]">{subcategory}</p>
-            <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">{category}</span>
+            <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
+              {category}
+            </span>
             <span
               className={`px-3 py-1 rounded-full text-sm ${
                 level === "Beginner"
@@ -338,14 +381,24 @@ export default function Playingrealquiz({
           </div>
 
           <div className="flex items-center gap-2">
-            <img src="/stopwatch-svgrepo-com.svg" className="w-6 h-6" alt="timer" />
-            <CountdownTimer key={timerKey} start={perQSeconds} onComplete={onTimeUp} />
+            <img
+              src="/stopwatch-svgrepo-com.svg"
+              className="w-6 h-6"
+              alt="timer"
+            />
+            <CountdownTimer
+              key={timerKey}
+              start={perQSeconds}
+              onComplete={onTimeUp}
+            />
           </div>
         </div>
 
         {/* question */}
         <div className="mt-6">
-          <p className="text-lg font-medium">{index + 1}. {currentQ.question}</p>
+          <p className="text-lg font-medium">
+            {index + 1}. {currentQ.question}
+          </p>
 
           <div className="mt-4 space-y-3">
             {currentQ.options.map((opt, i) => (
@@ -358,7 +411,9 @@ export default function Playingrealquiz({
                   locked ? "cursor-not-allowed opacity-60" : "hover:bg-gray-50"
                 } ${selectedIdx === i ? "border-black" : "border-gray-200"}`}
               >
-                <span className="mr-2 font-semibold">{String.fromCharCode(65 + i)}.</span>
+                <span className="mr-2 font-semibold">
+                  {String.fromCharCode(65 + i)}.
+                </span>
                 {opt}
               </button>
             ))}
@@ -370,7 +425,11 @@ export default function Playingrealquiz({
               onClick={nextOrFinish}
               className="px-5 py-2 rounded-md bg-black text-white hover:opacity-90"
             >
-              {index < questions.length - 1 ? (locked ? "Next" : "Skip") : "Finish"}
+              {index < questions.length - 1
+                ? locked
+                  ? "Next"
+                  : "Skip"
+                : "Finish"}
             </button>
           </div>
         </div>
