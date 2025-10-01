@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { quizConfig } from "@/config/quizConfig ";
+import { quizConfig } from "@/config/quizConfig";
 import { Play } from "lucide-react";
 
 export default function Playingquiz({ quiz }) {
@@ -20,22 +20,23 @@ export default function Playingquiz({ quiz }) {
   const perQSeconds = Number(quizConfig?.perQuestionTime ?? 60);
   const ptsPerQ = Number(quizConfig?.pointsPerQuestion ?? 5);
 
-
-//setting points
-    let points;
-    if(session?.user?.membership==="Free plan"){
-      points = quizConfig.constantNumberofQuestions*quizConfig.perQuestionPoint
-    }
-    if(session?.user?.membership==="Basic Pack"){
-      points = quizConfig.constantNumberofQuestions*quizConfig.basicPointPerQuestion
-    }
-    if(session?.user?.membership==="Premium Pack"){
-      points = quizConfig.constantNumberofQuestions*quizConfig.premiumPointPerQuestion
-    }
-    if(session?.user?.membership==="Pro Pack"){
-      points = quizConfig.constantNumberofQuestions*quizConfig.proPointPerQuestion
-    }
-
+  //setting points
+  let points;
+  if (session?.user?.membership === "Free plan") {
+    points = quizConfig.constantNumberofQuestions * quizConfig.perQuestionPoint;
+  }
+  if (session?.user?.membership === "Basic Pack") {
+    points =
+      quizConfig.constantNumberofQuestions * quizConfig.basicPointPerQuestion;
+  }
+  if (session?.user?.membership === "Premium Pack") {
+    points =
+      quizConfig.constantNumberofQuestions * quizConfig.premiumPointPerQuestion;
+  }
+  if (session?.user?.membership === "Pro Pack") {
+    points =
+      quizConfig.constantNumberofQuestions * quizConfig.proPointPerQuestion;
+  }
 
   // 1) Flatten to rows = one card per (subcategory, level)
   const rows = useMemo(() => {
@@ -77,8 +78,12 @@ export default function Playingquiz({ quiz }) {
       const matchesSearch =
         lc(r.subcategory).includes(q) ||
         r.categories.some((c) => lc(c).includes(q));
-      const matchesSub = subCategoryFilter ? r.subcategory === subCategoryFilter : true;
-      const matchesCat = categoryFilter ? r.categories.includes(categoryFilter) : true;
+      const matchesSub = subCategoryFilter
+        ? r.subcategory === subCategoryFilter
+        : true;
+      const matchesCat = categoryFilter
+        ? r.categories.includes(categoryFilter)
+        : true;
       const matchesLvl = levelFilter ? r.level === levelFilter : true;
       return matchesSearch && matchesSub && matchesCat && matchesLvl;
     });
@@ -134,11 +139,9 @@ export default function Playingquiz({ quiz }) {
 
     const key = `${row.subcategory}__${row.level}`;
     setLoadingKey(key);
-    
 
     // safer id
-    const rid =
-        `${Date.now()}${Math.floor(Math.random() * 1e9)}`;
+    const rid = `${Date.now()}${Math.floor(Math.random() * 1e9)}`;
 
     // keep payload short & predictable for route param
     const firstCategory = row.categories[0] || "General";
@@ -251,31 +254,51 @@ export default function Playingquiz({ quiz }) {
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-semibold">{r.subcategory}</h3>
-                    <span className={`text-xs px-2 py-1 rounded ${levelBadgeClass(r.level)}`}>
+                    <span
+                      className={`text-xs px-2 py-1 rounded ${levelBadgeClass(
+                        r.level
+                      )}`}
+                    >
                       {r.level}
                     </span>
                   </div>
 
                   <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
-                      <img src="brain-illustration-1-svgrepo-com.svg" className="w-4 h-4" alt="" />
+                      <img
+                        src="brain-illustration-1-svgrepo-com.svg"
+                        className="w-4 h-4"
+                        alt=""
+                      />
                       <span>{r.categories.join(", ") || "Unknown"}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <img src="time-past-svgrepo-com.svg" className="w-4 h-4" alt="" />
+                      <img
+                        src="time-past-svgrepo-com.svg"
+                        className="w-4 h-4"
+                        alt=""
+                      />
                       <span>{r.minutes.toFixed(0)} mins</span>
                     </div>
-                    <span>{quizConfig.constantNumberofQuestions} questions</span>
+                    <span>
+                      {quizConfig.constantNumberofQuestions} questions
+                    </span>
                     <span className="font-medium">
-  + {
-    points +
-    {
-      [quizConfig.levels[0]]: quizConfig.extraPointsBeginner* quizConfig.perQuestionPoint,
-      [quizConfig.levels[1]]: quizConfig.extraPointsIntermediate * quizConfig.perQuestionPoint,
-      [quizConfig.levels[2]]: quizConfig.extraPointsAdvanced * quizConfig.perQuestionPoint,
-    }[r.level]
-  } pts
-</span>
+                      +{" "}
+                      {points +
+                        {
+                          [quizConfig.levels[0]]:
+                            quizConfig.extraPointsBeginner *
+                            quizConfig.perQuestionPoint,
+                          [quizConfig.levels[1]]:
+                            quizConfig.extraPointsIntermediate *
+                            quizConfig.perQuestionPoint,
+                          [quizConfig.levels[2]]:
+                            quizConfig.extraPointsAdvanced *
+                            quizConfig.perQuestionPoint,
+                        }[r.level]}{" "}
+                      pts
+                    </span>
                   </div>
                 </div>
 
@@ -284,7 +307,9 @@ export default function Playingquiz({ quiz }) {
                   disabled={isLoading}
                   onClick={() => startFnc(r)}
                   className={`px-4 py-2 gap-2 flex rounded-md text-white ${
-                    isLoading ? "bg-black/70 cursor-not-allowed" : "bg-black hover:opacity-90"
+                    isLoading
+                      ? "bg-black/70 cursor-not-allowed"
+                      : "bg-black hover:opacity-90"
                   }`}
                 >
                   {isLoading ? (
@@ -323,7 +348,9 @@ export default function Playingquiz({ quiz }) {
                 key={`page-${p}`}
                 onClick={() => handlePageChange(p)}
                 className={`px-3 py-1 rounded-md ${
-                  currentPage === p ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
+                  currentPage === p
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
                 }`}
               >
                 {p}

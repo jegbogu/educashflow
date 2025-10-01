@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Logo from "../icons/logo";
+import { cn } from "@/lib/utils";
 
 const menuItems = [
   {
@@ -38,8 +39,8 @@ const menuItems = [
 
 export default function DashboardLayout({ children, onPageChange }) {
   const pathName = useRouter().pathname.split("/")[1];
-  console.log(pathName);
-  const [activeItem, setActiveItem] = useState(pathName);
+
+  const [activeItem, setActiveItem] = useState(pathName ?? "dashboard");
   const { data: session } = useSession();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -124,7 +125,7 @@ export default function DashboardLayout({ children, onPageChange }) {
       >
         {/* Logo */}
         <div className={styles.sidebarLogo}>
-            <Logo />
+          <Logo />
           <span className={styles.logoText}>EduCashflow</span>
         </div>
 
@@ -162,6 +163,15 @@ export default function DashboardLayout({ children, onPageChange }) {
             <div className={styles.profileEmail}>{session?.user?.email}</div>
           </div>
         </div>
+        <button
+          onClick={() => {}}
+          className={cn(
+            styles.navItem,
+            "!bg-slate-800 !text-white !text-center !mt-2"
+          )}
+        >
+          Logout
+        </button>
       </div>
 
       {/* Main Content */}
