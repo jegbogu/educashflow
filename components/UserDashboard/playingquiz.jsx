@@ -1,24 +1,15 @@
+"use client";
+
 import { useMemo, useState } from "react";
-import { quizConfig } from "../../config/quizConfig ";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { quizConfig } from "@/config/quizConfig ";
 import { Play } from "lucide-react";
 
-/**
- * Input shape (from your GSSP concat or grouped build):
- * quiz: Array<{
- *   subcategory: string,
- *   quizzes: Array<{
- *     id: string,
- *     category: string,
- *     question: string,
- *     options: string[],
- *     correctAnswer: number,
- *     level: "Beginner" | "Intermediate" | "Advanced" | string,
- *     createdAt: string
- *   }>
- * }>
- */
-
 export default function Playingquiz({ quiz }) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const groups = Array.isArray(quiz) ? quiz : [];
   const ITEMS_PER_PAGE = 20;
 
@@ -29,8 +20,24 @@ export default function Playingquiz({ quiz }) {
   const perQSeconds = Number(quizConfig?.perQuestionTime ?? 60);
   const ptsPerQ = Number(quizConfig?.pointsPerQuestion ?? 5);
 
-  // 1) Flatten into rows: one row per (subcategory, level)
-  //    Each row summarizes quizzes of that subcategory at a specific level.
+
+//setting points
+    let points;
+    if(session?.user?.membership==="Free plan"){
+      points = quizConfig.constantNumberofQuestions*quizConfig.perQuestionPoint
+    }
+    if(session?.user?.membership==="Basic Pack"){
+      points = quizConfig.constantNumberofQuestions*quizConfig.basicPointPerQuestion
+    }
+    if(session?.user?.membership==="Premium Pack"){
+      points = quizConfig.constantNumberofQuestions*quizConfig.premiumPointPerQuestion
+    }
+    if(session?.user?.membership==="Pro Pack"){
+      points = quizConfig.constantNumberofQuestions*quizConfig.proPointPerQuestion
+    }
+
+
+  // 1) Flatten to rows = one card per (subcategory, level)
   const rows = useMemo(() => {
     const out = [];
     for (const g of groups) {
@@ -57,48 +64,42 @@ export default function Playingquiz({ quiz }) {
     return out;
   }, [groups, perQSeconds, ptsPerQ]);
 
-  // 2) Build dropdown options from rows
-  const allSubcategories = useMemo(
-    () => unique(rows.map((r) => r.subcategory)).sort(),
-    [rows]
-  );
-  const allCategories = useMemo(
-    () => unique(rows.flatMap((r) => r.categories)).sort(),
-    [rows]
-  );
-  const allLevels = useMemo(() => unique(rows.map((r) => r.level)), [rows]);
-
-  // 3) UI state
+  // 2) Filters
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [subCategoryFilter, setSubCategoryFilter] = useState("");
   const [levelFilter, setLevelFilter] = useState("");
 
-  // 4) Filter rows
   const filtered = useMemo(() => {
     const q = lc(search);
     return rows.filter((r) => {
       const matchesSearch =
         lc(r.subcategory).includes(q) ||
         r.categories.some((c) => lc(c).includes(q));
-
-      const matchesSub = subCategoryFilter
-        ? r.subcategory === subCategoryFilter
-        : true;
-      const matchesCat = categoryFilter
-        ? r.categories.includes(categoryFilter)
-        : true;
+      const matchesSub = subCategoryFilter ? r.subcategory === subCategoryFilter : true;
+      const matchesCat = categoryFilter ? r.categories.includes(categoryFilter) : true;
       const matchesLvl = levelFilter ? r.level === levelFilter : true;
-
       return matchesSearch && matchesSub && matchesCat && matchesLvl;
     });
   }, [rows, search, categoryFilter, subCategoryFilter, levelFilter]);
 
-  // 5) Pagination
-  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  // 3) Stable sort for display: subcategory A→Z, then level order (Beginner, Intermediate, Advanced)
+  const levelOrder = { Beginner: 0, Intermediate: 1, Advanced: 2 };
+  const sorted = useMemo(() => {
+    return [...filtered].sort((a, b) => {
+      const subCmp = safe(a.subcategory).localeCompare(safe(b.subcategory));
+      if (subCmp !== 0) return subCmp;
+      const la = levelOrder[a.level] ?? 99;
+      const lb = levelOrder[b.level] ?? 99;
+      return la - lb;
+    });
+  }, [filtered]);
+
+  // 4) Pagination
+  const totalPages = Math.max(1, Math.ceil(sorted.length / ITEMS_PER_PAGE));
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const pageRows = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const pageRows = sorted.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handlePageChange = (p) => {
     if (p >= 1 && p <= totalPages) setCurrentPage(p);
@@ -120,6 +121,43 @@ export default function Playingquiz({ quiz }) {
     }
     return pages;
   };
+
+  // 5) Start button: track loading for THIS row only
+  const [loadingKey, setLoadingKey] = useState(null);
+
+  async function startFnc(row) {
+    // Require auth
+    if (status !== "authenticated" || !session?.user?._id) {
+      router.push("/login");
+      return;
+    }
+
+    const key = `${row.subcategory}__${row.level}`;
+    setLoadingKey(key);
+    
+
+    // safer id
+    const rid =
+        `${Date.now()}${Math.floor(Math.random() * 1e9)}`;
+
+    // keep payload short & predictable for route param
+    const firstCategory = row.categories[0] || "General";
+    const uniqueID = `${rid}-${row.subcategory}-${firstCategory}-${row.level}-${session.user._id}`;
+
+    // navigate
+    router.push(`/playingQuiz/${encodeURIComponent(uniqueID)}`);
+  }
+
+  // 6) Dropdown option lists
+  const allSubcategories = useMemo(
+    () => unique(rows.map((r) => r.subcategory)).sort(),
+    [rows]
+  );
+  const allCategories = useMemo(
+    () => unique(rows.flatMap((r) => r.categories)).sort(),
+    [rows]
+  );
+  const allLevels = useMemo(() => unique(rows.map((r) => r.level)), [rows]);
 
   const levelBadgeClass = (lvl) =>
     lvl === "Beginner"
@@ -193,7 +231,7 @@ export default function Playingquiz({ quiz }) {
       </div>
 
       {/* Empty state */}
-      {filtered.length === 0 && (
+      {sorted.length === 0 && (
         <div className="text-center text-gray-500 py-8">
           No quizzes match your filters.
         </div>
@@ -201,56 +239,71 @@ export default function Playingquiz({ quiz }) {
 
       {/* Cards: one per (subcategory, level) */}
       <div>
-        {pageRows.sort().map((r, i) => (
-          <div
-            key={`${r.subcategory}__${r.level}__${i}`}
-            className="border border-gray-200 rounded-md p-5 mt-5 shadow-sm"
-          >
-            <div className="flex justify-between items-center max-sm:flex-col max-sm:items-start gap-4">
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold">{r.subcategory}</h3>
-                  <span
-                    className={`text-xs px-2 py-1 rounded ${levelBadgeClass(
-                      r.level
-                    )}`}
-                  >
-                    {r.level}
-                  </span>
+        {pageRows.map((r, i) => {
+          const key = `${r.subcategory}__${r.level}`;
+          const isLoading = loadingKey === key;
+          return (
+            <div
+              key={`${key}__${i}`}
+              className="border border-gray-200 rounded-md p-5 mt-5 shadow-sm hover:bg-gray-50"
+            >
+              <div className="flex justify-between items-center max-sm:flex-col max-sm:items-start gap-4">
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold">{r.subcategory}</h3>
+                    <span className={`text-xs px-2 py-1 rounded ${levelBadgeClass(r.level)}`}>
+                      {r.level}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <img src="brain-illustration-1-svgrepo-com.svg" className="w-4 h-4" alt="" />
+                      <span>{r.categories.join(", ") || "Unknown"}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src="time-past-svgrepo-com.svg" className="w-4 h-4" alt="" />
+                      <span>{r.minutes.toFixed(0)} mins</span>
+                    </div>
+                    <span>{quizConfig.constantNumberofQuestions} questions</span>
+                    <span className="font-medium">
+  + {
+    points +
+    {
+      [quizConfig.levels[0]]: quizConfig.extraPointsBeginner* quizConfig.perQuestionPoint,
+      [quizConfig.levels[1]]: quizConfig.extraPointsIntermediate * quizConfig.perQuestionPoint,
+      [quizConfig.levels[2]]: quizConfig.extraPointsAdvanced * quizConfig.perQuestionPoint,
+    }[r.level]
+  } pts
+</span>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src="brain-illustration-1-svgrepo-com.svg"
-                      className="w-4 h-4"
-                      alt=""
-                    />
-                    <span>{r.categories.join(", ") || "Unknown"}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <img
-                      src="time-past-svgrepo-com.svg"
-                      className="w-4 h-4"
-                      alt=""
-                    />
-                    <span>{r.minutes.toFixed(2)} mins</span>
-                  </div>
-                  <span>{r.count} questions</span>
-                  <span className="font-medium">+{r.points} pts</span>
-                </div>
+                <button
+                  aria-label="Start quiz"
+                  disabled={isLoading}
+                  onClick={() => startFnc(r)}
+                  className={`px-4 py-2 gap-2 flex rounded-md text-white ${
+                    isLoading ? "bg-black/70 cursor-not-allowed" : "bg-black hover:opacity-90"
+                  }`}
+                >
+                  {isLoading ? (
+                    <span className="border-2 border-white border-t-transparent rounded-full w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      <Play className="w-5 h-5" />
+                      Start
+                    </>
+                  )}
+                </button>
               </div>
-
-              <button className="px-4 py-2 gap-2 flex rounded-md bg-black text-white hover:opacity-90">
-                <Play /> Start
-              </button>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Pagination */}
-      {filtered.length > 0 && totalPages > 1 && (
+      {sorted.length > 0 && totalPages > 1 && (
         <div className="flex justify-center items-center mt-6 gap-2 flex-wrap">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -270,9 +323,7 @@ export default function Playingquiz({ quiz }) {
                 key={`page-${p}`}
                 onClick={() => handlePageChange(p)}
                 className={`px-3 py-1 rounded-md ${
-                  currentPage === p
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
+                  currentPage === p ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
                 }`}
               >
                 {p}
