@@ -1,6 +1,25 @@
 import mongoose from "mongoose";
 import Register from "@/model/registerSchema";
+<<<<<<< HEAD
 import { quizConfig } from "@/config/quizConfig";
+=======
+import { quizConfig } from "@/config/quizConfig ";
+import Activity from "@/model/recentactivities";
+
+
+//this is for date and time
+function getFormattedDateTime() {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
+
+>>>>>>> new
 
 async function handler(req, res) {
   if (req.method !== "POST") {
@@ -129,6 +148,79 @@ async function handler(req, res) {
       { new: true }
     );
 
+<<<<<<< HEAD
+=======
+
+
+ }else if(user.membership==="Basic Pack"){
+    //checking the level of the game the user played
+  if(level==="Beginner"){
+newUserPoints = user.points + (correctCount*quizConfig.basicPointPerQuestion) + quizConfig.extraPointsBeginner
+
+  }else if(level==="Intermidiate"){
+newUserPoints = user.points + (correctCount*quizConfig.basicPointPerQuestion) + quizConfig.extraPointsIntermediate
+  }else{
+    newUserPoints = user.points + (correctCount*quizConfig.basicPointPerQuestion) + quizConfig.extraPointsAdvanced
+  }
+
+
+
+
+ }else if(user.membership==="Premium Pack"){
+  //checking the level of the game the user played
+  if(level==="Beginner"){
+newUserPoints = user.points + (correctCount*quizConfig.premiumPointPerQuestion) + quizConfig.extraPointsBeginner
+
+  }else if(level==="Intermidiate"){
+newUserPoints = user.points + (correctCount*quizConfig.premiumPointPerQuestion) + quizConfig.extraPointsIntermediate
+  }else{
+    newUserPoints = user.points + (correctCount*quizConfig.premiumPointPerQuestion) + quizConfig.extraPointsAdvanced
+  }
+
+
+
+
+
+ }else if(user.membership==="Pro Pack"){
+  //checking the level of the game the user played
+  if(level==="Beginner"){
+newUserPoints = user.points + (correctCount*quizConfig.proPointPerQuestion) + quizConfig.extraPointsBeginner
+
+  }else if(level==="Intermidiate"){
+newUserPoints = user.points + (correctCount*quizConfig.proPointPerQuestion) + quizConfig.extraPointsIntermediate
+  }else{
+    newUserPoints = user.points + (correctCount*quizConfig.proPointPerQuestion) + quizConfig.extraPointsAdvanced
+  }
+ }
+
+ //updating amountMade
+ const newamountMade = user.points*quizConfig.perPoint
+
+ const updatedUser = await Register.findByIdAndUpdate(
+  userId, 
+  { 
+    $set: { 
+      level: newUserlevel, 
+      points: newUserPoints,
+       amountMade: newamountMade
+    } 
+  }, 
+  { new: true }
+);
+
+
+ //saving activities for record sake
+          const newActivity = new Activity({
+                 _id: new mongoose.Types.ObjectId(),
+                 activity:"A User just completed a quiz",
+                 description:`${user.username} || ${category} || ${subcategory}`,
+                 createdAt: getFormattedDateTime()
+                
+               });
+         
+               await newActivity.save();
+ 
+>>>>>>> new
     // Example: you could now save quiz results, etc.
     return res.status(200).json({ message: "User fetched successfully", user });
   } catch (error) {
