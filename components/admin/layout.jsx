@@ -15,15 +15,6 @@ import {
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Logo from "../icons/logo";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { cn } from "@/lib/utils";
-=======
->>>>>>> c0a7fbe (settings)
-=======
-import { cn } from "@/lib/utils";
->>>>>>> 958fc23 (builder done;)
 
 const menuItems = [
   {
@@ -34,7 +25,7 @@ const menuItems = [
   },
   { id: "payment", label: "Payment", icon: CreditCard, link: "payment" },
   { id: "users", label: "Users", icon: Users, link: "users" },
-  { id: "coupons", label: "Coupon", icon: Ticket, link: "admincoupons" },
+  { id: "coupons", label: "Coupon", icon: Ticket, link: "ticket" },
   { id: "settings", label: "Settings", icon: Settings, link: "settings" },
   {
     id: "quiz-builder",
@@ -46,8 +37,8 @@ const menuItems = [
 
 export default function DashboardLayout({ children, onPageChange }) {
   const pathName = useRouter().pathname.split("/")[1];
-
-  const [activeItem, setActiveItem] = useState(pathName ?? "dashboard");
+  console.log(pathName);
+  const [activeItem, setActiveItem] = useState(pathName);
   const { data: session } = useSession();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -132,15 +123,13 @@ export default function DashboardLayout({ children, onPageChange }) {
       >
         {/* Logo */}
         <div className={styles.sidebarLogo}>
-<<<<<<< HEAD
-<<<<<<< HEAD
-          <Logo />
-=======
-            <Logo />
->>>>>>> c0a7fbe (settings)
-=======
-          <Logo />
->>>>>>> 958fc23 (builder done;)
+          <div className={styles.logoIcon}>
+            <div className={styles.logoDots}>
+              <div className={styles.dot}></div>
+              <div className={styles.dot}></div>
+              <div className={styles.dot}></div>
+            </div>
+          </div>
           <span className={styles.logoText}>EduCashflow</span>
         </div>
 
@@ -178,15 +167,6 @@ export default function DashboardLayout({ children, onPageChange }) {
             <div className={styles.profileEmail}>{session?.user?.email}</div>
           </div>
         </div>
-        <button
-          onClick={() => {}}
-          className={cn(
-            styles.navItem,
-            "!bg-slate-800 !text-white !text-center !mt-2"
-          )}
-        >
-          Logout
-        </button>
       </div>
 
       {/* Main Content */}
