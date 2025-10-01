@@ -108,6 +108,7 @@
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .searchInput:focus {
   outline: none;
@@ -117,6 +118,8 @@
 }
 
 >>>>>>> ca184cd (users page)
+=======
+>>>>>>> a88572b (search input style)
 .filtersRight {
   display: flex;
   align-items: center;
