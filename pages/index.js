@@ -8,17 +8,17 @@ import Faqs from "@/components/home/faq";
 import Reward from "@/components/home/reward";
 import CssParticles from "@/components/particles";
 import BgSvg from "@/components/layout/bg";
- 
+
 import connectDB from "@/utils/connectmongo";
-import Quiz from "../model/quizCreation"
+import Quiz from "../model/quizCreation";
 import UsersQuiz from "@/components/UserQuiz/quiz";
 import { useState } from "react";
+import RootLayout from "@/components/layout";
 
 export default function Home(props) {
-const[modal, setModal] = useState(true)
-//this for user quiz
-const allQuestions = props.quiz
-
+  const [modal, setModal] = useState(true);
+  //this for user quiz
+  const allQuestions = props.quiz;
 
   return (
     <>
@@ -32,7 +32,14 @@ const allQuestions = props.quiz
         <Navbar />
         <CssParticles />
         <Banner allQuestions={allQuestions} />
-        {modal && <UsersQuiz allQuestions={allQuestions} onClose={()=>{setModal(false)}} />}
+        {modal && (
+          <UsersQuiz
+            allQuestions={allQuestions}
+            onClose={() => {
+              setModal(false);
+            }}
+          />
+        )}
       </div>
       <div className="relative">
         <HowItWorks />
@@ -47,16 +54,18 @@ const allQuestions = props.quiz
     </>
   );
 }
-export async function getServerSideProps(){
-  await connectDB()
-  const quiz = await Quiz.find({}).lean()
-  
-  
+export async function getServerSideProps() {
+  await connectDB();
+  const quiz = await Quiz.find({}).lean();
 
-  return{
-    props:{
-      quiz:JSON.parse(JSON.stringify(quiz))
-     
-    }
-  }
+  return {
+    props: {
+      quiz: JSON.parse(JSON.stringify(quiz)),
+    },
+  };
 }
+
+
+Home.getLayout = function getLayout(page) {
+  return <RootLayout>{page}</RootLayout>;
+};
