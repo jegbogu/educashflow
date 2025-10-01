@@ -43,6 +43,34 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
         autoExpire,
       };
 
+
+        const response = await fetch(
+      "api/couponform",
+      {
+        body: JSON.stringify(payload),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+   
+     
+    let newPostData = await response.json();
+   
+    if (!response.ok) {
+     alert(newPostData.message)
+    }else{
+      
+     alert(newPostData.message)
+     
+   setCode(" ")
+   setDescription("")
+    }
+
+
+
+    
       // if parent provides a callback, use it; otherwise just log
       if (typeof onCreate === "function") {
         await onCreate(payload);
