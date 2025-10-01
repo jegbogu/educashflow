@@ -1,13 +1,14 @@
 import UserIcon from "../icons/user";
 import { DashboardIcon, PaymentIcon, UsersIcon, CouponIcon, SettingsIcon } from "../icons/navBarIcon";
+import Link from "next/link";
  
 
  const menuItems = [
-  { name: "Dashboard", icon: DashboardIcon },
-  { name: "Payment", icon: PaymentIcon },
-  { name: "Users", icon: UsersIcon },
-  { name: "Coupon", icon: CouponIcon },
-  { name: "Settings", icon: SettingsIcon },
+  { name: "Dashboard", icon: DashboardIcon, link:"/educashadmindashboard" },
+  { name: "Payment", icon: PaymentIcon ,link:"/adminpayment"  },
+  { name: "Users", icon: UsersIcon,link:"/adminusers"  },
+  { name: "Coupon", icon: CouponIcon, link:"/admincoupons" },
+  { name: "Settings", icon: SettingsIcon,link:"/adminsettingss"  },
 ];
 
 export default function SideBar(props) {
@@ -21,10 +22,13 @@ export default function SideBar(props) {
         <hr />
       </div>
       <div className="space-y-2 mt-[20px]">
-      {menuItems.map(({ name, icon: Icon }) => (
-        <div key={name} className="flex items-center space-x-5 mt-[20px] cursor-pointer hover:text-purple-600">
+      {menuItems.map(({ name,link, icon: Icon }) => (
+        <div key={name} >
+          <Link href={link} className="flex items-center space-x-5 mt-[20px] cursor-pointer hover:text-purple-600">
           <Icon className="w-6 h-6 text-gray-700 mt-[40px]" />
           <p className="mt-[40px]">{name}</p>
+          </Link>
+          
         </div>
       ))}
     </div>

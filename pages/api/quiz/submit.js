@@ -1,6 +1,21 @@
 import mongoose from "mongoose";
 import Register from "@/model/registerSchema";
 import { quizConfig } from "@/config/quizConfig ";
+import Activity from "@/model/recentactivities";
+
+
+//this is for date and time
+function getFormattedDateTime() {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
+
 
 async function handler(req, res) {
   if (req.method !== "POST") {
@@ -115,7 +130,16 @@ newUserPoints = user.points + (correctCount*quizConfig.proPointPerQuestion) + qu
 );
 
 
-
+ //saving activities for record sake
+          const newActivity = new Activity({
+                 _id: new mongoose.Types.ObjectId(),
+                 activity:"A User just completed a quiz",
+                 description:`${user.username} || ${category} || ${subcategory}`,
+                 createdAt: getFormattedDateTime()
+                
+               });
+         
+               await newActivity.save();
  
     // Example: you could now save quiz results, etc.
     return res.status(200).json({ message: "User fetched successfully", user });
