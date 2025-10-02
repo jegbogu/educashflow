@@ -1,4 +1,13 @@
-import { Plus, Filter, Search, Pencil, Trash2, Ban } from "lucide-react";
+import {
+  Plus,
+  Filter,
+  Search,
+  Pencil,
+  Trash2,
+  Ban,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
 import { useState } from "react";
 import styles from "@/styles/users.module.css";
 import DashboardLayout from "@/components/admin/layout";
@@ -17,6 +26,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import Pagination from "@/components/utils/pagination";
 
 const usersData = [
   {
@@ -84,6 +94,7 @@ export default function UsersPage() {
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [selected, setSelected] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Apply filters
   const filteredUsers = users
@@ -115,10 +126,12 @@ export default function UsersPage() {
 
   // Analytics data
   const totalUsers = users.length;
+
   const activeUsers = users.filter((u) => u.status === "Active").length;
   const blockedUsers = users.filter((u) => u.status === "Blocked").length;
   const premiumUsers = users.filter((u) => u.type === "Premium").length;
   const regularUsers = users.filter((u) => u.type === "Regular").length;
+  const itemsPerPage = 10;
 
   const pieData = [
     { name: "Premium", value: premiumUsers },
@@ -133,6 +146,16 @@ export default function UsersPage() {
     { month: "Apr", users: 900 },
     { month: "May", users: 1200 },
   ];
+
+  // Pagination
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const start = (currentPage - 1) * itemsPerPage;
+  const paginatedUsers = filteredUsers.slice(start, start + itemsPerPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  // Stats
 
   return (
     <DashboardLayout>
@@ -235,7 +258,7 @@ export default function UsersPage() {
                 </tr>
               </thead>
               <tbody className={styles.tableBody}>
-                {filteredUsers.map((user, index) => (
+                {paginatedUsers.map((user, index) => (
                   <tr key={index} className={styles.tableRow}>
                     <td className={styles.tableTd}>
                       <input
@@ -250,13 +273,10 @@ export default function UsersPage() {
                     <td className={styles.tableTd}>
                       <div className={styles.userInfo}>
                         <div className={styles.userAvatar}>
-                          <img
-                            src={`/placeholder-icon.png?height=32&width=32&text=${user.name.charAt(
-                              0
-                            )}`}
-                            alt={user.name}
-                            className={styles.avatarImage}
-                          />
+                          <span className={styles.avatarFallback}>
+                            {user.name.split(" ")[0].charAt(0)}
+                            {user.name.split(" ")[1]?.charAt(0)}
+                          </span>
                         </div>
                         <div className={styles.userDetails}>
                           <div className={styles.userName}>{user.name}</div>
@@ -345,6 +365,14 @@ export default function UsersPage() {
             </table>
           </div>
         </div>
+        {/* Pagination */}
+        <div className={styles.paginationSection}>
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
 
         {/* Analytics Cards */}
         <div className={styles.analyticsGrid}>
@@ -355,7 +383,7 @@ export default function UsersPage() {
               <div className={styles.userStats}>
                 <div className={styles.statItem}>
                   <div className={styles.statLabel}>Total Users</div>
-                  <div className={styles.statValue}>1,250</div>
+                  <div className={styles.statValue}>{totalUsers}</div>
                 </div>
                 <div className={styles.statItem}>
                   <div className={styles.statLabel}>Active Users</div>

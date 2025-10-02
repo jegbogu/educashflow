@@ -13,6 +13,7 @@ import DashboardLayout from "@/components/admin/layout";
 import { useState } from "react";
 import { quizConfig } from "@/config/quizConfig";
 import CreateQuizModal from "@/components/admin/createNewQuiz";
+import Pagination from "@/components/utils/pagination";
 
 const initialQuestions = [
   {
@@ -156,6 +157,9 @@ export default function QuizBuilderPage() {
     start,
     start + itemsPerPage
   );
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <DashboardLayout>
@@ -329,43 +333,11 @@ export default function QuizBuilderPage() {
 
           {/* Pagination */}
           <div className={styles.paginationSection}>
-            {/* <button className={styles.bulkActionBtn}>Bulk Action</button> */}
-
-            <div className={styles.pagination}>
-              <button
-                className={styles.paginationBtn}
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              >
-                <ChevronLeft className={styles.paginationIcon} />
-                Back
-              </button>
-
-              <div className={styles.pageNumbers}>
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i + 1}
-                    className={`${styles.pageNumber} ${
-                      currentPage === i + 1 ? styles.pageActive : ""
-                    }`}
-                    onClick={() => setCurrentPage(i + 1)}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-              </div>
-
-              <button
-                className={styles.paginationBtn}
-                disabled={currentPage === totalPages}
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(p + 1, totalPages))
-                }
-              >
-                Next
-                <ChevronRight className={styles.paginationIcon} />
-              </button>
-            </div>
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
       </div>

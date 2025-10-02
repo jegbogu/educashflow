@@ -111,6 +111,23 @@ export default function DashboardLayout({ children, onPageChange }) {
     return `${dayName}, ${day}${suffix(day)} ${monthName}`;
   }
 
+  function shortenEmail(email, mask = "***") {
+    if (!email || typeof email !== "string") return "";
+    let [local, domain] = email?.split("@");
+
+    let dotIndex = domain.lastIndexOf(".");
+    if (dotIndex === -1) return email; 
+
+    let extension = domain.slice(dotIndex);
+    let mainPart = local + "@" + domain.slice(0, dotIndex);
+
+    if (email.length > 17) {
+      return mainPart.slice(0, 6) + mask + extension;
+    }
+
+    return email;
+  }
+
   function logout() {
     signOut();
     router.replace("/adminlogin");
@@ -168,15 +185,13 @@ export default function DashboardLayout({ children, onPageChange }) {
         {/* User Profile */}
         <div className={styles.sidebarProfile}>
           <div className={styles.profileAvatar}>
-            <img
-              src="/admin-profile-avatar.png"
-              alt="Natalie Johnson"
-              className={styles.avatarImage}
-            />
+            <span className={styles.avatarFallback}>
+              {session?.user?.fullname.charAt(0)}
+            </span>
           </div>
           <div className={styles.profileInfo}>
             <div className={styles.profileName}>{session?.user?.fullname}</div>
-            <div className={styles.profileEmail}>{session?.user?.email}</div>
+            <div className={styles.profileEmail}>{shortenEmail(session?.user?.email)}</div>
           </div>
         </div>
         <button
@@ -209,7 +224,7 @@ export default function DashboardLayout({ children, onPageChange }) {
               <User className={styles.userIcon} />
               <div className={styles.userInfo}>
                 <div className={styles.userName}>{session?.user?.fullname}</div>
-                <div className={styles.userEmail}>{session?.user?.email}</div>
+                <div className={styles.userEmail}>{shortenEmail(session?.user?.email)}</div>
               </div>
             </div>
           </div>
