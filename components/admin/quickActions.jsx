@@ -19,13 +19,13 @@ export default function QuickActions() {
       title: "Manage Users",
       description: "View all users",
       icon: UsersIcon,
-      onClick: () => router.replace("/users"),
+      onClick: () => router.replace("/adminusers"),
     },
     {
       title: "Payment Analytics",
       description: "Check performance",
       icon: TrendingUp,
-      onClick: () => router.replace("/payment"),
+      onClick: () => router.replace("/adminpayment"),
     },
     {
       title: "Activity Log",
