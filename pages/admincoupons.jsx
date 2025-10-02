@@ -1,15 +1,15 @@
 import Couponssectionone from "@/components/admin/couponssectionone";
+import CouponTable from "@/components/admin/coupontable";
 import DashboardLayout from "@/components/admin/layout";
-import AdminNavBar from "@/components/admin/navBar";
-
-import SideBar from "@/components/admin/sideBar";
+import connectDB from "@/utils/connectmongo";
+import Coupon from "@/model/coupons";
 import Spinner from "@/components/icons/spinner";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-export default function Admincoupons() {
+export default function Admincoupons(props) {
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -41,6 +41,19 @@ export default function Admincoupons() {
   return (
     <DashboardLayout>
       <Couponssectionone />
+      <CouponTable couponData={props.coupons}/>
     </DashboardLayout>
   );
+}
+export async function getServerSideProps() {
+  await connectDB();
+  const coupons = await Coupon.find({}).lean();
+ 
+
+  return {
+    props: {
+      coupons: JSON.parse(JSON.stringify(coupons)),
+       
+    },
+  };
 }

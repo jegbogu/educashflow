@@ -1,36 +1,35 @@
-import { Schema, model, models } from "mongoose";
-const mongoose = require("mongoose");
+import mongoose, { Schema, models } from "mongoose";
 
 const CouponSchema = new Schema({
-   
-  code:{
-    type: String
+  code: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
   },
   description: {
     type: String,
-   
+    trim: true,
   },
   gameLimit: {
     type: Number,
- 
+    default: 0,
   },
-  
   expiryDays: {
     type: Number,
- 
+    default: 0,
   },
   autoExpire: {
     type: Boolean,
- 
+    default: false,
   },
-  
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
- 
-const Quiz = models.Coupons || mongoose.model("Coupon", CouponSchema);
+// Avoid model overwrite in dev
+const Coupon = models.Coupon || mongoose.model("Coupon", CouponSchema);
 
 export default Coupon;

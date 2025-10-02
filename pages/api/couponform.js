@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Coupon from "@/model/coupons";
+import connectDB from "@/utils/connectmongo";
  
 
 
@@ -20,7 +21,7 @@ async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
-
+await connectDB()
   try {
     const {
         code,
@@ -40,24 +41,21 @@ console.log({
     })
 
     const couponId = new mongoose.Types.ObjectId();
-        const newCoupon = new Register({
+        const newCoupon = new Coupon({
           _id: couponId,
-          fullname,
-          username,
-          email,
-          password: hashedPassword,
-          activate: false,                 // boolean, not string
+          code,
+          description,
+          gameLimit,
+          expiryDays,
+          activate: true,                 // boolean, not string
           createdAt: new Date(),  
-          level: 0,
-          amountMade: 0,
-          points: 0,
-          membership:"Free plan",
-          role: "user",
+          autoExpire,
+          
         });
     
         await newCoupon.save();
     
-
+return res.status(200).json({ message: "Coupon successfully created" });
   } catch (error) {
     console.error("Handler error:", error);
     return res.status(500).json({ message: "Internal server error", error: error.message });
