@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import Logo from "../icons/logo";
 import { cn } from "@/lib/utils";
@@ -25,20 +25,31 @@ const menuItems = [
     icon: LayoutDashboard,
     link: "educashadmindashboard",
   },
-  { id: "payment", label: "Payment", icon: CreditCard, link: "payment" },
-  { id: "users", label: "Users", icon: Users, link: "users" },
-  { id: "coupons", label: "Coupon", icon: Ticket, link: "admincoupons" },
-  { id: "settings", label: "Settings", icon: Settings, link: "settings" },
   {
-    id: "quiz-builder",
+    id: "adminpayment",
+    label: "Payment",
+    icon: CreditCard,
+    link: "adminpayment",
+  },
+  { id: "adminusers", label: "Users", icon: Users, link: "adminusers" },
+  { id: "admincoupons", label: "Coupon", icon: Ticket, link: "admincoupons" },
+  {
+    id: "adminsettings",
+    label: "Settings",
+    icon: Settings,
+    link: "adminsettings",
+  },
+  {
+    id: "adminbuilder",
     label: "Quiz Builder",
     icon: BookOpen,
-    link: "builder",
+    link: "adminbuilder",
   },
 ];
 
 export default function DashboardLayout({ children, onPageChange }) {
   const pathName = useRouter().pathname.split("/")[1];
+  const router = useRouter();
 
   const [activeItem, setActiveItem] = useState(pathName ?? "dashboard");
   const { data: session } = useSession();
@@ -98,6 +109,11 @@ export default function DashboardLayout({ children, onPageChange }) {
     };
 
     return `${dayName}, ${day}${suffix(day)} ${monthName}`;
+  }
+
+  function logout() {
+    signOut();
+    router.replace("/adminlogin");
   }
 
   return (
@@ -164,7 +180,7 @@ export default function DashboardLayout({ children, onPageChange }) {
           </div>
         </div>
         <button
-          onClick={() => {}}
+          onClick={() => logout()}
           className={cn(
             styles.navItem,
             "!bg-slate-800 !text-white !text-center !mt-2"

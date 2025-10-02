@@ -1,4 +1,5 @@
 import Couponssectionone from "@/components/admin/couponssectionone";
+import DashboardLayout from "@/components/admin/layout";
 import AdminNavBar from "@/components/admin/navBar";
 
 import SideBar from "@/components/admin/sideBar";
@@ -38,16 +39,8 @@ export default function Admincoupons() {
     return null;
   }
   return (
-    <div className="bg-gray-300 min-h-screen pl-5 pr-5 flex gap-5">
-      {/* Sidebar (25%) */}
-      <div className="w-1/5">
-        <SideBar data={session} />
-      </div>
-      {/* Main content (75%) */}
-      <div className="w-4/5">
-        <AdminNavBar data={session} />
-        <Couponssectionone />
-      </div>
-    </div>
+    <DashboardLayout>
+      <Couponssectionone />
+    </DashboardLayout>
   );
 }

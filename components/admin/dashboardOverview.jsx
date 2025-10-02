@@ -11,7 +11,7 @@ export default function DashboardOverview(props) {
     },
     {
       title: "Active Quizzes",
-      value: "382",
+      value: props.overviewData[2]?.totalQuizzes,
       change: "+8.2% from last month",
       icon: BookOpen,
     },
@@ -23,11 +23,12 @@ export default function DashboardOverview(props) {
     },
     {
       title: "Monthly Activity",
-      value: "1,238",
+      value: props.overviewData[3]?.monthlyActivity,
       change: "+15.3% from last month",
       icon: Activity,
     },
   ];
+  
   return (
     <div className={styles.statsGrid}>
       {stats.map((stat, index) => {

@@ -12,6 +12,7 @@ import Activity from "../model/recentactivities";
 import DashboardLayout from "@/components/admin/layout";
 import styles from "@/styles/admin.module.css";
 import QuickActions from "@/components/admin/quickActions";
+import Quiz from "@/model/quizCreation";
 
 export default function Dashboard(props) {
   const { data: session, status } = useSession();
@@ -95,7 +96,30 @@ export default function Dashboard(props) {
   }
 
   const usersRate = getCurrentVsLastMonthGrowth(users);
-  const overviewData = [{ userRate: usersRate }, { totalUsers: totalUsers }];
+
+  function MonthlyActivities(activities) {
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1; // JS months are 0-based
+    const currentYear = now.getFullYear();
+
+    return activities.filter((activity) => {
+      const [day, month, yearAndTime] = activity.createdAt.split("-");
+      const [year] = yearAndTime.split(" ");
+      return (
+        parseInt(month, 10) === currentMonth &&
+        parseInt(year, 10) === currentYear
+      );
+    }).length;
+  }
+
+
+
+  const overviewData = [
+    { userRate: usersRate },
+    { totalUsers: totalUsers },
+    { totalQuizzes: props.totalQuizzes.length },
+    { monthlyActivity: MonthlyActivities(props.activities) }
+  ];
   //Overview component ends
 
   //this is for recent activities
@@ -103,10 +127,6 @@ export default function Dashboard(props) {
 
   return (
     <DashboardLayout>
-      {/* <div className="bg-gray-300 min-h-screen pl-5 pr-5 flex gap-5">
-            <QuickActions />
-            
-    </div> */}
       <div className={styles.dashboardPage}>
         <div className={styles.dashboardHeader}>
           <h1 className={styles.dashboardTitle}>Dashboard Overview</h1>
@@ -137,11 +157,13 @@ export async function getServerSideProps() {
   await connectDB();
   const users = await Users.find({}).lean();
   const activities = await Activity.find({}).lean();
+  const totalQuizzes = await Quiz.find({}).lean();
 
   return {
     props: {
       users: JSON.parse(JSON.stringify(users)),
       activities: JSON.parse(JSON.stringify(activities)),
+      totalQuizzes: JSON.parse(JSON.stringify(totalQuizzes)),
     },
   };
 }
