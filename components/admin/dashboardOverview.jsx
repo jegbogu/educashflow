@@ -23,12 +23,12 @@ export default function DashboardOverview(props) {
     },
     {
       title: "Monthly Activity",
-      value: "-",
+      value: props.overviewData[3]?.monthlyActivity,
       change: "+15.3% from last month",
       icon: Activity,
     },
   ];
-  console.log("Overview Data in DashboardOverview:", props.overviewData)
+  
   return (
     <div className={styles.statsGrid}>
       {stats.map((stat, index) => {

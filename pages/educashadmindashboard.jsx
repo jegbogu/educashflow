@@ -96,10 +96,29 @@ export default function Dashboard(props) {
   }
 
   const usersRate = getCurrentVsLastMonthGrowth(users);
+
+  function MonthlyActivities(activities) {
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1; // JS months are 0-based
+    const currentYear = now.getFullYear();
+
+    return activities.filter((activity) => {
+      const [day, month, yearAndTime] = activity.createdAt.split("-");
+      const [year] = yearAndTime.split(" ");
+      return (
+        parseInt(month, 10) === currentMonth &&
+        parseInt(year, 10) === currentYear
+      );
+    }).length;
+  }
+
+
+
   const overviewData = [
     { userRate: usersRate },
     { totalUsers: totalUsers },
     { totalQuizzes: props.totalQuizzes.length },
+    { monthlyActivity: MonthlyActivities(props.activities) }
   ];
   //Overview component ends
 
@@ -108,10 +127,6 @@ export default function Dashboard(props) {
 
   return (
     <DashboardLayout>
-      {/* <div className="bg-gray-300 min-h-screen pl-5 pr-5 flex gap-5">
-            <QuickActions />
-            
-    </div> */}
       <div className={styles.dashboardPage}>
         <div className={styles.dashboardHeader}>
           <h1 className={styles.dashboardTitle}>Dashboard Overview</h1>
