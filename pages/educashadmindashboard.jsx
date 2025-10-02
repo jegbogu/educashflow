@@ -12,6 +12,7 @@ import Activity from "../model/recentactivities";
 import DashboardLayout from "@/components/admin/layout";
 import styles from "@/styles/admin.module.css";
 import QuickActions from "@/components/admin/quickActions";
+import Quiz from "@/model/quizCreation";
 
 export default function Dashboard(props) {
   const { data: session, status } = useSession();
@@ -95,7 +96,11 @@ export default function Dashboard(props) {
   }
 
   const usersRate = getCurrentVsLastMonthGrowth(users);
-  const overviewData = [{ userRate: usersRate }, { totalUsers: totalUsers }];
+  const overviewData = [
+    { userRate: usersRate },
+    { totalUsers: totalUsers },
+    { totalQuizzes: props.totalQuizzes.length },
+  ];
   //Overview component ends
 
   //this is for recent activities
@@ -137,11 +142,13 @@ export async function getServerSideProps() {
   await connectDB();
   const users = await Users.find({}).lean();
   const activities = await Activity.find({}).lean();
+  const totalQuizzes = await Quiz.find({}).lean();
 
   return {
     props: {
       users: JSON.parse(JSON.stringify(users)),
       activities: JSON.parse(JSON.stringify(activities)),
+      totalQuizzes: JSON.parse(JSON.stringify(totalQuizzes)),
     },
   };
 }
