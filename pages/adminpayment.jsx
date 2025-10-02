@@ -1,4 +1,5 @@
 import DashboardLayout from "@/components/admin/layout";
+import Pagination from "@/components/utils/pagination";
 import styles from "@/styles/payment.module.css";
 import { useState } from "react";
 import {
@@ -165,11 +166,21 @@ export function RevenueLineChart({ transactions }) {
 
 export default function PaymentPage() {
   const [filter, setFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
 
   let activeList = transactions;
   if (filter === "pending") activeList = pending;
   if (filter === "successful") activeList = successful;
   if (filter === "failed") activeList = failed;
+  let itemsPerPage = 10;
+
+  // Pagination
+  const totalPages = Math.ceil(activeList.length / itemsPerPage);
+  const start = (currentPage - 1) * itemsPerPage;
+  const paginatedPayments = activeList.slice(start, start + itemsPerPage);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <DashboardLayout>
@@ -224,7 +235,7 @@ export default function PaymentPage() {
               </tr>
             </thead>
             <tbody className={styles.tableBody}>
-              {activeList.map((transaction, index) => (
+              {paginatedPayments.map((transaction, index) => (
                 <tr key={index} className={styles.tableRow}>
                   <td className={styles.tableTd}>{transaction.id}</td>
                   <td className={styles.tableTd}>{transaction.user}</td>
@@ -245,6 +256,14 @@ export default function PaymentPage() {
             </tbody>
           </table>
         </div>
+        <div className={styles.paginationSection}>
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+
         {/* Analytics Cards */}
         <div className={styles.analyticsGrid}>
           {/* Payment Analytics */}
@@ -269,7 +288,6 @@ export default function PaymentPage() {
                 <div className={styles.donutChart}>
                   <PaymentDonutChart />
                 </div>
-                
               </div>
             </div>
           </div>
