@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { ShoppingCart, Star } from "lucide-react";
 import Userheader from "@/components/UserDashboard/userheader";
 import Usernavbar from "@/components/UserDashboard/usernavbar";
+import { couponPlans } from "@/config/couponConfig";
 
 export default function Coupons() {
   const { data: session, status } = useSession();
@@ -40,48 +41,7 @@ export default function Coupons() {
     return null;
   }
 
-  const couponPlans = [
-    {
-      name: "Basic Pack",
-      price: "$9.99",
-      features: [
-        "10 quiz attempt",
-        "Valid for 7 days",
-        "Standard earning rate",
-        "Email support",
-      ],
-      buttonStyle: "planButtonBasic",
-      popular: false,
-    },
-    {
-      name: "Premium Pack",
-      price: "$19.99",
-      features: [
-        "25 quiz attempt",
-        "Valid for 14 days",
-        "2x earning rate",
-        "Priority Support",
-        "Bonus Challenges",
-      ],
-      buttonStyle: "planButtonPremium",
-      popular: true, // has badge "Most Popular"
-      badgeText: "Most Popular",
-    },
-    {
-      name: "Pro Pack",
-      price: "$39.99",
-      features: [
-        "50 quiz attempt",
-        "Valid for 30 days",
-        "4x earning rate",
-        "VIP Support",
-        "Exclusive Quizzes",
-        "Weekly Bonuses",
-      ],
-      buttonStyle: "planButtonBasic",
-      popular: false,
-    },
-  ];
+ 
 
   return (
     <div>
@@ -142,6 +102,7 @@ export default function Coupons() {
                   </div>
                   <button
                     className={cn(styles.planButton, styles[plan.buttonStyle])}
+                    
                   >
                     <ShoppingCart className={styles.buttonIcon} />
                     Purchase

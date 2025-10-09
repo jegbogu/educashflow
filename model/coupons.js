@@ -7,8 +7,24 @@ const CouponSchema = new Schema({
     unique: true,
     trim: true,
   },
+  pack:{
+type: String,
+    required: true,
+   
+    trim: true,
+  },
+  cost:{
+type: String,
+    required: true,
+  
+  },
+  rate:{
+type: Number,
+    required: true,
+  
+  },
   description: {
-    type: String,
+    type: Array,
     trim: true,
   },
   gameLimit: {

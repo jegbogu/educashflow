@@ -2,16 +2,34 @@
 import { useState } from "react";
 import { Eye, Copy, Trash2, Calendar } from "lucide-react";
 
-export default function CouponTable({couponData}) {
-    console.log(couponData)
-  // Dummy data (replace with backend API later)
-  const [coupons, setCoupons] = useState( couponData);
+export default function CouponTable({ couponData }) {
+  const [coupons, setCoupons] = useState(couponData);
 
+  // Copy coupon code
   const copyCode = (code) => {
     navigator.clipboard.writeText(code);
     alert(`Copied: ${code}`);
   };
 
+  // Add days to createdAt
+  function addDays(dateString, days) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+    return date.toISOString();
+  }
+
+  // Format to readable date
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-GB", {
+      weekday: "long", // Monday, Tuesday...
+      day: "2-digit",
+      month: "long",   // January, February...
+      year: "numeric",
+    });
+  }
+
+  // Delete coupon
   const deleteCoupon = (code) => {
     setCoupons((prev) => prev.filter((c) => c.code !== code));
   };
@@ -20,13 +38,10 @@ export default function CouponTable({couponData}) {
     <div className="p-6">
       {/* Tabs */}
       <div className="flex items-center gap-4 text-sm mb-4">
-        <span className="font-semibold cursor-pointer">All ({coupons.length})</span>
-        <span className="text-blue-600 cursor-pointer">
-          Active ({coupons.filter((c) => c.status === "Active").length})
+        <span className="font-semibold cursor-pointer">
+          All ({coupons.length})
         </span>
-        <span className="text-blue-600 cursor-pointer">
-          Expired ({coupons.filter((c) => c.status === "Expired").length})
-        </span>
+         
       </div>
 
       {/* Bulk actions */}
@@ -34,10 +49,11 @@ export default function CouponTable({couponData}) {
         <select className="border rounded px-3 py-2 text-sm">
           <option>Bulk actions</option>
           <option>Delete</option>
-          <option>Activate</option>
-          <option>Expire</option>
+         
         </select>
-        <button className="px-3 py-2 bg-gray-100 border rounded text-sm">Apply</button>
+        <button className="px-3 py-2 bg-gray-100 border rounded text-sm">
+          Apply
+        </button>
       </div>
 
       {/* Table */}
@@ -49,11 +65,11 @@ export default function CouponTable({couponData}) {
                 <input type="checkbox" />
               </th>
               <th className="px-4 py-3">Code</th>
-              <th className="px-4 py-3">Description</th>
+              <th className="px-4 py-3">Package</th>
               <th className="px-4 py-3">Game Limit</th>
-              <th className="px-4 py-3">Status</th>
+             
               <th className="px-4 py-3">Expires</th>
-              <th className="px-4 py-3"></th>
+              <th className="px-4 py-3">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -70,22 +86,12 @@ export default function CouponTable({couponData}) {
                     onClick={() => copyCode(c.code)}
                   />
                 </td>
-                <td className="px-4 py-3">{c.description || "-"}</td>
+                <td className="px-4 py-3">{c.pack || "-"}</td>
                 <td className="px-4 py-3">#{c.gameLimit}</td>
-                <td className="px-4 py-3">
-                  <span
-                    className={`px-2 py-1 rounded text-xs font-medium ${
-                      c.status === "Active"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {c.status}
-                  </span>
-                </td>
+                 
                 <td className="px-4 py-3 flex items-center gap-1">
                   <Calendar className="w-4 h-4 text-gray-500" />
-                  {c.expires}
+                  {formatDate(addDays(c.createdAt, c.expiryDays))}
                 </td>
                 <td className="px-4 py-3">
                   <Trash2

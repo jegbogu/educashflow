@@ -3,13 +3,18 @@
 "use client";
 
 import { useState } from "react";
+import CouponTable from "./coupontable";
+import { couponPlans } from "@/config/couponConfig";
 
 export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
   // form state
   const [code, setCode] = useState("");
+  const [cost, setCost] = useState("");
+  const [pack, setPack] = useState("");
+  const [rate, setRate] = useState("")
   const [description, setDescription] = useState("");
-  const [gameLimit, setGameLimit] = useState("1");
-  const [expiryDays, setExpiryDays] = useState("30");
+  const [gameLimit, setGameLimit] = useState("");
+  const [expiryDays, setExpiryDays] = useState("");
   const [autoExpire, setAutoExpire] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -29,6 +34,33 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
     return Object.keys(e).length === 0;
   }
 
+function findPackage(pack) {
+  if (!pack) {
+    setDescription("");
+    setGameLimit("");
+    setExpiryDays("");
+    setRate("")
+    return; // stop here if no package
+  }
+
+  const foundPlan = couponPlans.find((el) => el.name === pack);
+
+  if (foundPlan) {
+    setDescription(foundPlan.features);
+    setGameLimit(foundPlan.gameLimit);
+    setExpiryDays(foundPlan.validDays);
+    setCost(foundPlan.price);
+    setRate(foundPlan.earningRate)
+  } else {
+    // optional: reset if not found
+    setDescription("");
+    setGameLimit("");
+    setExpiryDays("");
+    setCost("")
+    setRate("")
+  }
+}
+ 
   async function handleSubmit(e) {
     e.preventDefault();
     if (!validate()) return;
@@ -37,7 +69,10 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
     try {
       const payload = {
         code: code.trim(),
-        description: description.trim(),
+        cost:cost.trim(),
+        rate: Number(rate),
+        pack: pack.trim(),
+        description: description,
         gameLimit: Number(gameLimit),
         expiryDays: Number(expiryDays),
         autoExpire,
@@ -65,9 +100,14 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
      alert(newPostData.message)
      
    setCode(" ")
-   setDescription("")
-    }
+   setDescription("") ;
+    setGameLimit("");
+    setExpiryDays("");
+    setCost("")
+      setRate("")
 
+    }
+  
 
 
     
@@ -91,9 +131,9 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-
-    
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto">
+ 
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl mx-auto my-10 max-h-[90vh] overflow-y-auto">
     <form
       onSubmit={handleSubmit}
       className="max-w-xl w-full bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6"
@@ -112,7 +152,7 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
             type="text"
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            placeholder="Enter coupon code..."
+            placeholder=" "
             className="flex-1 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500"
           />
           <button
@@ -127,17 +167,37 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
           <p className="text-sm text-red-600 mt-2">{errors.code}</p>
         )}
       </div>
-
-      {/* Description */}
       <div>
         <label className="block text-[15px] font-semibold mb-2">
-          Description
+          Pack
+        </label>
+        <select 
+        name="pack" 
+        id="pack" 
+        value={pack}
+        onChange={(e) => {setPack(e.target.value); findPackage(e.target.value) }}
+       
+
+        className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500" >
+          <option value="">Select a pack</option>
+          {couponPlans.map((el)=>(
+            <option>
+              {el.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Features */}
+      <div>
+        <label className="block text-[15px] font-semibold mb-2">
+          Features
         </label>
         <textarea
           rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Describe this coupon..."
+          placeholder="Choose a pack, the feacture would be seen here"
           className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500"
         />
         <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -154,17 +214,7 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
         <label className="block text-[15px] font-semibold mb-2">
           Game Limit
         </label>
-        <select
-          value={gameLimit}
-          onChange={(e) => setGameLimit(e.target.value)}
-          className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500"
-        >
-          <option value="1">1 Game</option>
-          <option value="3">3 Games</option>
-          <option value="5">5 Games</option>
-          <option value="10">10 Games</option>
-          <option value="9999">Unlimited</option>
-        </select>
+         <input type="text" name="" id="" value={gameLimit}  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 "/>
       </div>
 
       {/* Expiry (Days) */}
@@ -172,17 +222,21 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
         <label className="block text-[15px] font-semibold mb-2">
           Expiry (Days)
         </label>
-        <select
-          value={expiryDays}
-          onChange={(e) => setExpiryDays(e.target.value)}
-          className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500"
-        >
-          <option value="7">7 Days</option>
-          <option value="14">14 Days</option>
-          <option value="30">30 Days</option>
-          <option value="60">60 Days</option>
-          <option value="90">90 Days</option>
-        </select>
+               <input type="text" name="" id="" value={expiryDays}  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500"/>
+      </div>
+      {/* cost*/}
+      <div>
+        <label className="block text-[15px] font-semibold mb-2">
+          Cost
+        </label>
+               <input type="text" name="" id="" value={cost}  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500"/>
+      </div>
+      {/*rate*/}
+      <div>
+        <label className="block text-[15px] font-semibold mb-2">
+          Earning Rate
+        </label>
+               <input type="text" name="" id="" value={rate}  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500"/>
       </div>
 
       {/* Auto-expire toggle */}
@@ -229,6 +283,7 @@ export default function CouponForm({ onCreate, onCreateBulk, onClose}) {
         </button>
       </div>
     </form>
+    </div>
     </div>
   );
 }

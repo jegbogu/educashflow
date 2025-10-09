@@ -25,6 +25,9 @@ await connectDB()
   try {
     const {
         code,
+        rate,
+        pack,
+        cost,
         description, 
         gameLimit, 
         expiryDays, 
@@ -33,17 +36,23 @@ await connectDB()
 
     
 console.log({
-        code,
+       code,
+        rate,
+        pack,
+        cost,
         description, 
         gameLimit, 
         expiryDays, 
-        autoExpire,
+        autoExpire 
     })
 
     const couponId = new mongoose.Types.ObjectId();
         const newCoupon = new Coupon({
           _id: couponId,
           code,
+          rate,
+          pack,
+          cost,
           description,
           gameLimit,
           expiryDays,
