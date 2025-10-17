@@ -27,6 +27,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Pagination from "@/components/utils/pagination";
+import UserForm from "@/components/admin/addOrEditUser";
+import DeleteModal from "@/components/admin/deleteUser";
+import BlockUserModal from "@/components/admin/blockUser";
 
 const usersData = [
   {
@@ -95,6 +98,10 @@ export default function UsersPage() {
   const [typeFilter, setTypeFilter] = useState("");
   const [selected, setSelected] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showBlock, setShowBlock] = useState(false);
 
   // Apply filters
   const filteredUsers = users
@@ -122,6 +129,59 @@ export default function UsersPage() {
   const bulkDelete = () => {
     setUsers((prev) => prev.filter((u) => !selected.includes(u.id)));
     setSelected([]);
+  };
+
+  // Delete single user
+  const deleteUser = (user) => {
+    setUsers((prev) => prev.filter((u) => u.id !== user.id));
+    setShowDelete(false);
+  };
+
+  const toggleBlockUser = (user) => {
+    if (user.status === "Blocked") {
+      setUsers((prev) =>
+        prev.map((u) => (u.id === user.id ? { ...u, status: "Active" } : u))
+      );
+    } else {
+      setUsers((prev) =>
+        prev.map((u) => (u.id === user.id ? { ...u, status: "Blocked" } : u))
+      );
+    }
+    setShowBlock(false);
+  };
+
+  const handleDeleteUser = (user) => {
+    setSelectedUser(user);
+    setShowDelete(true);
+  };
+
+  // Add / Edit User
+  const handleAddUser = () => {
+    setSelectedUser(null); // new user
+    setShowModal(true);
+  };
+
+  const handleEditUser = (user) => {
+    setSelectedUser(user);
+    setShowModal(true);
+  };
+
+  const handleBlockUser = (user) => {
+    setSelectedUser(user);
+    setShowBlock(true);
+  };
+
+  const handleSaveUser = (userData) => {
+    setUsers((prev) => {
+      const existingIndex = prev.findIndex((u) => u.id === userData.id);
+      if (existingIndex !== -1) {
+        const updated = [...prev];
+        updated[existingIndex] = userData;
+        return updated;
+      }
+      return [...prev, { ...userData, id: crypto.randomUUID() }];
+    });
+    setShowModal(false);
   };
 
   // Analytics data
@@ -169,7 +229,10 @@ export default function UsersPage() {
             </p>
           </div>
           <div className={styles.headerActions}>
-            <button className={styles.btnPrimary}>
+            <button
+              className={styles.btnPrimary}
+              onClick={() => handleAddUser()}
+            >
               <Plus className={styles.btnIcon} />
               Add User
             </button>
@@ -268,7 +331,7 @@ export default function UsersPage() {
                       />
                     </td>
                     <td className={cn(styles.tableTd, "!text-left")}>
-                      {user.id}
+                      {user.id.slice(0, 3)}...{user.id.slice(-3)}
                     </td>
                     <td className={styles.tableTd}>
                       <div className={styles.userInfo}>
@@ -304,12 +367,13 @@ export default function UsersPage() {
                     </td>
                     <td className={styles.tableTd}>
                       <div className="relative">
-                        <button
+                        {/* <button
                           className={styles.actionMenuBtn}
                           onClick={() => setShowBulkMenu(!showBulkMenu)}
-                        ></button>
+                        ></button> */}
                         <div className={styles.actionButtons}>
                           <button
+                            onClick={() => handleEditUser(user)}
                             className={styles.actionBtn}
                             title="Edit user"
                           >
@@ -317,6 +381,7 @@ export default function UsersPage() {
                           </button>
                           <button
                             className={styles.actionBtn}
+                            onClick={() => handleDeleteUser(user)}
                             title="Delete user"
                           >
                             <Trash2 className={styles.actionIcon} />
@@ -324,6 +389,7 @@ export default function UsersPage() {
                           <button
                             className={styles.actionBtn}
                             title="Verify user"
+                            onClick={() => handleBlockUser(user)}
                           >
                             <Ban className={styles.actionIcon} />
                           </button>
@@ -465,6 +531,32 @@ export default function UsersPage() {
           </div>
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <UserForm
+            formTitle={"add user"}
+            onClose={() => setShowModal(false)}
+            onSave={handleSaveUser}
+            user={selectedUser}
+          />
+        </div>
+      )}
+
+      {showDelete && (
+        <DeleteModal
+          user={selectedUser}
+          onClose={() => setShowDelete(false)}
+          onConfirm={() => deleteUser(selectedUser)}
+        />
+      )}
+
+      {showBlock && (
+        <BlockUserModal
+          user={selectedUser}
+          onClose={() => setShowBlock(false)}
+          onConfirm={() => toggleBlockUser(selectedUser)}
+        />
+      )}
     </DashboardLayout>
   );
 }

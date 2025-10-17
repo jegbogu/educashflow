@@ -97,34 +97,26 @@ export default function Dashboard(props) {
 
   const usersRate = getCurrentVsLastMonthGrowth(users);
 
-  function MonthlyActivities(activities) {
+  function getMonthlyActivitiesCount(activities) {
     const now = new Date();
-    const currentMonth = now.getMonth() + 1; // JS months are 0-based
+    const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
 
-    return activities.filter((activity) => {
-      console.log(activities)
-      const [day, month, yearAndTime] = activity.createdAt.split("-");
-      console.log("yeartime",yearAndTime)
-      let year;
-      if(yearAndTime){
-[year] = yearAndTime.split(" ");
-      }
-      
+    return activities.filter(({ createdAt }) => {
+      const activityDate = new Date(createdAt);
+
       return (
-        parseInt(month, 10) === currentMonth &&
-        parseInt(year, 10) === currentYear
+        activityDate.getMonth() === currentMonth &&
+        activityDate.getFullYear() === currentYear
       );
     }).length;
   }
-
-
 
   const overviewData = [
     { userRate: usersRate },
     { totalUsers: totalUsers },
     { totalQuizzes: props.totalQuizzes.length },
-    { monthlyActivity: MonthlyActivities(props.activities) }
+    { monthlyActivity: getMonthlyActivitiesCount(props.activities) },
   ];
   //Overview component ends
 

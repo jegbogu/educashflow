@@ -13,6 +13,7 @@
   --text: #0f1632;
   --shape-bg: #2874ec0d;
   --accent: #f6f8fa;
+  --dashboard-primary: #1e293b;
 }
 * {
   box-sizing: border-box;

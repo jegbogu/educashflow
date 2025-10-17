@@ -16,6 +16,7 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         shapeBg: "var(--shape-bg)",
+        "dashboard-primary": "var(--dashboard-primary)",
       },
     },
   },

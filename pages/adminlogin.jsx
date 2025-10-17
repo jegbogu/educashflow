@@ -6,6 +6,7 @@ import EyeIcon from "@/components/icons/eyeicon";
 import EyeOffIcon from "@/components/icons/eyeofficon";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import RootLayout from "@/components/layout";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,12 +47,18 @@ export default function Login() {
 
   return (
     <div className="w-[30%] mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
-      <h1 className="text-center text-2xl font-bold text-gray-800"> Admin Login</h1>
+      <h1 className="text-center text-2xl font-bold text-gray-800">
+        {" "}
+        Admin Login
+      </h1>
 
       <form className="mt-6 space-y-5" onSubmit={submitHandler}>
         {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
             Email Address
           </label>
           <div className="relative mt-1">
@@ -72,7 +79,10 @@ export default function Login() {
 
         {/* Password */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700"
+          >
             Password
           </label>
           <div className="relative mt-1">
@@ -93,7 +103,11 @@ export default function Login() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
             >
-              {showPassword ? <EyeOffIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
+              {showPassword ? (
+                <EyeOffIcon className="w-5 h-5" />
+              ) : (
+                <EyeIcon className="w-5 h-5" />
+              )}
             </button>
           </div>
         </div>
@@ -137,7 +151,7 @@ export default function Login() {
       {/* Register button */}
       <div className="flex justify-center">
         <Link
-          href="/register"
+          href="/adminregeducashflow"
           className="bg-white text-secondary border-2 border-gray-200 p-2 rounded-md w-1/2 mt-5 text-center hover:bg-gray-50 hover:border-secondary transition"
         >
           Register
@@ -145,4 +159,9 @@ export default function Login() {
       </div>
     </div>
   );
+}
+
+
+Login.getLayout = function getLayout(page) {
+  return <RootLayout>{page}</RootLayout>;
 }

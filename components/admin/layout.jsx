@@ -11,6 +11,7 @@ import {
   User,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
@@ -116,7 +117,7 @@ export default function DashboardLayout({ children, onPageChange }) {
     let [local, domain] = email?.split("@");
 
     let dotIndex = domain.lastIndexOf(".");
-    if (dotIndex === -1) return email; 
+    if (dotIndex === -1) return email;
 
     let extension = domain.slice(dotIndex);
     let mainPart = local + "@" + domain.slice(0, dotIndex);
@@ -191,17 +192,19 @@ export default function DashboardLayout({ children, onPageChange }) {
           </div>
           <div className={styles.profileInfo}>
             <div className={styles.profileName}>{session?.user?.fullname}</div>
-            <div className={styles.profileEmail}>{shortenEmail(session?.user?.email)}</div>
+            <div className={styles.profileEmail}>
+              {shortenEmail(session?.user?.email)}
+            </div>
           </div>
         </div>
         <button
           onClick={() => logout()}
           className={cn(
             styles.navItem,
-            "!bg-slate-800 !text-white !text-center !mt-2"
+            "!bg-slate-800 !text-white !text-center !mt-2 flex justify-between items-center"
           )}
         >
-          Logout
+          Logout <LogOut className={styles.navIcon} />
         </button>
       </div>
 
@@ -224,7 +227,9 @@ export default function DashboardLayout({ children, onPageChange }) {
               <User className={styles.userIcon} />
               <div className={styles.userInfo}>
                 <div className={styles.userName}>{session?.user?.fullname}</div>
-                <div className={styles.userEmail}>{shortenEmail(session?.user?.email)}</div>
+                <div className={styles.userEmail}>
+                  {shortenEmail(session?.user?.email)}
+                </div>
               </div>
             </div>
           </div>
