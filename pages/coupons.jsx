@@ -9,8 +9,11 @@ import { ShoppingCart, Star } from "lucide-react";
 import Userheader from "@/components/UserDashboard/userheader";
 import Usernavbar from "@/components/UserDashboard/usernavbar";
 import { couponPlans } from "@/config/couponConfig";
+import CheckOut from "@/components/home/checkOut";
 
 export default function Coupons() {
+  const[checkout, setCheckOut] = useState(false)
+  const[foundPlan, setFoundPlan] = useState([])
   const { data: session, status } = useSession();
   const userData = session?.user;
 
@@ -40,11 +43,15 @@ export default function Coupons() {
   if (status !== "authenticated" || session?.user.role !== "user") {
     return null;
   }
-
+function findPlan(plan){
+  console.log(plan)
+ setFoundPlan(plan)
+}
  
 
   return (
     <div>
+      {checkout && <CheckOut onClose={()=>setCheckOut(false)} plan ={foundPlan} />}
       <Userheader userData={userData} />
       <div className="p-5">
         <Usernavbar />
@@ -102,7 +109,7 @@ export default function Coupons() {
                   </div>
                   <button
                     className={cn(styles.planButton, styles[plan.buttonStyle])}
-                    
+                    onClick={()=>{setCheckOut(true);    findPlan(plan)}}
                   >
                     <ShoppingCart className={styles.buttonIcon} />
                     Purchase

@@ -39,6 +39,9 @@ type: Number,
     type: Boolean,
     default: false,
   },
+  couponStatus:{
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

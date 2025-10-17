@@ -51,6 +51,29 @@ const registerSchema = new Schema({
   membership:{
     type:String
   },
+  paymentConfirmation:{
+    type:String
+  },
+  coupon:{
+    type: String,
+    default:"Null"
+  },
+  playedGames:{
+    type: Array,
+    default:[]
+  },
+  usedCoupons:{
+     type: Array,
+    default:[]
+  },
+  latestPurchase:{
+     type: Array,
+    default:[]
+  },
+   latestPurchaseGames:{
+     type: Array,
+    default:[]
+  },
   spaceOne: {
     type: String,
   },

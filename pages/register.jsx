@@ -116,7 +116,7 @@ if (!passwordRegex.test(enteredPassword)) {
    
     
     const response = await fetch(
-      "http://localhost:3000/api/register",
+      "/api/register",
       {
         body: JSON.stringify(data),
         method: "POST",

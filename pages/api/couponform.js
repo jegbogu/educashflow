@@ -35,16 +35,16 @@ await connectDB()
     } = req.body;
 
     
-console.log({
-       code,
-        rate,
-        pack,
-        cost,
-        description, 
-        gameLimit, 
-        expiryDays, 
-        autoExpire 
-    })
+// console.log({
+//        code,
+//         rate,
+//         pack,
+//         cost,
+//         description, 
+//         gameLimit, 
+//         expiryDays, 
+//         autoExpire 
+//     })
 
     const couponId = new mongoose.Types.ObjectId();
         const newCoupon = new Coupon({
@@ -56,7 +56,8 @@ console.log({
           description,
           gameLimit,
           expiryDays,
-          activate: true,                 // boolean, not string
+          activate: true,
+          couponStatus: "unused",                
           createdAt: new Date(),  
           autoExpire,
           

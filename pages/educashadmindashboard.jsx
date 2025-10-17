@@ -103,8 +103,14 @@ export default function Dashboard(props) {
     const currentYear = now.getFullYear();
 
     return activities.filter((activity) => {
+      console.log(activities)
       const [day, month, yearAndTime] = activity.createdAt.split("-");
-      const [year] = yearAndTime.split(" ");
+      console.log("yeartime",yearAndTime)
+      let year;
+      if(yearAndTime){
+[year] = yearAndTime.split(" ");
+      }
+      
       return (
         parseInt(month, 10) === currentMonth &&
         parseInt(year, 10) === currentYear

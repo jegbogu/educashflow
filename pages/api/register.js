@@ -205,8 +205,20 @@ export default async function handler(req, res) {
       level: 0,
       amountMade: 0,
       points: 0,
+      coupon :"Null",
+  paymentConfirmation : "Null",
       membership:"Free plan",
       role: "user",
+       playedGames:[],
+  usedCoupons:[],
+
+  latestPurchase:[],
+   latestPurchaseGames:[],
+       spaceOne: "Null",
+  spaceTwo: "Null",
+  spaceThree: 0,
+
+
     });
 
     await newUser.save();

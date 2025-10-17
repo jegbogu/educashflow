@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import CountdownTimer from "../UserQuiz/countdownTimer";
 import { quizConfig } from "@/config/quizConfig";
-
+import { signOut } from "next-auth/react";
 /**
  * Props:
  *  - createdID, subcategory, category, level, userID
@@ -133,9 +133,45 @@ export default function Playingrealquiz({
 
   // -------------- Start --------------
   async function handleStart() {
+
+
+
+//here is to capture the game ifo, as well as the fact that the user has clicked start
+    //The variable startQuiz helps to capture that the user started the quiz, and when the user has completed the quiz there will be a variable that captures that the user has compl
+    const startQuiz = `Start-${createdID}-${subcategory}-${category}-${level}-${userID}`
+    //store info in the DB
+
+    const data ={
+      uniqueID: createdID,
+      userID: userID,
+      startQuiz:startQuiz
+    }
+
+     const response = await fetch(
+      "/api/playingquiz",
+      {
+        body: JSON.stringify(data),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+
+
+
+
+
+
     await requestFullscreen();
     setStarted(true);
     setTimerKey((k) => k + 1);
+  }
+  //---------------- When user is done with the quiz, it log him out so that he can login again, this would help the user to have a new points
+  async function userLogOut(){
+  await signOut({ redirect: false });
+    router.push("/login");
   }
 
   // -------------- Per question handlers --------------
@@ -203,7 +239,7 @@ export default function Playingrealquiz({
     }
 
     const payload = answersRef.current;
-    const { correctCount, total, score } = computeScore(payload);
+    const { correctCount, total } = computeScore(payload);
 
     try {
       await fetch("/api/quiz/submit", {
@@ -338,7 +374,7 @@ export default function Playingrealquiz({
 
         <div className="mt-8">
           <button
-            onClick={() => router.replace("/quizzes")}
+            onClick={userLogOut}
             className="px-5 py-2 rounded-md bg-black text-white hover:opacity-90"
           >
             Back to Quizzes

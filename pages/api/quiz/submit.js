@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 import Register from "@/model/registerSchema";
-<<<<<<< HEAD
 import { quizConfig } from "@/config/quizConfig";
-=======
-import { quizConfig } from "@/config/quizConfig ";
 import Activity from "@/model/recentactivities";
 
 
@@ -19,7 +16,6 @@ function getFormattedDateTime() {
   return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 }
 
->>>>>>> new
 
 async function handler(req, res) {
   if (req.method !== "POST") {
@@ -51,6 +47,28 @@ async function handler(req, res) {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    //updating playedGames array, to show the user completed the game
+    //Search for the game using id
+    const foundGame = user.playedGames.find((el)=>el.includes(quizId))
+    //Add End to it
+    const updatedFoundGame = `${foundGame}-End`
+    //Replace it and save
+    //delete it from the array called palyedGames
+     
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $pull: { playedGames: foundGame } } // remove from array
+);
+
+//add it to array
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { playedGames: updatedFoundGame } } // remove from array
+);
+   
+ 
+
     //updating levles
 
     const newUserlevel = user.level + correctCount;
@@ -64,17 +82,17 @@ async function handler(req, res) {
       if (level === "Beginner") {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.perQuestionPoint +
+          (correctCount * quizConfig.perQuestionPoint) +
           quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.perQuestionPoint +
+          (correctCount * quizConfig.perQuestionPoint) +
           quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.perQuestionPoint +
+          (correctCount * quizConfig.perQuestionPoint) +
           quizConfig.extraPointsAdvanced;
       }
     } else if (user.membership === "Basic Pack") {
@@ -82,17 +100,17 @@ async function handler(req, res) {
       if (level === "Beginner") {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.basicPointPerQuestion +
+          (correctCount * quizConfig.basicPointPerQuestion) +
           quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.basicPointPerQuestion +
+          (correctCount * quizConfig.basicPointPerQuestion) +
           quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.basicPointPerQuestion +
+          (correctCount * quizConfig.basicPointPerQuestion) +
           quizConfig.extraPointsAdvanced;
       }
     } else if (user.membership === "Premium Pack") {
@@ -100,17 +118,17 @@ async function handler(req, res) {
       if (level === "Beginner") {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.premiumPointPerQuestion +
+          (correctCount * quizConfig.premiumPointPerQuestion) +
           quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.premiumPointPerQuestion +
+          (correctCount * quizConfig.premiumPointPerQuestion) +
           quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.premiumPointPerQuestion +
+          (correctCount * quizConfig.premiumPointPerQuestion) +
           quizConfig.extraPointsAdvanced;
       }
     } else if (user.membership === "Pro Pack") {
@@ -118,17 +136,17 @@ async function handler(req, res) {
       if (level === "Beginner") {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.proPointPerQuestion +
+          (correctCount * quizConfig.proPointPerQuestion) +
           quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.proPointPerQuestion +
+          (correctCount * quizConfig.proPointPerQuestion) +
           quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
-          correctCount * quizConfig.proPointPerQuestion +
+          (correctCount * quizConfig.proPointPerQuestion) +
           quizConfig.extraPointsAdvanced;
       }
     }
@@ -148,65 +166,9 @@ async function handler(req, res) {
       { new: true }
     );
 
-<<<<<<< HEAD
-=======
 
 
- }else if(user.membership==="Basic Pack"){
-    //checking the level of the game the user played
-  if(level==="Beginner"){
-newUserPoints = user.points + (correctCount*quizConfig.basicPointPerQuestion) + quizConfig.extraPointsBeginner
-
-  }else if(level==="Intermidiate"){
-newUserPoints = user.points + (correctCount*quizConfig.basicPointPerQuestion) + quizConfig.extraPointsIntermediate
-  }else{
-    newUserPoints = user.points + (correctCount*quizConfig.basicPointPerQuestion) + quizConfig.extraPointsAdvanced
-  }
-
-
-
-
- }else if(user.membership==="Premium Pack"){
-  //checking the level of the game the user played
-  if(level==="Beginner"){
-newUserPoints = user.points + (correctCount*quizConfig.premiumPointPerQuestion) + quizConfig.extraPointsBeginner
-
-  }else if(level==="Intermidiate"){
-newUserPoints = user.points + (correctCount*quizConfig.premiumPointPerQuestion) + quizConfig.extraPointsIntermediate
-  }else{
-    newUserPoints = user.points + (correctCount*quizConfig.premiumPointPerQuestion) + quizConfig.extraPointsAdvanced
-  }
-
-
-
-
-
- }else if(user.membership==="Pro Pack"){
-  //checking the level of the game the user played
-  if(level==="Beginner"){
-newUserPoints = user.points + (correctCount*quizConfig.proPointPerQuestion) + quizConfig.extraPointsBeginner
-
-  }else if(level==="Intermidiate"){
-newUserPoints = user.points + (correctCount*quizConfig.proPointPerQuestion) + quizConfig.extraPointsIntermediate
-  }else{
-    newUserPoints = user.points + (correctCount*quizConfig.proPointPerQuestion) + quizConfig.extraPointsAdvanced
-  }
- }
-
- //updating amountMade
- const newamountMade = user.points*quizConfig.perPoint
-
- const updatedUser = await Register.findByIdAndUpdate(
-  userId, 
-  { 
-    $set: { 
-      level: newUserlevel, 
-      points: newUserPoints,
-       amountMade: newamountMade
-    } 
-  }, 
-  { new: true }
-);
+ 
 
 
  //saving activities for record sake
@@ -220,7 +182,6 @@ newUserPoints = user.points + (correctCount*quizConfig.proPointPerQuestion) + qu
          
                await newActivity.save();
  
->>>>>>> new
     // Example: you could now save quiz results, etc.
     return res.status(200).json({ message: "User fetched successfully", user });
   } catch (error) {

@@ -146,6 +146,9 @@ export default function Playingquiz({ quiz }) {
     // keep payload short & predictable for route param
     const firstCategory = row.categories[0] || "General";
     const uniqueID = `${rid}-${row.subcategory}-${firstCategory}-${row.level}-${session.user._id}`;
+    
+
+
 
     // navigate
     router.push(`/playingQuiz/${encodeURIComponent(uniqueID)}`);
