@@ -453,11 +453,11 @@ export default function UsersPage() {
                 </div>
                 <div className={styles.statItem}>
                   <div className={styles.statLabel}>Active Users</div>
-                  <div className={styles.statValue}>1,060</div>
+                  <div className={styles.statValue}>{activeUsers}</div>
                 </div>
                 <div className={styles.statItem}>
                   <div className={styles.statLabel}>Regular Users</div>
-                  <div className={styles.statValue}>70%</div>
+                  <div className={styles.statValue}>{ regularUsers}</div>
                 </div>
               </div>
               <div className={styles.chartContainer}>

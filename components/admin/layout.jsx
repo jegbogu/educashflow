@@ -35,16 +35,16 @@ const menuItems = [
   { id: "adminusers", label: "Users", icon: Users, link: "adminusers" },
   { id: "admincoupons", label: "Coupon", icon: Ticket, link: "admincoupons" },
   {
-    id: "adminsettings",
-    label: "Settings",
-    icon: Settings,
-    link: "adminsettings",
-  },
-  {
     id: "adminbuilder",
     label: "Quiz Builder",
     icon: BookOpen,
     link: "adminbuilder",
+  },
+  {
+    id: "adminsettings",
+    label: "Settings",
+    icon: Settings,
+    link: "adminsettings",
   },
 ];
 
