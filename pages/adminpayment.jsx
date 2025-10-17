@@ -146,25 +146,33 @@ export default function PaymentPage({ transactions }) {
         <div className={styles.filterTabs}>
           <button
             onClick={() => setFilter("all")}
-            className={`${styles.filterTab} ${filter === "all" ? styles.filterTabActive : ""}`}
+            className={`${styles.filterTab} ${
+              filter === "all" ? styles.filterTabActive : ""
+            }`}
           >
             All ({paymentData.length})
           </button>
           <button
             onClick={() => setFilter("pending")}
-            className={`${styles.filterTab} ${filter === "pending" ? styles.filterTabActive : ""}`}
+            className={`${styles.filterTab} ${
+              filter === "pending" ? styles.filterTabActive : ""
+            }`}
           >
             Pending ({pending.length})
           </button>
           <button
             onClick={() => setFilter("successful")}
-            className={`${styles.filterTab} ${filter === "successful" ? styles.filterTabActive : ""}`}
+            className={`${styles.filterTab} ${
+              filter === "successful" ? styles.filterTabActive : ""
+            }`}
           >
             Successful ({successful.length})
           </button>
           <button
             onClick={() => setFilter("failed")}
-            className={`${styles.filterTab} ${filter === "failed" ? styles.filterTabActive : ""}`}
+            className={`${styles.filterTab} ${
+              filter === "failed" ? styles.filterTabActive : ""
+            }`}
           >
             Failed ({failed.length})
           </button>
@@ -186,7 +194,9 @@ export default function PaymentPage({ transactions }) {
               {paginatedPayments.map((transaction, index) => (
                 <tr key={index} className={styles.tableRow}>
                   <td className={styles.tableTd}>{transaction.packageName}</td>
-                  <td className={styles.tableTd}>{transaction.userData?.fullname || "N/A"}</td>
+                  <td className={styles.tableTd}>
+                    {transaction.userData?.fullname || "N/A"}
+                  </td>
                   <td className={styles.tableTd}>{transaction.price}</td>
                   <td className={styles.tableTd}>
                     <select
@@ -194,7 +204,10 @@ export default function PaymentPage({ transactions }) {
                       onChange={(e) =>
                         handleStatusChange(transaction._id, e.target.value)
                       }
-                      className={`${styles.statusDropdown} ${styles[`status${transaction.paymentConfirmation}`]}`}
+                      className={`${styles.statusDropdown} ${
+                        styles[`status${transaction.paymentConfirmation}`]
+                      }`}
+                      a
                     >
                       <option value="Pending">Pending</option>
                       <option value="Successful">Successful</option>
@@ -202,7 +215,9 @@ export default function PaymentPage({ transactions }) {
                     </select>
                   </td>
                   <td className={styles.tableTd}>
-                    {new Date(transaction.createdAt).toLocaleDateString()}
+                    {new Date(transaction.createdAt).toLocaleDateString(
+                      "en-GB"
+                    )}
                   </td>
                 </tr>
               ))}
