@@ -163,7 +163,7 @@ export default function QuestionModal({ question, onSave, onClose }) {
                   Choose Subcategory
                 </option>
                 {selectedCategory?.subcategories.map(
-                  ({ name }, index) => (
+                  (name , index) => (
                     <option key={index} value={name}>
                       {name}
                     </option>
