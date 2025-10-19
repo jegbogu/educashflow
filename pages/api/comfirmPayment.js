@@ -119,7 +119,7 @@ export default async function handler(req, res) {
     // Log activity
 const activity = new Activity({
   _id: new mongoose.Types.ObjectId(),
-  activity: "Payment confirmation",
+  activity: "Payment Pending",
   description: `User ${userData.fullname} (${userData.email}) awaits payment confirmation for ₦${price}.`,
   createdAt: getFormattedDateTime(),
 });
@@ -129,11 +129,12 @@ await activity.save();
 const userRecentPurchase = {
   package: packageName,
   DOP: new Date(),
+  DOC:" ",
   gameLimit,
   validDays,
   earningRate,
   status: "Pending",
-  expiryDate: new Date(Date.now() + validDays * 24 * 60 * 60 * 1000), // correct expiry
+  expiryDate: " ",  
 };
 
 const updatedPayment = await Register.findByIdAndUpdate(

@@ -89,6 +89,7 @@ export function RevenueLineChart({ transactions }) {
 }
 
 export default function PaymentPage({ transactions }) {
+ 
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [paymentData, setPaymentData] = useState(transactions);
@@ -110,7 +111,7 @@ export default function PaymentPage({ transactions }) {
   const handlePageChange = (page) => setCurrentPage(page);
 
   // ✅ Handle status change
-  const handleStatusChange = async (id, newStatus) => {
+  const handleStatusChange = async (id, newStatus,userData,packageName) => {
     // Optimistic UI update
     setPaymentData((prev) =>
       prev.map((p) =>
@@ -118,11 +119,12 @@ export default function PaymentPage({ transactions }) {
       )
     );
     const data = {
-      confirmPaymentId: transactions._id,
-      userDataId: transactions.userData._id,
+      confirmPaymentId:id,
+      userDataId: userData._id,
+      packageName: packageName,
       newStatus: newStatus
     }
-
+ 
     try {
       const res = await fetch("/api/updatePaymentStatus", {
         method: "POST",
@@ -130,8 +132,8 @@ export default function PaymentPage({ transactions }) {
         body: JSON.stringify(data),
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to update payment status");
+      if (res.ok) {
+        alert("Successfully Updated");
       }
     } catch (error) {
       console.error(error);
@@ -192,7 +194,7 @@ export default function PaymentPage({ transactions }) {
                     <select
                       value={transaction.paymentConfirmation}
                       onChange={(e) =>
-                        handleStatusChange(transaction._id, e.target.value)
+                        handleStatusChange(transaction._id, e.target.value,transaction.userData, transaction.packageName)
                       }
                       className={`${styles.statusDropdown} ${styles[`status${transaction.paymentConfirmation}`]}`}
                     >

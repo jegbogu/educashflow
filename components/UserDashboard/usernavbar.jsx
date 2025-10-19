@@ -1,8 +1,14 @@
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
 import Buycouponbanner from "./buycuponbanner";
+import { useSession } from "next-auth/react";
 
 export default function Usernavbar() {
+
+
+    const { data: session, status } = useSession();
+    const userData = session?.user;
+
   const menu = [
     { name: "Quizzes", link: "/quizzes" },
     { name: "Dashboard", link: "/dashboard" },
@@ -33,8 +39,8 @@ export default function Usernavbar() {
           ))}
         </ul>
       </nav>
-
-      <Buycouponbanner/>
+{userData?.paymentConfirmation==="Successful"?" ": <Buycouponbanner/>}
+     
     </div>
   );
 }

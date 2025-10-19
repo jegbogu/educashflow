@@ -151,8 +151,14 @@ async function handler(req, res) {
       }
     }
 
-    //updating amountMade
-    const newamountMade = user.points * quizConfig.perPoint;
+
+    //updating amountMade and points gotten
+//updating amount made for first game
+// if(user.playedGames.length<1){
+// newamountMade = newUserPoints
+// }
+
+    const newamountMade = (user.points + newUserPoints) * (quizConfig.perPoint);
 
     const updatedUser = await Register.findByIdAndUpdate(
       userId,

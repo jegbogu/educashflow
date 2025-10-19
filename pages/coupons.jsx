@@ -44,7 +44,7 @@ export default function Coupons() {
     return null;
   }
 function findPlan(plan){
-  console.log(plan)
+   
  setFoundPlan(plan)
 }
  
@@ -68,12 +68,10 @@ function findPlan(plan){
                 <div className={styles.couponStatus}>
                   <div className={styles.couponInfo}>
                     <span className={styles.couponText}>
-                      You are on a free plan buy a coupon to earn faster!
+                      {userData?.paymentConfirmation==="Successful"?userData?.membership:"You are on a free plan buy a coupon to earn faster!"}
                     </span>
                   </div>
-                  <div className={styles.couponQuizzes}>
-                    <span className={styles.quizzesLeft}>0 quizzes left</span>
-                  </div>
+                   
                 </div>
               </div>
             </div>

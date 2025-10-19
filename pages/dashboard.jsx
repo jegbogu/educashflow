@@ -163,13 +163,13 @@ export default function Dashboard() {
                     <h2 className={styles.sectionTitle}>Available Quizzes</h2>
                   </div>
                   <div>
-                    <div className={styles.couponNotice}>
+                    {userData?.paymentConfirmation==="Successful"?" ":<div className={styles.couponNotice}>
                       <p className="">
                         Get more from every game. Purchase a coupon to increase
                         your earnings.
                       </p>
                       <button className={styles.btnPrimary}>Buy Coupon</button>
-                    </div>
+                    </div>}
                   </div>
                 </div>
 

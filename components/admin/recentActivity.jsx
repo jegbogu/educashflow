@@ -1,5 +1,7 @@
 import styles from "@/styles/admin.module.css";
 
+ 
+
 export default function RecentActivity(props) {
   const recentA = props.allActivities;
   const recentActivities = recentA.slice(-5);
@@ -7,7 +9,14 @@ export default function RecentActivity(props) {
   function timeAgo(dateString) {
     // Convert the string to a Date object (format: DD-MM-YYYY HH:mm:ss)
     const [day, month, yearAndTime] = dateString.split("-");
-    const [year, time] = yearAndTime.split(" ");
+
+    let year;
+    let time;
+      if(yearAndTime){
+[year] = yearAndTime.split(" ")
+[time] = yearAndTime.split(" ")
+      }
+ 
     const formattedDate = `${year}-${month}-${day} ${time}`; // YYYY-MM-DD HH:mm:ss
 
     const pastDate = new Date(formattedDate);
