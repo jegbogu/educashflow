@@ -15,13 +15,13 @@ export default function Footer() {
               <h5>Quick Links</h5>
               <ul>
                 <li>
-                  <Link href={"#"}>Home</Link>
+                  <Link href={"/#"}>Home</Link>
                 </li>
                 <li>
-                  <Link href={"#"}>How It Works</Link>
+                  <Link href={"#howItWorks"}>How It Works</Link>
                 </li>
                 <li>
-                  <Link href={"#"}>Rewards</Link>
+                  <Link href={"#rewards"}>Rewards</Link>
                 </li>
                 <li>
                   <Link href={"#"}>admin Login</Link>
@@ -72,7 +72,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="flex justify-between items-center mt-16">
+        <div className="flex justify-between items-center mt-16 flex-col sm:flex-row">
           <div className="flex flex-col sm:flex-row gap-4 font-light">
             <p className="italic">
               &copy; {new Date().getFullYear()} Educash Flow. All rights

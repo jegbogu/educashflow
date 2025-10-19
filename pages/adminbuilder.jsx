@@ -1,11 +1,4 @@
-import {
-  Filter,
-  Search,
-  Upload,
-  Plus,
-  Edit,
-  Trash2
-} from "lucide-react";
+import { Filter, Search, Upload, Plus, Edit, Trash2 } from "lucide-react";
 import styles from "@/styles/builder.module.css";
 import DashboardLayout from "@/components/admin/layout";
 import { useState } from "react";
@@ -13,6 +6,7 @@ import { quizConfig } from "@/config/quizConfig";
 import CreateQuizModal from "@/components/admin/createNewQuiz";
 import Pagination from "@/components/utils/pagination";
 import QuestionModal from "@/components/admin/quizModal";
+import DeleteItemModal from "@/components/admin/deleteuestion";
 
 const initialQuestions = [
   {
@@ -25,6 +19,8 @@ const initialQuestions = [
     timeLimit: quizConfig.perQuestionTime,
     points:
       quizConfig.basicPointPerQuestion + quizConfig.extraPointsIntermediate,
+    options: ["Elon Musk", "Jeff Bezos", "Bernard Arnault", "Bill Gates"],
+    correctAnswer: "Bernard Arnault",
   },
   {
     id: "002",
@@ -35,6 +31,8 @@ const initialQuestions = [
     completed: true,
     timeLimit: quizConfig.perQuestionTime,
     points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsBeginner,
+    options: ["Cub", "Calf", "Pup", "Foal"],
+    correctAnswer: "Cub",
   },
   {
     id: "003",
@@ -46,6 +44,13 @@ const initialQuestions = [
     timeLimit: quizConfig.perQuestionTime,
     points:
       quizConfig.basicPointPerQuestion + quizConfig.extraPointsIntermediate,
+    options: [
+      "Vincent van Gogh",
+      "Pablo Picasso",
+      "Leonardo da Vinci",
+      "Michelangelo",
+    ],
+    correctAnswer: "Leonardo da Vinci",
   },
   {
     id: "004",
@@ -56,6 +61,8 @@ const initialQuestions = [
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
     points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsBeginner,
+    options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
+    correctAnswer: "Carbon Dioxide",
   },
   {
     id: "005",
@@ -66,6 +73,8 @@ const initialQuestions = [
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
     points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsAdvanced,
+    options: ["mv", "1/2 mv²", "mgh", "F × d"],
+    correctAnswer: "1/2 mv²",
   },
   {
     id: "006",
@@ -76,6 +85,8 @@ const initialQuestions = [
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
     points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsBeginner,
+    options: ["Joule", "Newton", "Pascal", "Watt"],
+    correctAnswer: "Newton",
   },
   {
     id: "007",
@@ -87,6 +98,13 @@ const initialQuestions = [
     timeLimit: quizConfig.perQuestionTime,
     points:
       quizConfig.basicPointPerQuestion + quizConfig.extraPointsIntermediate,
+    options: [
+      "Alexander Fleming",
+      "Louis Pasteur",
+      "Marie Curie",
+      "Isaac Newton",
+    ],
+    correctAnswer: "Alexander Fleming",
   },
   {
     id: "008",
@@ -98,6 +116,13 @@ const initialQuestions = [
     timeLimit: quizConfig.perQuestionTime,
     points:
       quizConfig.basicPointPerQuestion + quizConfig.extraPointsIntermediate,
+    options: [
+      "Indira Gandhi",
+      "Margaret Thatcher",
+      "Angela Merkel",
+      "Golda Meir",
+    ],
+    correctAnswer: "Margaret Thatcher",
   },
   {
     id: "009",
@@ -108,6 +133,8 @@ const initialQuestions = [
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
     points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsAdvanced,
+    options: ["1942", "1945", "1948", "1950"],
+    correctAnswer: "1945",
   },
 ];
 
@@ -129,6 +156,7 @@ export default function QuizBuilderPage() {
   const [modalQuiz, setModalQuiz] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Filtering
   const filteredQuestions = questions
@@ -174,6 +202,11 @@ export default function QuizBuilderPage() {
     setShowModal(true);
   };
 
+  const handleDeleteQuestion = (question) => {
+    setShowDeleteModal(true);
+    setSelectedQuestion(question);
+  };
+
   // Save or update question
   const handleSaveQuestion = (data) => {
     setQuestions((prev) => {
@@ -189,10 +222,9 @@ export default function QuizBuilderPage() {
   };
 
   // Delete
-  const handleDeleteQuestion = (id) => {
-    if (confirm("Are you sure you want to delete this question?")) {
-      setQuestions((prev) => prev.filter((q) => q.id !== id));
-    }
+  const deleteQuestion = (id) => {
+    setQuestions((prev) => prev.filter((q) => q.id !== id));
+    setShowDeleteModal(false);
   };
 
   return (
@@ -351,11 +383,13 @@ export default function QuizBuilderPage() {
                     <td className={styles.tableTd}>
                       <div className={styles.actionButtons}>
                         <button
+                          onClick={() => handleEditQuestion(question)}
                           className={`${styles.actionBtn} ${styles.editBtn}`}
                         >
                           <Edit className={styles.actionIcon} />
                         </button>
                         <button
+                          onClick={() => handleDeleteQuestion(question)}
                           className={`${styles.actionBtn} ${styles.deleteBtn}`}
                         >
                           <Trash2 className={styles.actionIcon} />
@@ -382,7 +416,18 @@ export default function QuizBuilderPage() {
         <QuestionModal
           question={selectedQuestion}
           onSave={handleSaveQuestion}
-          onClose={() => setShowModal(false)}
+          onClose={() => {setShowModal(false); setSelectedQuestion(null);}}
+        />
+      )}
+
+      {showDeleteModal && (
+        <DeleteItemModal
+          item={selectedQuestion}
+          onClose={() => {
+            setShowDeleteModal(false)
+            setSelectedQuestion(null)
+          }}
+          onConfirm={deleteQuestion}
         />
       )}
     </DashboardLayout>

@@ -7,6 +7,7 @@ export default function RecentActivity(props) {
   const recentActivities = recentA.slice(-5);
 
   function timeAgo(dateString) {
+<<<<<<< HEAD
     // Convert the string to a Date object (format: DD-MM-YYYY HH:mm:ss)
     const [day, month, yearAndTime] = dateString.split("-");
 
@@ -18,16 +19,46 @@ export default function RecentActivity(props) {
       }
  
     const formattedDate = `${year}-${month}-${day} ${time}`; // YYYY-MM-DD HH:mm:ss
+=======
+    // safe guard: handle falsy input
+    if (!dateString) return "";
 
-    const pastDate = new Date(formattedDate);
+    let pastDate;
+
+    // Try to parse expected format: DD-MM-YYYY HH:mm:ss
+    try {
+      const parts = dateString.split("-");
+      if (parts.length >= 3) {
+        const [day, month, yearAndTime] = parts;
+        const [year, ...timeParts] = yearAndTime.split(" ");
+        const time = timeParts.join(" ") || "00:00:00";
+        const formattedDate = `${year}-${month}-${day} ${time}`; // YYYY-MM-DD HH:mm:ss
+        pastDate = new Date(formattedDate);
+      } else {
+        // Fallback: let Date try to parse other formats (ISO, etc.)
+        pastDate = new Date(dateString);
+      }
+    } catch (e) {
+      pastDate = new Date(dateString);
+    }
+
+    // If parsing failed, return empty string
+    if (isNaN(pastDate)) return "";
+>>>>>>> 3aeaad0964b074fb2933d1a20f1d3c896ecbf73b
+
     const now = new Date();
-
     const diffMs = now - pastDate; // difference in ms
+
+    // If date is in the future, handle gracefully
+    if (diffMs < 0) return "just now";
+
     const diffMinutes = Math.floor(diffMs / (1000 * 60));
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffMinutes < 60) {
+    if (diffMinutes < 1) {
+      return "just now";
+    } else if (diffMinutes < 60) {
       return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
     } else if (diffHours < 24) {
       return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;

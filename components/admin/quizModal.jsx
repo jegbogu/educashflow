@@ -5,71 +5,64 @@ import { quizConfig } from "@/config/quizConfig";
 export default function QuestionModal({ question, onSave, onClose }) {
   const [formData, setFormData] = useState({
     id: "",
-    title: "",
-    description: "",
+    question: "",
     category: "",
+    subcategory: "",
     difficulty: "medium",
+    options: { a: "", b: "", c: "", d: "" },
+    correctAnswer: "",
   });
 
   useEffect(() => {
     if (question) {
-      setFormData(question);
+      setFormData({
+        ...question,
+        options: question.options || { a: "", b: "", c: "", d: "" },
+        correctAnswer: question.correctAnswer || "",
+      });
     } else {
       setFormData({
         id: crypto.randomUUID(),
-        title: "",
-        description: "",
+        question: "",
         category: "",
-        difficulty: "medium",
         subcategory: "",
-        category: "",
+        difficulty: "medium",
+        options: { a: "", b: "", c: "", d: "" },
+        correctAnswer: "",
       });
     }
   }, [question]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-      ...(name === "category" ? { subcategory: "" } : {}), // reset subcategory if category changes
-    }));
+
+    if (["a", "b", "c", "d"].includes(name)) {
+      // Update option text
+      setFormData((prev) => ({
+        ...prev,
+        options: { ...prev.options, [name]: value },
+      }));
+    } else if (name === "correctAnswer") {
+      // Update correct answer selection
+      setFormData((prev) => ({ ...prev, correctAnswer: value }));
+    } else {
+      // Other fields
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+        ...(name === "category" ? { subcategory: "" } : {}),
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.correctAnswer) {
+      alert("Please select the correct answer before saving.");
+      return;
+    }
     onSave(formData);
   };
-
-  // 🔹 Define field configs
-  const fields = [
-    {
-      label: "Question",
-      name: "question",
-      type: "text",
-      placeholder: "Enter question",
-      required: true,
-    },
-    {
-      label: "Description",
-      name: "description",
-      type: "textarea",
-      placeholder: "Enter question description",
-    },
-  ];
-
-  const selectFields = [
-    {
-      name: "category",
-      label: "Category",
-      options: quizConfig.categories,
-    },
-    {
-      name: "levels",
-      label: "Difficulty",
-      options: quizConfig.levels,
-    },
-  ];
 
   const selectedCategory = quizConfig.categories.find(
     (cat) => cat.name === formData.category
@@ -97,36 +90,23 @@ export default function QuestionModal({ question, onSave, onClose }) {
           {question ? "Edit Question" : "Add Question"}
         </h2>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {fields.map((field) => (
-            <div key={field.name}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {field.label}
-              </label>
-              {field.type === "textarea" ? (
-                <textarea
-                  name={field.name}
-                  value={formData[field.name]}
-                  onChange={handleChange}
-                  rows={4}
-                  placeholder={field.placeholder}
-                  required={field.required}
-                  className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
-                />
-              ) : (
-                <input
-                  type={field.type}
-                  name={field.name}
-                  value={formData[field.name]}
-                  onChange={handleChange}
-                  placeholder={field.placeholder}
-                  required={field.required}
-                  className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
-                />
-              )}
-            </div>
-          ))}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Question
+            </label>
+            <input
+              type="text"
+              name="question"
+              value={formData.question}
+              onChange={handleChange}
+              placeholder="Enter question"
+              required
+              className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+
+          {/* Category */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Category
@@ -135,11 +115,9 @@ export default function QuestionModal({ question, onSave, onClose }) {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
+              className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent"
             >
-              <option value="Default" defaultChecked>
-                Choose Category
-              </option>
+              <option value="">Choose Category</option>
               {quizConfig.categories.map(({ name }, index) => (
                 <option key={index} value={name}>
                   {name}
@@ -154,37 +132,32 @@ export default function QuestionModal({ question, onSave, onClose }) {
                 Subcategory
               </label>
               <select
-                name={"subcategory"}
+                name="subcategory"
                 value={formData.subcategory}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
+                className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent"
               >
-                <option value="Default" defaultChecked>
-                  Choose Subcategory
-                </option>
-                {selectedCategory?.subcategories.map(
-                  (name , index) => (
-                    <option key={index} value={name}>
-                      {name}
-                    </option>
-                  )
-                )}
+                <option value="">Choose Subcategory</option>
+                {selectedCategory?.subcategories.map((name, index) => (
+                  <option key={index} value={name}>
+                    {name}
+                  </option>
+                ))}
               </select>
             </div>
           )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Difficulty
             </label>
             <select
               name="difficulty"
-              value={formData["difficulty"]}
+              value={formData.difficulty}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
+              className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent]"
             >
-              <option value="Default" defaultChecked>
-                Choose Difficulty
-              </option>
+              <option value="">Choose Difficulty</option>
               {quizConfig.levels.map((item, index) => (
                 <option key={index} value={item}>
                   {item}
@@ -192,7 +165,40 @@ export default function QuestionModal({ question, onSave, onClose }) {
               ))}
             </select>
           </div>
-          {/* Buttons */}
+
+          {/* Multiple Choice Options */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Options (Select the correct one)
+            </label>
+            <div className="space-y-2">
+              {["a", "b", "c", "d"].map((opt) => (
+                <label
+                  key={opt}
+                  className="flex items-center gap-2 rounded"
+                >
+                  <input
+                    type="radio"
+                    name="correctAnswer"
+                    value={opt}
+                    checked={formData.correctAnswer === opt}
+                    onChange={handleChange}
+                    className="accent"
+                  />
+                  <span className="font-semibold">{opt.toUpperCase()}.</span>
+                  <input
+                    type="text"
+                    name={opt}
+                    value={formData.options[opt]}
+                    onChange={handleChange}
+                    placeholder={`Option ${opt.toUpperCase()}`}
+                    className="flex-1 px-3 py-2 border border-border rounded focus:outline-none focus:ring-1 focus:ring-accent"
+                  />
+                </label>
+              ))}
+            </div>
+          </div>
+
           <div className="flex justify-end gap-3 mt-6">
             <button
               type="button"
@@ -201,7 +207,6 @@ export default function QuestionModal({ question, onSave, onClose }) {
             >
               Cancel
             </button>
-
             <button
               type="submit"
               className="px-4 py-2 bg-dashboard-primary text-white rounded hover:opacity-90 transition"
