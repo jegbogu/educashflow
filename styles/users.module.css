@@ -9,10 +9,12 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .headerLeft {
-  flex: 1;
+  width: 400px;
 }
 
 .pageTitle {
@@ -57,6 +59,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1em;
   margin-bottom: 1rem;
 }
 
@@ -110,6 +114,7 @@
 .filtersRight {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
@@ -123,12 +128,12 @@
 .filterSelect:focus {
   outline: none;
   ring: 2px;
-  ring-color: #3b82f6;
   border-color: transparent;
 }
 
 .usersTableSection {
   margin-bottom: 2rem;
+  overflow-x: auto;
 }
 
 .usersTable {
@@ -164,6 +169,9 @@
   border-top: 1px solid #e5e7eb;
 }
 
+.tableBody td {
+  white-space: nowrap;
+}
 .tableRow:hover {
   background-color: #f9fafb;
 }

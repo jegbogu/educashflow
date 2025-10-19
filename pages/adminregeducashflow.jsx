@@ -136,93 +136,95 @@ text-red-700"
   }
 
   return (
-    <div className="w-[30%] mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
-      {/* Header */}
-      <h1 className="text-center text-2xl font-bold text-gray-800">
-        Admin Sign Up
-      </h1>
+    <div className="p-6">
+      <div className="max-w-xl mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
+        {/* Header */}
+        <h1 className="text-center text-2xl font-bold text-gray-800">
+          Admin Sign Up
+        </h1>
 
-      <form className="mt-6 space-y-5" onSubmit={submitHandler}>
-        {/* Email */}
-        <div>
-          <label
-            htmlFor="fullname"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Full Name
-          </label>
-          <div className="relative mt-1">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-              <UserIcon className="w-5 h-5" />
-            </span>
-            <input
-              type="text"
-              name="fullname"
-              id="fullname"
-              ref={fullnameRef}
-              placeholder="Enter your fullname"
-              className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
-            />
+        <form className="mt-6 space-y-5" onSubmit={submitHandler}>
+          {/* Email */}
+          <div>
+            <label
+              htmlFor="fullname"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Full Name
+            </label>
+            <div className="relative mt-1">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                <UserIcon className="w-5 h-5" />
+              </span>
+              <input
+                type="text"
+                name="fullname"
+                id="fullname"
+                ref={fullnameRef}
+                placeholder="Enter your fullname"
+                className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
+              />
+            </div>
+            <div>{showNofullname}</div>
           </div>
-          <div>{showNofullname}</div>
-        </div>
 
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email Address
-          </label>
-          <div className="relative mt-1">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-              <MailIcon className="w-5 h-5" />
-            </span>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              ref={emailRef}
-              placeholder="Enter your email"
-              className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
-            />
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email Address
+            </label>
+            <div className="relative mt-1">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                <MailIcon className="w-5 h-5" />
+              </span>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                ref={emailRef}
+                placeholder="Enter your email"
+                className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
+              />
+            </div>
+            <div>{showNoemail}</div>
           </div>
-          <div>{showNoemail}</div>
-        </div>
 
-        {/* Sign up button */}
-        <button
-          type="submit"
-          disabled={loading} // Prevent multiple clicks
-          className={`p-2 rounded-md w-full mt-4 transition flex items-center justify-center 
+          {/* Sign up button */}
+          <button
+            type="submit"
+            disabled={loading} // Prevent multiple clicks
+            className={`p-2 rounded-md w-full mt-4 transition flex items-center justify-center 
         ${
           loading
             ? "bg-secondary/70 cursor-not-allowed"
             : "bg-secondary hover:bg-secondary/90 text-white"
         }`}
-        >
-          {loading ? (
-            // Spinner
-            <Spinner className="w-5 h-5" />
-          ) : (
-            "Sign Up"
-          )}
-        </button>
-        <div>{finalReg}</div>
-      </form>
+          >
+            {loading ? (
+              // Spinner
+              <Spinner className="w-5 h-5" />
+            ) : (
+              "Sign Up"
+            )}
+          </button>
+          <div>{finalReg}</div>
+        </form>
 
-      {/* Divider */}
-      <div className="flex items-center mt-6">
-        <hr className="flex-grow border-gray-300" />
-        <span className="px-3 text-gray-500 text-sm">OR</span>
-        <hr className="flex-grow border-gray-300" />
-      </div>
+        {/* Divider */}
+        <div className="flex items-center mt-6">
+          <hr className="flex-grow border-gray-300" />
+          <span className="px-3 text-gray-500 text-sm">OR</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
 
-      {/* Register button */}
-      <div className="flex justify-center">
-        <button className="bg-white text-secondary border-2 border-gray-200 p-2 rounded-md w-1/2 mt-5 hover:bg-gray-50 hover:border-secondary transition">
-          <Link href="/adminlogin">Login</Link>
-        </button>
+        {/* Register button */}
+        <div className="flex justify-center">
+          <button className="bg-white text-secondary border-2 border-gray-200 p-2 rounded-md w-1/2 mt-5 hover:bg-gray-50 hover:border-secondary transition">
+            <Link href="/adminlogin">Login</Link>
+          </button>
+        </div>
       </div>
     </div>
   );
