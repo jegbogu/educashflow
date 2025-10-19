@@ -4,9 +4,7 @@ import {
   Upload,
   Plus,
   Edit,
-  Trash2,
-  ChevronLeft,
-  ChevronRight,
+  Trash2
 } from "lucide-react";
 import styles from "@/styles/builder.module.css";
 import DashboardLayout from "@/components/admin/layout";
@@ -14,6 +12,7 @@ import { useState } from "react";
 import { quizConfig } from "@/config/quizConfig";
 import CreateQuizModal from "@/components/admin/createNewQuiz";
 import Pagination from "@/components/utils/pagination";
+import QuestionModal from "@/components/admin/quizModal";
 
 const initialQuestions = [
   {
@@ -128,6 +127,8 @@ export default function QuizBuilderPage() {
   const [selected, setSelected] = useState([]);
   const itemsPerPage = 10;
   const [modalQuiz, setModalQuiz] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   // Filtering
   const filteredQuestions = questions
@@ -161,6 +162,39 @@ export default function QuizBuilderPage() {
     setCurrentPage(page);
   };
 
+  // Open for adding new
+  const handleAddQuestion = () => {
+    setSelectedQuestion(null);
+    setShowModal(true);
+  };
+
+  // Open for editing
+  const handleEditQuestion = (question) => {
+    setSelectedQuestion(question);
+    setShowModal(true);
+  };
+
+  // Save or update question
+  const handleSaveQuestion = (data) => {
+    setQuestions((prev) => {
+      const index = prev.findIndex((q) => q.id === data.id);
+      if (index !== -1) {
+        const updated = [...prev];
+        updated[index] = data;
+        return updated;
+      }
+      return [...prev, data];
+    });
+    setShowModal(false);
+  };
+
+  // Delete
+  const handleDeleteQuestion = (id) => {
+    if (confirm("Are you sure you want to delete this question?")) {
+      setQuestions((prev) => prev.filter((q) => q.id !== id));
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className={styles.quizBuilderPage}>
@@ -180,7 +214,10 @@ export default function QuizBuilderPage() {
               <Upload className={styles.btnIcon} />
               Bulk Import
             </button>
-            <button className={styles.btnPrimary}>
+            <button
+              className={styles.btnPrimary}
+              onClick={() => setShowModal(true)}
+            >
               <Plus className={styles.btnIcon} />
               Create New Quiz
             </button>
@@ -341,6 +378,13 @@ export default function QuizBuilderPage() {
           </div>
         </div>
       </div>
+      {showModal && (
+        <QuestionModal
+          question={selectedQuestion}
+          onSave={handleSaveQuestion}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </DashboardLayout>
   );
 }

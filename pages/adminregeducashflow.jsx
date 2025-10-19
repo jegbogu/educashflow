@@ -6,6 +6,7 @@ import LockIcon from "@/components/icons/lockicon";
 
 import Link from "next/link";
 import Spinner from "@/components/icons/spinner";
+import RootLayout from "@/components/layout";
 
 export default function Adminregeducashflow() {
   //after clicking on register
@@ -220,9 +221,13 @@ text-red-700"
       {/* Register button */}
       <div className="flex justify-center">
         <button className="bg-white text-secondary border-2 border-gray-200 p-2 rounded-md w-1/2 mt-5 hover:bg-gray-50 hover:border-secondary transition">
-          <Link href="/login">Login</Link>
+          <Link href="/adminlogin">Login</Link>
         </button>
       </div>
     </div>
   );
 }
+
+Adminregeducashflow.getLayout = function getLayout(page) {
+  return <RootLayout>{page}</RootLayout>;
+};
