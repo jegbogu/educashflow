@@ -22,6 +22,7 @@
   list-style: none;
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 .img {

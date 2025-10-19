@@ -300,137 +300,109 @@ export default function UsersPage() {
 
         {/* Users Table */}
         <div className={styles.usersTableSection}>
-          <div className={styles.usersTable}>
-            <table className={styles.table}>
-              <thead className={styles.tableHeader}>
-                <tr>
-                  <th className={styles.tableTh}>
-                    <input
-                      type="checkbox"
-                      checked={allSelected}
-                      onChange={(e) =>
-                        e.target.checked ? selectAll() : deselectAll()
-                      }
-                    />
-                  </th>
-                  <th className={cn(styles.tableTh, "!text-left")}>User ID</th>
-                  <th className={styles.tableTh}>User</th>
-                  <th className={styles.tableTh}>Status</th>
-                  <th className={styles.tableTh}>User Type</th>
-                  <th className={styles.tableTh}>Actions</th>
-                </tr>
-              </thead>
-              <tbody className={styles.tableBody}>
-                {paginatedUsers.map((user, index) => (
-                  <tr key={index} className={styles.tableRow}>
-                    <td className={styles.tableTd}>
+          <div className="w-full overflow-x-auto">
+            <div className={`${styles.usersTable} min-w-max`}>
+              <table className={`${styles.table} w-full text-sm`}>
+                <thead className={styles.tableHeader}>
+                  <tr>
+                    <th className={styles.tableTh}>
                       <input
                         type="checkbox"
-                        checked={selected.includes(user.id)}
-                        onChange={() => toggleSelect(user.id)}
+                        checked={allSelected}
+                        onChange={(e) =>
+                          e.target.checked ? selectAll() : deselectAll()
+                        }
                       />
-                    </td>
-                    <td className={cn(styles.tableTd, "!text-left")}>
-                      {user.id.slice(0, 3)}...{user.id.slice(-3)}
-                    </td>
-                    <td className={styles.tableTd}>
-                      <div className={styles.userInfo}>
-                        <div className={styles.userAvatar}>
-                          <span className={styles.avatarFallback}>
-                            {user.name.split(" ")[0].charAt(0)}
-                            {user.name.split(" ")[1]?.charAt(0)}
-                          </span>
+                    </th>
+                    <th className={cn(styles.tableTh, "!text-left")}>
+                      User ID
+                    </th>
+                    <th className={styles.tableTh}>User</th>
+                    <th className={styles.tableTh}>Status</th>
+                    <th className={styles.tableTh}>User Type</th>
+                    <th className={styles.tableTh}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody className={styles.tableBody}>
+                  {paginatedUsers.map((user, index) => (
+                    <tr key={index} className={styles.tableRow}>
+                      <td className={styles.tableTd}>
+                        <input
+                          type="checkbox"
+                          checked={selected.includes(user.id)}
+                          onChange={() => toggleSelect(user.id)}
+                        />
+                      </td>
+                      <td className={cn(styles.tableTd, "!text-left")}>
+                        {user.id.slice(0, 3)}...{user.id.slice(-3)}
+                      </td>
+                      <td className={styles.tableTd}>
+                        <div className={styles.userInfo}>
+                          <div className={styles.userAvatar}>
+                            <span className={styles.avatarFallback}>
+                              {user.name.split(" ")[0].charAt(0)}
+                              {user.name.split(" ")[1]?.charAt(0)}
+                            </span>
+                          </div>
+                          <div className={styles.userDetails}>
+                            <div className={styles.userName}>{user.name}</div>
+                            <div className={styles.userEmail}>{user.email}</div>
+                          </div>
                         </div>
-                        <div className={styles.userDetails}>
-                          <div className={styles.userName}>{user.name}</div>
-                          <div className={styles.userEmail}>{user.email}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={styles.tableTd}>
-                      <span
-                        className={`${styles.statusBadge} ${
-                          styles[`status${user.status}`]
-                        }`}
-                      >
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className={styles.tableTd}>
-                      <span
-                        className={`${styles.typeBadge} ${
-                          styles[`type${user.type}`]
-                        }`}
-                      >
-                        {user.type}
-                      </span>
-                    </td>
-                    <td className={styles.tableTd}>
-                      <div className="relative">
-                        {/* <button
-                          className={styles.actionMenuBtn}
-                          onClick={() => setShowBulkMenu(!showBulkMenu)}
-                        ></button> */}
-                        <div className={styles.actionButtons}>
-                          <button
-                            onClick={() => handleEditUser(user)}
-                            className={styles.actionBtn}
-                            title="Edit user"
-                          >
-                            <Pencil className={styles.actionIcon} />
-                          </button>
-                          <button
-                            className={styles.actionBtn}
-                            onClick={() => handleDeleteUser(user)}
-                            title="Delete user"
-                          >
-                            <Trash2 className={styles.actionIcon} />
-                          </button>
-                          <button
-                            className={styles.actionBtn}
-                            title="Verify user"
-                            onClick={() => handleBlockUser(user)}
-                          >
-                            <Ban className={styles.actionIcon} />
-                          </button>
-                        </div>
-
-                        {showBulkMenu && (
-                          <div className={styles.bulkActionsMenu}>
-                            <button className={styles.menuItem}>
-                              Edit User
-                            </button>
-                            <button className={styles.menuItem}>
-                              View Profile
-                            </button>
-                            <button className={styles.menuItem}>
-                              Block User
+                      </td>
+                      <td className={styles.tableTd}>
+                        <span
+                          className={`${styles.statusBadge} ${
+                            styles[`status${user.status}`]
+                          }`}
+                        >
+                          {user.status}
+                        </span>
+                      </td>
+                      <td className={styles.tableTd}>
+                        <span
+                          className={`${styles.typeBadge} ${
+                            styles[`type${user.type}`]
+                          }`}
+                        >
+                          {user.type}
+                        </span>
+                      </td>
+                      <td className={styles.tableTd}>
+                        <div className="relative">
+                          <div className={styles.actionButtons}>
+                            <button
+                              onClick={() => handleEditUser(user)}
+                              className={styles.actionBtn}
+                              title="Edit user"
+                            >
+                              <Pencil className={styles.actionIcon} />
                             </button>
                             <button
-                              className={`${styles.menuItem} text-red-600`}
+                              className={styles.actionBtn}
+                              onClick={() => handleDeleteUser(user)}
+                              title="Delete user"
                             >
-                              Delete User
+                              <Trash2 className={styles.actionIcon} />
                             </button>
-                            <div className={styles.menuDivider}></div>
-                            <button className={styles.menuItem}>
-                              Delete all
-                            </button>
-                            <button className={styles.menuItem}>
-                              Select all
-                            </button>
-                            <button className={styles.menuItem}>
-                              Deselect all
+                            <button
+                              className={styles.actionBtn}
+                              title="Verify user"
+                              onClick={() => handleBlockUser(user)}
+                            >
+                              <Ban className={styles.actionIcon} />
                             </button>
                           </div>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+
         {/* Pagination */}
         <div className={styles.paginationSection}>
           <Pagination
@@ -457,7 +429,7 @@ export default function UsersPage() {
                 </div>
                 <div className={styles.statItem}>
                   <div className={styles.statLabel}>Regular Users</div>
-                  <div className={styles.statValue}>{ regularUsers}</div>
+                  <div className={styles.statValue}>{regularUsers}</div>
                 </div>
               </div>
               <div className={styles.chartContainer}>
