@@ -1,6 +1,9 @@
 import DashboardOverview from "@/components/admin/dashboardOverview";
 import RecentActivity from "@/components/admin/recentActivity";
 import Spinner from "@/components/icons/spinner";
+import QuickActions from "@/components/admin/quickActions";
+import DashboardLayout from "@/components/admin/layout";
+import styles from "@/styles/admin.module.css";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -9,17 +12,13 @@ import { useEffect } from "react";
 import connectDB from "@/utils/connectmongo";
 import Users from "../model/registerSchema";
 import Activity from "../model/recentactivities";
-import DashboardLayout from "@/components/admin/layout";
-import styles from "@/styles/admin.module.css";
-import QuickActions from "@/components/admin/quickActions";
 import Quiz from "@/model/quizCreation";
 
 export default function Dashboard(props) {
   const { data: session, status } = useSession();
-
   const router = useRouter();
 
-  // Handle redirects in useEffect
+  // Redirect unauthorized users
   useEffect(() => {
     if (status === "authenticated" && session?.user.role !== "admin") {
       router.replace("/adminlogin");
@@ -28,29 +27,27 @@ export default function Dashboard(props) {
     }
   }, [status, session, router]);
 
-  // Show loading state while session is being checked
+  // Loading spinner while session is checked
   if (status === "loading") {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-3xl font-bold">
-          <Spinner className="w-12 h-12" />
-        </div>
+        <Spinner className="w-12 h-12 text-gray-600 animate-spin" />
       </div>
     );
   }
 
-  // If user is not allowed, return null to prevent flashing content
+  // Prevent flashing if unauthorized
   if (status !== "authenticated" || session?.user.role !== "admin") {
     return null;
   }
-  //Overview component starts
-  //this is to get the number of users
+
+  // ========== DASHBOARD LOGIC ==========
+
+  // Get users
   const users = props.users;
   const totalUsers = users.length;
 
-  /**
-   * Calculate percentage change
-   */
+  // --- Percentage change utility ---
   function calculatePercentageChange(current, previous) {
     if (previous === 0 && current === 0) return "0%";
     if (previous === 0) return "+100%"; // avoid division by zero
@@ -59,32 +56,21 @@ export default function Dashboard(props) {
     return change >= 0 ? `+${change.toFixed(1)}%` : `${change.toFixed(1)}%`;
   }
 
-  /**
-   * Get percentage change for current month vs last month
-   */
+  // --- Monthly growth calculation ---
   function getCurrentVsLastMonthGrowth(users) {
-    // Count users per month (YYYY-MM)
     const counts = users.reduce((acc, u) => {
       if (!u.createdAt) return acc;
 
-      // Ensure it's a Date object
       const d = new Date(u.createdAt);
       if (isNaN(d)) return acc;
 
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, "0"); // 01-12
-
-      const key = `${year}-${month}`;
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
       acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
 
-    // Sort months chronologically
     const months = Object.keys(counts).sort();
-
-    if (months.length < 2) {
-      return "Not enough data";
-    }
+    if (months.length < 2) return "Not enough data";
 
     const lastMonth = months[months.length - 2];
     const currentMonth = months[months.length - 1];
@@ -97,43 +83,39 @@ export default function Dashboard(props) {
 
   const usersRate = getCurrentVsLastMonthGrowth(users);
 
-  function MonthlyActivities(activities) {
+  // --- Monthly activities count ---
+  function getMonthlyActivitiesCount(activities) {
     const now = new Date();
-    const currentMonth = now.getMonth() + 1; // JS months are 0-based
+    const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
 
     return activities.filter((activity) => {
- 
-      const [day, month, yearAndTime] = activity.createdAt.split("-");
-      
-      let year;
-      if(yearAndTime){
-[year] = yearAndTime.split(" ");
-      }
-      
+      const date = new Date(activity.createdAt);
+      if (isNaN(date)) return false;
       return (
-        parseInt(month, 10) === currentMonth &&
-        parseInt(year, 10) === currentYear
+        date.getMonth() === currentMonth &&
+        date.getFullYear() === currentYear
       );
     }).length;
   }
 
-
-
+  // --- Overview Data ---
   const overviewData = [
     { userRate: usersRate },
-    { totalUsers: totalUsers },
+    { totalUsers },
     { totalQuizzes: props.totalQuizzes.length },
-    { monthlyActivity: MonthlyActivities(props.activities) }
+    { monthlyActivity: getMonthlyActivitiesCount(props.activities) },
   ];
-  //Overview component ends
 
-  //this is for recent activities
+  // --- Recent Activities ---
   const allActivities = props.activities;
+
+  // ========== UI SECTION ==========
 
   return (
     <DashboardLayout>
       <div className={styles.dashboardPage}>
+        {/* Header */}
         <div className={styles.dashboardHeader}>
           <h1 className={styles.dashboardTitle}>Dashboard Overview</h1>
           <p className={styles.dashboardSubtitle}>
@@ -141,14 +123,18 @@ export default function Dashboard(props) {
           </p>
         </div>
 
+        {/* Overview cards */}
         <DashboardOverview overviewData={overviewData} />
 
+        {/* Content grid */}
         <div className={styles.contentGrid}>
+          {/* Recent Activity */}
           <div className={styles.activitySection}>
             <h2 className={styles.sectionTitle}>Recent Activity</h2>
             <RecentActivity allActivities={allActivities} />
           </div>
 
+          {/* Quick Actions */}
           <div className={styles.actionsSection}>
             <h2 className={styles.sectionTitle}>Quick Actions</h2>
             <QuickActions />
@@ -159,8 +145,11 @@ export default function Dashboard(props) {
   );
 }
 
+// ========== SERVER SIDE PROPS ==========
+
 export async function getServerSideProps() {
   await connectDB();
+
   const users = await Users.find({}).lean();
   const activities = await Activity.find({}).lean();
   const totalQuizzes = await Quiz.find({}).lean();

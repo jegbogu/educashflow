@@ -228,6 +228,11 @@
   color: #065f46;
 }
 
+.statusAdmin {
+  background-color: #d1defa;
+  color: #061f5f;
+}
+
 .statusBlocked {
   background-color: #fee2e2;
   color: #991b1b;
