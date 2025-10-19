@@ -45,18 +45,19 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <Link href="#" className={style.navLink}>
+              <Link href="#howItWorks" className={style.navLink}>
                 How it Works
               </Link>
             </li>
             <li>
-              <Link href="#" className={style.navLink}>
+              <Link href="#rewards" className={style.navLink}>
                 Rewards
               </Link>
             </li>
             <li>
               <Button size="sm">
-                <Link href="/register">Sign Up</Link></Button>
+                <Link href="/register">Sign Up</Link>
+              </Button>
             </li>
             <li>
               <Button size="sm">
@@ -96,7 +97,7 @@ export default function Navbar() {
             </li>
             <li>
               <Link
-                href="#"
+                href="#howItWorks"
                 className={style.mobileNavLink}
                 onClick={() => setOpen(false)}
               >
@@ -105,7 +106,7 @@ export default function Navbar() {
             </li>
             <li>
               <Link
-                href="#"
+                href="#rewards"
                 className={style.mobileNavLink}
                 onClick={() => setOpen(false)}
               >

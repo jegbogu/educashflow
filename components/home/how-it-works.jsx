@@ -64,7 +64,7 @@ export default function HowItWorks() {
   }, [inView, api]);
 
   return (
-    <section ref={ref} className="max-w-7xl mx-auto my-12 p-4">
+    <section id="howItWorks" ref={ref} className="max-w-7xl mx-auto my-12 p-4">
       <div className="space-y-16">
         <Title className="text-center">How it works</Title>
 

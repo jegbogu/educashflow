@@ -6,7 +6,7 @@ import { DashboardImg } from "./dashboardImg";
 
 export default function Reward() {
   return (
-    <section className="relative w-full">
+    <section id="rewards" className="relative w-full">
       {/* background stripes */}
       <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-7">
         <div className="col-span-3 bg-accent"></div>
