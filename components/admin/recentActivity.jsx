@@ -1,25 +1,10 @@
 import styles from "@/styles/admin.module.css";
 
- 
-
 export default function RecentActivity(props) {
   const recentA = props.allActivities;
   const recentActivities = recentA.slice(-5);
 
   function timeAgo(dateString) {
-<<<<<<< HEAD
-    // Convert the string to a Date object (format: DD-MM-YYYY HH:mm:ss)
-    const [day, month, yearAndTime] = dateString.split("-");
-
-    let year;
-    let time;
-      if(yearAndTime){
-[year] = yearAndTime.split(" ")
-[time] = yearAndTime.split(" ")
-      }
- 
-    const formattedDate = `${year}-${month}-${day} ${time}`; // YYYY-MM-DD HH:mm:ss
-=======
     // safe guard: handle falsy input
     if (!dateString) return "";
 
@@ -44,7 +29,6 @@ export default function RecentActivity(props) {
 
     // If parsing failed, return empty string
     if (isNaN(pastDate)) return "";
->>>>>>> 3aeaad0964b074fb2933d1a20f1d3c896ecbf73b
 
     const now = new Date();
     const diffMs = now - pastDate; // difference in ms
@@ -75,7 +59,9 @@ export default function RecentActivity(props) {
             <h3 className={styles.activityTitle}>{activity?.activity}</h3>
             <p className={styles.activityDetail}>{activity?.description}</p>
           </div>
-          <span className={styles.activityTime}>{timeAgo(activity?.createdAt)}</span>
+          <span className={styles.activityTime}>
+            {timeAgo(activity?.createdAt)}
+          </span>
         </div>
       ))}
     </div>
