@@ -8,7 +8,7 @@ export default function Footer() {
       <section className="max-w-7xl mx-auto p-4 py-8">
         <div className="flex flex-col md:flex-row">
           <div className="max-w-72 w-full min-h-32">
-            <h4 className="text-xl">Educash Flow</h4>
+            <Link href={'/'} className="text-xl">Educash Flow</Link>
           </div>
           <div className="links-groups">
             <div className="capitalize">

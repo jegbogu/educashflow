@@ -17,11 +17,27 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import {
+  AArrowDown,
+  AArrowUp,
+  ArrowDownAZ,
+  ArrowDownUp,
+  ArrowUpAZ,
+  Filter,
+  Search,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function PaymentDonutChart({ transactions }) {
-  const pending = transactions.filter((item) => item.paymentConfirmation === "Pending");
-  const successful = transactions.filter((item) => item.paymentConfirmation === "Successful");
-  const failed = transactions.filter((item) => item.paymentConfirmation === "Failed");
+  const pending = transactions.filter(
+    (item) => item.paymentConfirmation === "Pending"
+  );
+  const successful = transactions.filter(
+    (item) => item.paymentConfirmation === "Successful"
+  );
+  const failed = transactions.filter(
+    (item) => item.paymentConfirmation === "Failed"
+  );
 
   const data = [
     { name: "Successful", value: successful.length },
@@ -60,7 +76,9 @@ export function RevenueLineChart({ transactions }) {
     const revenueByMonth = {};
 
     transactions.forEach((t) => {
-      const month = new Date(t.createdAt).toLocaleString("default", { month: "short" });
+      const month = new Date(t.createdAt).toLocaleString("default", {
+        month: "short",
+      });
       const amount = parseFloat(t.price.replace("$", "")) || 0;
       if (!revenueByMonth[month]) revenueByMonth[month] = 0;
       revenueByMonth[month] += amount;
@@ -93,10 +111,28 @@ export default function PaymentPage({ transactions }) {
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [paymentData, setPaymentData] = useState(transactions);
+  const [search, setSearch] = useState("");
 
-  const pending = paymentData.filter((t) => t.paymentConfirmation === "Pending");
-  const successful = paymentData.filter((t) => t.paymentConfirmation === "Successful");
-  const failed = paymentData.filter((t) => t.paymentConfirmation === "Failed");
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+
+  // Filter based on search input
+  const filteredBySearch = paymentData.filter(
+    (transaction) =>
+      transaction.packageName.toLowerCase().includes(search.toLowerCase()) ||
+      transaction.userData?.fullname
+        ?.toLowerCase()
+        .includes(search.toLowerCase())
+  );
+
+  const pending = filteredBySearch.filter(
+    (transaction) => transaction.paymentConfirmation === "Pending"
+  );
+  const successful = filteredBySearch.filter(
+    (transaction) => transaction.paymentConfirmation === "Successful"
+  );
+  const failed = filteredBySearch.filter(
+    (transaction) => transaction.paymentConfirmation === "Failed"
+  );
 
   let activeList = paymentData;
   if (filter === "pending") activeList = pending;
@@ -141,62 +177,148 @@ export default function PaymentPage({ transactions }) {
     }
   };
 
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedPayments = [...filteredBySearch].sort((a, b) => {
+    if (!sortConfig.key) return 0;
+
+    const valueA = a[sortConfig.key];
+    const valueB = b[sortConfig.key];
+
+    if (valueA < valueB) return sortConfig.direction === "asc" ? -1 : 1;
+    if (valueA > valueB) return sortConfig.direction === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  const renderSortIcon = (key) => {
+    if (sortConfig.key !== key)
+      return (
+        <span className={styles.sortIcon}>
+          <ArrowDownUp className="size-4" />
+        </span>
+      ); // neutral
+    if (sortConfig.direction === "asc")
+      return (
+        <span className={styles.sortIcon}>
+          <ArrowDownAZ className="size-4" />
+        </span>
+      );
+    return (
+      <span className={styles.sortIcon}>
+        <ArrowUpAZ className="size-4" />
+      </span>
+    );
+  };
+
   return (
     <DashboardLayout>
       <div className={styles.paymentPage}>
-        {/* Filter Tabs */}
-        <div className={styles.filterTabs}>
-          <button
-            onClick={() => setFilter("all")}
-            className={`${styles.filterTab} ${
-              filter === "all" ? styles.filterTabActive : ""
-            }`}
-          >
-            All ({paymentData.length})
-          </button>
-          <button
-            onClick={() => setFilter("pending")}
-            className={`${styles.filterTab} ${
-              filter === "pending" ? styles.filterTabActive : ""
-            }`}
-          >
-            Pending ({pending.length})
-          </button>
-          <button
-            onClick={() => setFilter("successful")}
-            className={`${styles.filterTab} ${
-              filter === "successful" ? styles.filterTabActive : ""
-            }`}
-          >
-            Successful ({successful.length})
-          </button>
-          <button
-            onClick={() => setFilter("failed")}
-            className={`${styles.filterTab} ${
-              filter === "failed" ? styles.filterTabActive : ""
-            }`}
-          >
-            Failed ({failed.length})
-          </button>
-        </div>
+        <div className={styles.filtersSection}>
+          <div className={styles.filtersLeft}>
+            <div className={styles.filterGroup}>
+              <Filter className={styles.filterIcon} />
+              <span className={styles.filterLabel}>Filters:</span>
+            </div>
 
+            <div className={styles.searchFilter}>
+              <Search className={styles.searchIcon} />
+              <input
+                type="text"
+                placeholder="Search"
+                className={styles.searchInput}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+          </div>
+          {/* Filter Tabs */}
+          <div className={styles.filterTabs}>
+            <button
+              onClick={() => setFilter("all")}
+              className={`${styles.filterTab} ${
+                filter === "all" ? styles.filterTabActive : ""
+              }`}
+            >
+              All ({paymentData.length})
+            </button>
+            <button
+              onClick={() => setFilter("pending")}
+              className={`${styles.filterTab} ${
+                filter === "pending" ? styles.filterTabActive : ""
+              }`}
+            >
+              Pending ({pending.length})
+            </button>
+            <button
+              onClick={() => setFilter("successful")}
+              className={`${styles.filterTab} ${
+                filter === "successful" ? styles.filterTabActive : ""
+              }`}
+            >
+              Successful ({successful.length})
+            </button>
+            <button
+              onClick={() => setFilter("failed")}
+              className={`${styles.filterTab} ${
+                filter === "failed" ? styles.filterTabActive : ""
+              }`}
+            >
+              Failed ({failed.length})
+            </button>
+          </div>
+        </div>
         {/* Transactions Table */}
         <div className={styles.transactionsTable}>
           <table className={styles.table}>
             <thead className={styles.tableHeader}>
               <tr>
-                <th className={styles.tableTh}>Package</th>
-                <th className={styles.tableTh}>User</th>
-                <th className={styles.tableTh}>Amount</th>
-                <th className={styles.tableTh}>Status</th>
-                <th className={styles.tableTh}>Date</th>
+                <th
+                  onClick={() => handleSort("packageName")}
+                  className={cn(styles.tableTh)}
+                >
+                  <span className="flex gap-2 items-center">
+                    Package {renderSortIcon("packageName")}
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSort("userData.fullname")}
+                  className={cn(styles.tableTh)}
+                >
+                  <span className="flex gap-2 items-center">
+                    User {renderSortIcon("userData.fullname")}
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSort("price")}
+                  className={cn(styles.tableTh)}
+                >
+                  <span className="flex gap-2 items-center">
+                    Amount {renderSortIcon("price")}
+                  </span>
+                </th>
+                <th className={cn(styles.tableTh)}>Status</th>
+                <th
+                  onClick={() => handleSort("createdAt")}
+                  className={cn(styles.tableTh)}
+                >
+                  <span className="flex gap-2 items-center">
+                    Date {renderSortIcon("createdAt")}
+                  </span>
+                </th>
               </tr>
             </thead>
+
             <tbody className={styles.tableBody}>
-              {paginatedPayments.map((transaction, index) => (
+              {sortedPayments.map((transaction, index) => (
                 <tr key={index} className={styles.tableRow}>
                   <td className={styles.tableTd}>{transaction.packageName}</td>
-                  <td className={styles.tableTd}>
+                  <td className={cn(styles.tableTd, "capitalize")}>
                     {transaction.userData?.fullname || "N/A"}
                   </td>
                   <td className={styles.tableTd}>{transaction.price}</td>
@@ -226,7 +348,6 @@ export default function PaymentPage({ transactions }) {
             </tbody>
           </table>
         </div>
-
         <div className={styles.paginationSection}>
           <Pagination
             totalPages={totalPages}
@@ -234,7 +355,6 @@ export default function PaymentPage({ transactions }) {
             onPageChange={handlePageChange}
           />
         </div>
-
         {/* Analytics */}
         <div className={styles.analyticsGrid}>
           <div className={styles.analyticsCard}>

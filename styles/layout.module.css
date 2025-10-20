@@ -16,7 +16,7 @@
   color: var(--text);
 }
 
-.header.scrolled > a {
+.header.scrolled .navLink {
   color: var(--text);
 }
 
@@ -61,7 +61,7 @@
   padding: 0;
 }
 
-.navLink {
+.header .navLink {
   color: white;
   transition: color 200ms;
   text-decoration: none;
