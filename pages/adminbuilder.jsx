@@ -7,6 +7,7 @@ import CreateQuizModal from "@/components/admin/createNewQuiz";
 import Pagination from "@/components/utils/pagination";
 import QuestionModal from "@/components/admin/quizModal";
 import DeleteItemModal from "@/components/admin/deleteuestion";
+import { cn } from "@/lib/utils";
 
 const initialQuestions = [
   {
@@ -227,6 +228,12 @@ export default function QuizBuilderPage() {
     setShowDeleteModal(false);
   };
 
+  // Bulk delete
+  const bulkDelete = () => {
+    setQuestions((prev) => prev.filter((u) => !selected.includes(u.id)));
+    setSelected([]);
+  };
+
   return (
     <DashboardLayout>
       <div className={styles.quizBuilderPage}>
@@ -277,6 +284,19 @@ export default function QuizBuilderPage() {
           </div>
 
           <div className={styles.filtersRight}>
+            {selected.length > 0 && (
+              <div className={styles.bulkActions}>
+                <button
+                  onClick={bulkDelete}
+                  className={cn(styles.bulkBtn, styles.bulkBtnDelete)}
+                >
+                  Delete Selected
+                </button>
+                <button onClick={deselectAll} className={cn(styles.bulkBtn, styles.bulkBtnClear)}>
+                  Clear Selection
+                </button>
+              </div>
+            )}
             <select
               className={styles.filterSelect}
               value={filters.level}
@@ -416,7 +436,10 @@ export default function QuizBuilderPage() {
         <QuestionModal
           question={selectedQuestion}
           onSave={handleSaveQuestion}
-          onClose={() => {setShowModal(false); setSelectedQuestion(null);}}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedQuestion(null);
+          }}
         />
       )}
 
@@ -424,8 +447,8 @@ export default function QuizBuilderPage() {
         <DeleteItemModal
           item={selectedQuestion}
           onClose={() => {
-            setShowDeleteModal(false)
-            setSelectedQuestion(null)
+            setShowDeleteModal(false);
+            setSelectedQuestion(null);
           }}
           onConfirm={deleteQuestion}
         />

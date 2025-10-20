@@ -1,9 +1,12 @@
 "use client";
 import { useState } from "react";
 import { Eye, Copy, Trash2, Calendar } from "lucide-react";
+import DeleteCouponModal from "./deleteCoupon";
 
 export default function CouponTable({ couponData }) {
   const [coupons, setCoupons] = useState(couponData);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
 
   // Copy coupon code
   const copyCode = (code) => {
@@ -24,7 +27,7 @@ export default function CouponTable({ couponData }) {
     return date.toLocaleString("en-GB", {
       weekday: "long", // Monday, Tuesday...
       day: "2-digit",
-      month: "long",   // January, February...
+      month: "long", // January, February...
       year: "numeric",
     });
   }
@@ -32,6 +35,7 @@ export default function CouponTable({ couponData }) {
   // Delete coupon
   const deleteCoupon = (code) => {
     setCoupons((prev) => prev.filter((c) => c.code !== code));
+    setShowModal(false);
   };
 
   return (
@@ -41,7 +45,6 @@ export default function CouponTable({ couponData }) {
         <span className="font-semibold cursor-pointer">
           All ({coupons.length})
         </span>
-         
       </div>
 
       {/* Bulk actions */}
@@ -49,7 +52,6 @@ export default function CouponTable({ couponData }) {
         <select className="border rounded px-3 py-2 text-sm">
           <option>Bulk actions</option>
           <option>Delete</option>
-         
         </select>
         <button className="px-3 py-2 bg-gray-100 border rounded text-sm">
           Apply
@@ -67,7 +69,7 @@ export default function CouponTable({ couponData }) {
               <th className="px-4 py-3">Code</th>
               <th className="px-4 py-3">Package</th>
               <th className="px-4 py-3">Game Limit</th>
-             
+
               <th className="px-4 py-3">Expires</th>
               <th className="px-4 py-3">Delete</th>
             </tr>
@@ -88,7 +90,7 @@ export default function CouponTable({ couponData }) {
                 </td>
                 <td className="px-4 py-3">{c.pack || "-"}</td>
                 <td className="px-4 py-3">#{c.gameLimit}</td>
-                 
+
                 <td className="px-4 py-3 flex items-center gap-1">
                   <Calendar className="w-4 h-4 text-gray-500" />
                   {formatDate(addDays(c.createdAt, c.expiryDays))}
@@ -96,7 +98,10 @@ export default function CouponTable({ couponData }) {
                 <td className="px-4 py-3">
                   <Trash2
                     className="w-5 h-5 text-red-600 cursor-pointer"
-                    onClick={() => deleteCoupon(c.code)}
+                    onClick={() => {
+                      setShowModal(true);
+                      setSelectedCoupon(c);
+                    }}
                   />
                 </td>
               </tr>
@@ -104,6 +109,13 @@ export default function CouponTable({ couponData }) {
           </tbody>
         </table>
       </div>
+      {showModal && (
+        <DeleteCouponModal
+          onClose={() => setShowModal(false)}
+          item={selectedCoupon}
+          onConfirm={deleteCoupon}
+        />
+      )}
     </div>
   );
 }

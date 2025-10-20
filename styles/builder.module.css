@@ -278,18 +278,39 @@
   margin-top: 1.5rem;
 }
 
-.bulkActionBtn {
-  background-color: #111827;
-  color: white;
+.bulkActions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.bulkBtn {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-weight: 500;
-  transition: background-color 0.2s;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
 }
 
-.bulkActionBtn:hover {
-  background-color: #1f2937;
+.bulkBtnDelete {
+  background-color: #ef4444; /* red-500 */
+  color: #fff;
 }
+
+.bulkBtnDelete:hover {
+  background-color: #dc2626; /* red-600 */
+}
+
+.bulkBtnClear {
+  color: #e5e7eb;
+  background-color: #374151;
+}
+
+.bulkBtnClear:hover {
+  background-color: #d1d5db; /* gray-300 */
+}
+
 
 .pagination {
   display: flex;

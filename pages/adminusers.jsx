@@ -264,13 +264,13 @@ export default function UsersPage() {
               <div className={styles.bulkActions}>
                 <button
                   onClick={bulkDelete}
-                  className="bg-red-500 text-white px-3 py-1 rounded"
+                  className={cn(styles.bulkBtn, styles.bulkBtnDelete)}
                 >
                   Delete Selected
                 </button>
                 <button
                   onClick={deselectAll}
-                  className="bg-gray-300 px-3 py-1 rounded"
+                  className={cn(styles.bulkBtn, styles.bulkBtnClear)}
                 >
                   Clear Selection
                 </button>
