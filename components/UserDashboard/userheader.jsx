@@ -48,10 +48,7 @@ export default function Userheader({ userData }) {
             {/* Points - hidden on very small screens */}
             <p className="font-medium hidden sm:block">{userData.points} pts</p>
 
-            {/* Settings Icon - hidden on small, visible on md+ */}
-            <button aria-label="Settings" className="hidden sm:block">
-              <SettingsIcon className="w-6 h-6 text-gray-700" />
-            </button>
+            
 
             {/* Notifications */}
             <div className="relative inline-flex items-center">
