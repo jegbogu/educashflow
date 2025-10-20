@@ -1,12 +1,17 @@
 import { useState } from "react";
-import { SettingsIcon } from "../icons/navBarIcon";
-import { LogoutIcon } from "../icons/logouticon";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Bell, Coins, StepForward, TrendingUp } from "lucide-react";
+import {
+  Bell,
+  Coins,
+  TrendingUp,
+  LogOutIcon,
+  SettingsIcon,
+} from "lucide-react";
 
 export default function Userheader({ userData }) {
   const [profileSettings, setProfileSetting] = useState(false);
+
   const router = useRouter();
 
   function toggleProfile() {
@@ -83,35 +88,56 @@ export default function Userheader({ userData }) {
 
               {/* Profile Dropdown */}
               {profileSettings && (
-                <div className="absolute top-16 right-16 bg-gray-50 border-gray-100 rounded-lg z-50 shadow-lg p-3 w-60 flex flex-col gap-2">
-                  <div className="md:hidden flex flex-col space-y-2">
-                    <div className="flex gap-4">
-                      <span className="capitalize font-semibold">
+                <div className="absolute top-16 right-16 bg-white border border-gray-200 rounded-xl shadow-xl z-50 p-5 w-64 flex flex-col gap-4 transition-all duration-200 animate-fade-in">
+                  {/* User Info (visible only on mobile) */}
+                  <div className="md:hidden flex flex-col space-y-2 border-b border-gray-100 pb-3">
+                    <div className="flex justify-between items-center">
+                      <span className="capitalize font-semibold text-gray-800">
                         {userData.username}
                       </span>
-                      <span className="flex gap-2">{userData.membership}</span>
+                      <span className="text-sm text-purple-600 font-medium">
+                        {userData.membership}
+                      </span>
                     </div>
-                    <span className="flex gap-2">
-                      <TrendingUp /> Level {userData.level}
-                    </span>
-                    <span className="flex gap-2"> {userData.points} pts</span>
-                    <span className="flex gap-2">
-                      <Coins /> $ {userData.amountMade}
-                    </span>
+
+                    <div className="flex justify-between text-sm text-gray-700">
+                      <span className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-purple-500" />
+                        Level {userData.level}
+                      </span>
+                      <span>{userData.points} pts</span>
+                    </div>
+
+                    <div className="flex justify-between text-sm text-gray-700">
+                      <span className="flex items-center gap-2">
+                        <Coins className="w-4 h-4 text-yellow-500" />$
+                        {userData.amountMade}
+                      </span>
+                    </div>
                   </div>
-                  <button
-                    onClick={logout}
-                    className="flex items-center gap-2 text-gray-700 hover:text-purple-600 transition-colors"
-                  >
-                    <LogoutIcon className="w-5 h-5" />
-                    <span>Logout</span>
-                  </button>
-                  <button
-                    onClick={() => setProfileSetting(false)}
-                    className="flex items-center justify-center justify-self-end mt-1 text-sm text-gray-500 hover:text-red-500"
-                  >
-                    Close
-                  </button>
+                  {/* Actions */}
+                  <div className="flex flex-col gap-3 pt-1">
+                    <button
+                      onClick={() => router.push("/updateProfile")} // your settings handler
+                      className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium transition-colors"
+                    >
+                      <SettingsIcon className="w-5 h-5" />
+                      Settings
+                    </button>
+                    <button
+                      onClick={logout}
+                      className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium transition-colors"
+                    >
+                      <LogOutIcon className="w-5 h-5" />
+                      Logout
+                    </button>
+                    <button
+                      onClick={() => setProfileSetting(false)}
+                      className="text-sm text-gray-400 hover:text-red-500 transition-colors self-end"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
