@@ -131,7 +131,10 @@ export default function Navbar() {
               <Button
                 size="sm"
                 variant="outline"
-                className={style.mobileButton}
+                className={cn(
+                  style.mobileButton,
+                  "!border-primary !text-primary"
+                )}
                 onClick={() => {
                   router.push("/login");
                   setOpen(false);
