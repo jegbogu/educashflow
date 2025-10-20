@@ -48,7 +48,7 @@ export default function Login() {
   return (
     <div className="p-6">
       <div className="max-w-xl mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
-        <h1 className="text-center text-2xl font-bold text-gray-800">Login</h1>
+        <h1 className="text-center text-2xl font-bold text-gray-800 p-2">Login</h1>
 
         <form className="mt-6 space-y-5" onSubmit={submitHandler}>
           {/* Email */}
@@ -150,7 +150,7 @@ export default function Login() {
         <div className="flex justify-center">
           <Link
             href="/register"
-            className="bg-white text-secondary border-2 border-gray-200 p-2 rounded-md w-1/2 mt-5 text-center hover:bg-gray-50 hover:border-secondary transition"
+            className="w-full sm:w-1/2 bg-white text-secondary border-2 border-gray-200 p-2 rounded-md mt-5 text-center hover:bg-gray-50 hover:border-secondary transition"
           >
             Register
           </Link>

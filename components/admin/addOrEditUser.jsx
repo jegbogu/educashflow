@@ -10,12 +10,16 @@ export default function UserForm({ onClose, formTitle, onSave, user }) {
     status: "Active",
     type: "Regular",
   });
-
+  
+  // When editing an existing user
   useEffect(() => {
-    if (user) setFormData(user);
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        ...user, 
+      }));
+    }
   }, [user]);
-
-  const uid = crypto.randomUUID();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,16 +28,25 @@ export default function UserForm({ onClose, formTitle, onSave, user }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
 
+    const newUser = {
+      ...formData,
+      id: formData.id || crypto.randomUUID(), // assign ID only if missing
+    };
+
+    onSave(newUser);
+
+    // Reset form
     setFormData({
       id: "",
+      username: "",
       name: "",
       email: "",
       status: "Active",
       type: "Regular",
     });
   };
+
 
   const fields = [
     { name: "name", type: "text", placeholder: "Full Name" },
@@ -45,7 +58,7 @@ export default function UserForm({ onClose, formTitle, onSave, user }) {
     "w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent";
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 rounded-lg shadow-md bg-background text-[var(--text-color)] font-sans">
+    <div className="max-w-xs w-full md:max-w-md mx-auto mt-10 p-6 rounded-lg shadow-md bg-background text-[var(--text-color)] font-sans">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-text capitalize">
           {formTitle ? formTitle : "Add / Edit User"}
