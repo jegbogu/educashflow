@@ -1,7 +1,5 @@
 import styles from "@/styles/admin.module.css";
 
- 
-
 export default function RecentActivity(props) {
   const recentA = props.allActivities;
   const recentActivities = recentA.slice(-5);
@@ -61,7 +59,9 @@ export default function RecentActivity(props) {
             <h3 className={styles.activityTitle}>{activity?.activity}</h3>
             <p className={styles.activityDetail}>{activity?.description}</p>
           </div>
-          <span className={styles.activityTime}>{timeAgo(activity?.createdAt)}</span>
+          <span className={styles.activityTime}>
+            {timeAgo(activity?.createdAt)}
+          </span>
         </div>
       ))}
     </div>
