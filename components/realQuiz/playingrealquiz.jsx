@@ -394,7 +394,7 @@ export default function Playingrealquiz({
   }
 
   return (
-    <div className="min-h-[100vh] w-[100vw] bg-white p-4 md:p-6">
+    <div className="min-h-[100vh] w-[100vw] bg-white p-4 mt-[170px] md:p-6">
       <div className="max-w-3xl mx-auto">
         {/* header */}
         <div className="flex items-center justify-between gap-3 flex-wrap">
