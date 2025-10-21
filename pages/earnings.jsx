@@ -9,6 +9,7 @@ import Usernavbar from "@/components/UserDashboard/usernavbar";
 import { useEffect, useState } from "react";
 import Spinner from "@/components/icons/spinner";
 import { cn } from "@/lib/utils";
+import connectDB from "@/utils/connectmongo";
 
 export default function EarningsPage() {
   const { data: session, status } = useSession();
@@ -161,17 +162,7 @@ export default function EarningsPage() {
               <button className={styles.btnGhost}>View All</button>
             </div>
 
-            <div className={styles.activityList}>
-              {activities.map((activity, index) => (
-                <ActivityItem
-                  key={index}
-                  title={activity.title}
-                  timeAgo={activity.timeAgo}
-                  amount={activity.amount}
-                  status={activity.status}
-                />
-              ))}
-            </div>
+             
           </div>
           <div className={styles.couponSummary}>
             <div>
@@ -188,3 +179,22 @@ export default function EarningsPage() {
     </div>
   );
 }
+
+// ========== SERVER SIDE PROPS ==========
+
+export async function getServerSideProps() {
+  await connectDB();
+
+  const users = await Users.find({}).lean();
+  const activities = await Activity.find({}).lean();
+  const totalQuizzes = await Quiz.find({}).lean();
+
+  return {
+    props: {
+      users: JSON.parse(JSON.stringify(users)),
+      activities: JSON.parse(JSON.stringify(activities)),
+      totalQuizzes: JSON.parse(JSON.stringify(totalQuizzes)),
+    },
+  };
+}
+
