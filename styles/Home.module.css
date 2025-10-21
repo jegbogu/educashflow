@@ -8,6 +8,6 @@
   @apply max-w-7xl m-auto lg:min-h-[80vh] flex flex-col lg:flex-row items-center justify-between gap-4 px-4;
 }
 
-.bTitle{
+.bTitle {
   @apply capitalize text-5xl md:text-7xl md:leading-normal font-bold text-white leading-normal;
 }

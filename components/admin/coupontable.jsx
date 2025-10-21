@@ -39,7 +39,7 @@ export default function CouponTable({ couponData }) {
   };
 
   return (
-    <div className="p-6">
+    <div className="mt-6">
       {/* Tabs */}
       <div className="flex items-center gap-4 text-sm mb-4">
         <span className="font-semibold cursor-pointer">
@@ -76,7 +76,7 @@ export default function CouponTable({ couponData }) {
           </thead>
           <tbody>
             {coupons.map((c, idx) => (
-              <tr key={idx} className="border-t hover:bg-gray-50">
+              <tr key={idx} className="border-t hover:bg-gray-50 text-nowrap">
                 <td className="px-4 py-3">
                   <input type="checkbox" />
                 </td>

@@ -61,10 +61,10 @@
 }
 
 .landing-features {
-  @apply gap-8 items-center text-white text-lg font-light pb-4 hidden lg:flex;
+  @apply gap-6 items-center text-white text-lg font-light pb-4 hidden md:flex;
 }
 .landing-features.sm {
-  @apply pb-4 flex lg:hidden text-sm;
+  @apply pb-4 flex flex-col items-start justify-start w-full lg:hidden text-base;
 }
 .landing-features > span {
   @apply flex items-center gap-4;

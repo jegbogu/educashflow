@@ -7,15 +7,20 @@ import {
   TrendingUp,
   LogOutIcon,
   SettingsIcon,
+  X,
 } from "lucide-react";
 
 export default function Userheader({ userData }) {
   const [profileSettings, setProfileSetting] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const router = useRouter();
 
   function toggleProfile() {
     setProfileSetting((prev) => !prev);
+  }
+  function toggleNotifications() {
+    setShowNotifications((prev) => !prev);
   }
 
   function logout() {
@@ -48,10 +53,11 @@ export default function Userheader({ userData }) {
             {/* Points - hidden on very small screens */}
             <p className="font-medium hidden sm:block">{userData.points} pts</p>
 
-            
-
             {/* Notifications */}
-            <div className="relative inline-flex items-center">
+            <div
+              className="relative inline-flex items-center cursor-pointer"
+              onClick={toggleNotifications}
+            >
               <img
                 src="notification-bell-on-svgrepo-com.svg"
                 alt="Notifications"
@@ -60,6 +66,44 @@ export default function Userheader({ userData }) {
               <span className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full leading-none">
                 3
               </span>
+
+              {showNotifications && (
+                <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-xl shadow-xl w-80 max-h-[70vh] overflow-y-auto p-5 relative animate-fade-in">
+                    {/* Header */}
+                    <div className="flex justify-between mb-3">
+                      <h2 className="text-lg font-semibold text-gray-800">
+                        Notifications
+                      </h2>
+                      <button
+                        onClick={toggleNotifications}
+                        className="text-gray-400 hover:text-red-500 transition-colors"
+                      >
+                        <X />
+                      </button>
+                    </div>
+
+                    {/* Notifications List */}
+                    <div className="space-y-3">
+                      {userData.notifications &&
+                      userData.notifications.length > 0 ? (
+                        userData.notifications.map((note, i) => (
+                          <div
+                            key={i}
+                            className="p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700"
+                          >
+                            {note}
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-gray-500 text-sm text-center">
+                          No new notifications 🎉
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* User Info - hidden on small screens */}

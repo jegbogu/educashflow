@@ -211,9 +211,9 @@ text-red-700"
 
   return (
     <div className="p-6">
-      <div className="max-w-xl  mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
+      <div className="max-w-xl mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
         {/* Header */}
-        <h1 className="text-center text-2xl font-bold text-gray-800">
+        <h1 className="text-center p-2 text-2xl font-bold text-gray-800">
           Sign Up
         </h1>
 
@@ -400,7 +400,7 @@ text-red-700"
 
         {/* Register button */}
         <div className="flex justify-center">
-          <button className="bg-white text-secondary border-2 border-gray-200 p-2 rounded-md w-1/2 mt-5 hover:bg-gray-50 hover:border-secondary transition">
+          <button className=" w-full bg-white text-secondary border-2 border-gray-200 p-2 rounded-md sm:w-1/2 mt-5 hover:bg-gray-50 hover:border-secondary transition">
             <Link href="/login">Login</Link>
           </button>
         </div>

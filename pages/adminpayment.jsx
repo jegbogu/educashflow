@@ -107,7 +107,6 @@ export function RevenueLineChart({ transactions }) {
 }
 
 export default function PaymentPage({ transactions }) {
- 
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [paymentData, setPaymentData] = useState(transactions);
@@ -124,17 +123,28 @@ export default function PaymentPage({ transactions }) {
         .includes(search.toLowerCase())
   );
 
-  const pending = filteredBySearch.filter(
+  const sortedPayments = [...filteredBySearch].sort((a, b) => {
+    if (!sortConfig.key) return 0;
+
+    const valueA = a[sortConfig.key];
+    const valueB = b[sortConfig.key];
+
+    if (valueA < valueB) return sortConfig.direction === "asc" ? -1 : 1;
+    if (valueA > valueB) return sortConfig.direction === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  const pending = sortedPayments.filter(
     (transaction) => transaction.paymentConfirmation === "Pending"
   );
-  const successful = filteredBySearch.filter(
+  const successful = sortedPayments.filter(
     (transaction) => transaction.paymentConfirmation === "Successful"
   );
-  const failed = filteredBySearch.filter(
+  const failed = sortedPayments.filter(
     (transaction) => transaction.paymentConfirmation === "Failed"
   );
 
-  let activeList = paymentData;
+  let activeList = sortedPayments;
   if (filter === "pending") activeList = pending;
   if (filter === "successful") activeList = successful;
   if (filter === "failed") activeList = failed;
@@ -147,7 +157,7 @@ export default function PaymentPage({ transactions }) {
   const handlePageChange = (page) => setCurrentPage(page);
 
   // ✅ Handle status change
-  const handleStatusChange = async (id, newStatus,userData,packageName) => {
+  const handleStatusChange = async (id, newStatus, userData, packageName) => {
     // Optimistic UI update
     setPaymentData((prev) =>
       prev.map((p) =>
@@ -155,12 +165,12 @@ export default function PaymentPage({ transactions }) {
       )
     );
     const data = {
-      confirmPaymentId:id,
+      confirmPaymentId: id,
       userDataId: userData._id,
       packageName: packageName,
-      newStatus: newStatus
-    }
- 
+      newStatus: newStatus,
+    };
+
     try {
       const res = await fetch("/api/updatePaymentStatus", {
         method: "POST",
@@ -185,17 +195,6 @@ export default function PaymentPage({ transactions }) {
     setSortConfig({ key, direction });
   };
 
-  const sortedPayments = [...filteredBySearch].sort((a, b) => {
-    if (!sortConfig.key) return 0;
-
-    const valueA = a[sortConfig.key];
-    const valueB = b[sortConfig.key];
-
-    if (valueA < valueB) return sortConfig.direction === "asc" ? -1 : 1;
-    if (valueA > valueB) return sortConfig.direction === "asc" ? 1 : -1;
-    return 0;
-  });
-
   const renderSortIcon = (key) => {
     if (sortConfig.key !== key)
       return (
@@ -219,7 +218,7 @@ export default function PaymentPage({ transactions }) {
   return (
     <DashboardLayout>
       <div className={styles.paymentPage}>
-        <div className={styles.filtersSection}>
+        <div className={cn(styles.filtersSection)}>
           <div className={styles.filtersLeft}>
             <div className={styles.filterGroup}>
               <Filter className={styles.filterIcon} />
@@ -238,7 +237,7 @@ export default function PaymentPage({ transactions }) {
             </div>
           </div>
           {/* Filter Tabs */}
-          <div className={styles.filterTabs}>
+          <div className={cn(styles.filterTabs, "max-sm:overflow-x-scroll")}>
             <button
               onClick={() => setFilter("all")}
               className={`${styles.filterTab} ${
@@ -315,7 +314,7 @@ export default function PaymentPage({ transactions }) {
             </thead>
 
             <tbody className={styles.tableBody}>
-              {sortedPayments.map((transaction, index) => (
+              {paginatedPayments.map((transaction, index) => (
                 <tr key={index} className={styles.tableRow}>
                   <td className={styles.tableTd}>{transaction.packageName}</td>
                   <td className={cn(styles.tableTd, "capitalize")}>
@@ -326,12 +325,16 @@ export default function PaymentPage({ transactions }) {
                     <select
                       value={transaction.paymentConfirmation}
                       onChange={(e) =>
-                        handleStatusChange(transaction._id, e.target.value,transaction.userData, transaction.packageName)
+                        handleStatusChange(
+                          transaction._id,
+                          e.target.value,
+                          transaction.userData,
+                          transaction.packageName
+                        )
                       }
                       className={`${styles.statusDropdown} ${
                         styles[`status${transaction.paymentConfirmation}`]
                       }`}
-                      a
                     >
                       <option value="Pending">Pending</option>
                       <option value="Successful">Successful</option>

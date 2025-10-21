@@ -3,10 +3,12 @@ import Link from "next/link";
 import { Button } from "../home/button";
 import style from "@/styles/layout.module.css";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,7 +119,10 @@ export default function Navbar() {
               <Button
                 size="sm"
                 className={style.mobileButton}
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  setOpen(false);
+                  router.push("/register");
+                }}
               >
                 Sign Up
               </Button>
@@ -126,8 +131,14 @@ export default function Navbar() {
               <Button
                 size="sm"
                 variant="outline"
-                className={style.mobileButton}
-                onClick={() => setOpen(false)}
+                className={cn(
+                  style.mobileButton,
+                  "!border-primary !text-primary"
+                )}
+                onClick={() => {
+                  router.push("/login");
+                  setOpen(false);
+                }}
               >
                 Login
               </Button>

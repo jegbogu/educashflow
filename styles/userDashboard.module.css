@@ -124,7 +124,7 @@
 
 /* Stats */
 .statNumber {
-  @apply text-3xl font-bold;
+  @apply text-3xl font-bold py-2;
 }
 
 .statDescription {
@@ -219,7 +219,7 @@
 }
 
 .balanceRow {
-  @apply flex justify-between items-stretch mb-6 gap-4;
+  @apply flex flex-col md:flex-row justify-between items-stretch mb-6 gap-4;
 }
 
 .balanceItem {
@@ -235,7 +235,7 @@
 }
 
 .balanceAmount {
-  @apply text-2xl font-bold bg-transparent;
+  @apply text-2xl font-bold bg-transparent py-2;
 }
 
 .balanceRate {
@@ -529,7 +529,7 @@
 }
 
 .planPrice {
-  @apply text-3xl font-bold text-gray-900;
+  @apply text-3xl font-bold text-gray-900 py-2;
 }
 
 .planFeatures {
