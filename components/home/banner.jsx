@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { Button } from "./button";
 import Image from "next/image";
 import { useSpring, animated } from "@react-spring/web";
-import style from '@/styles/Home.module.css'
+import style from "@/styles/Home.module.css";
 import UsersQuiz from "../UserQuiz/quiz";
- 
 
 export default function Banner(props) {
-  const[modal, setModal] = useState(false)
+  const [modal, setModal] = useState(false);
   const springs = useSpring({
     from: { x: -700 },
     to: { x: 0 },
@@ -32,17 +31,32 @@ export default function Banner(props) {
           Questions <br />
           earn <span className="text-primary">rewards</span>
         </h1>
-        <p className="text-white text-xl">
+        <p className="text-white md:text-xl text-lg">
           Register today, use your coupon, and start
           <br /> winning points you can spend in your wallet
         </p>
-        <div>
-<Button size="lg">Register Now </Button> <button className="text-primary ml-3 border pt-4 pb-4 pr-[50px] pl-[50px] rounded-md font-bold" onClick={()=>{setModal(true)}} >Start Quiz</button>
-{modal && <UsersQuiz allQuestions={props.allQuestions} onClose={()=>{setModal(false)}} />}
-  
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Button size="lg">Register Now </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            Start Quiz
+          </Button>
+          {modal && (
+            <UsersQuiz
+              allQuestions={props.allQuestions}
+              onClose={() => {
+                setModal(false);
+              }}
+            />
+          )}
         </div>
-        
-        <animated.div className="landing-features" style={{ ...features }}>
+
+        <animated.div className="landing-features " style={{ ...features }}>
           <span>
             <span>
               <Image
@@ -98,7 +112,7 @@ export default function Banner(props) {
               alt="landing icon"
             />
           </span>
-          Secure <br /> Registration
+          Secure Registration
         </span>
         <span>
           <span>
@@ -109,8 +123,7 @@ export default function Banner(props) {
               alt="landing icon"
             />
           </span>
-          Coupon Activated
-          <br /> Quizzes
+          Coupon Activated Quizzes
         </span>
         <span>
           <span>

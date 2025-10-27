@@ -48,8 +48,8 @@ export default function Login() {
   return (
     <div className="p-6">
       <div className="max-w-xl mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
-        <h1 className="text-center text-2xl font-bold text-gray-800">
-          {" "}
+        <h1 className="p-2 text-center text-2xl font-bold text-gray-800">
+          
           Admin Login
         </h1>
 
@@ -153,7 +153,7 @@ export default function Login() {
         <div className="flex justify-center">
           <Link
             href="/adminregeducashflow"
-            className="bg-white text-secondary border-2 border-gray-200 p-2 rounded-md w-1/2 mt-5 text-center hover:bg-gray-50 hover:border-secondary transition"
+            className="w-full bg-white text-secondary border-2 border-gray-200 p-2 rounded-md md:w-1/2 mt-5 text-center hover:bg-gray-50 hover:border-secondary transition"
           >
             Register
           </Link>

@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Settings from "@/components/UserDashboard/settings";
+import Usernavbar from "@/components/UserDashboard/usernavbar";
 
 export default function UpdateProfile() {
   const { data: session, status } = useSession();
@@ -42,6 +43,10 @@ export default function UpdateProfile() {
   return (
     <div>
       <Userheader userData={userData} />
+      <div className="p-4">
+
+      <Usernavbar />
+      </div>
       <Settings
         userData={userData}
         onUpdate={handleUpdate}

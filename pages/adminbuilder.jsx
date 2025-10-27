@@ -292,7 +292,10 @@ export default function QuizBuilderPage() {
                 >
                   Delete Selected
                 </button>
-                <button onClick={deselectAll} className={cn(styles.bulkBtn, styles.bulkBtnClear)}>
+                <button
+                  onClick={deselectAll}
+                  className={cn(styles.bulkBtn, styles.bulkBtnClear)}
+                >
                   Clear Selection
                 </button>
               </div>
