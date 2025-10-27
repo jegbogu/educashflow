@@ -38,7 +38,9 @@ export const quizConfig = {
   premiumPointPerQuestion: 20, //4x earning
   proPointPerQuestion: 40, //8x earning
 
-
+  minimumAmount: 3.00, //Minimum Amount before you can ask for withdrawal
+  minUserCanWithdraw :1,
+  maxUserCanWithdraw: 10,
   perPoint: 0.002, //Standard earning
 
   constantNumberofQuestions:20,

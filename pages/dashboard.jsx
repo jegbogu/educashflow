@@ -121,8 +121,8 @@ export default function Dashboard() {
             <div className={styles.statsGrid}>
               {/* Active Coupon */}
               <StatsCard
-                title="Active Coupon"
-                badge={{ text: "Active", variant: "active" }}
+                title={userData?.membership==="Free Pack"?"No Active Plan":userData?.membership}
+                badge={{ text: userData?.membership==="Free Pack"?"Inactive":"Active", variant: "active" }}
               >
                 <div className={styles.timeRemaining}>
                   <Clock className={styles.timeIcon} />
@@ -139,9 +139,9 @@ export default function Dashboard() {
               </StatsCard>
 
               {/* Today */}
-              <StatsCard title="Today">
-                <div className={styles.statNumber}>3</div>
-                <p className={styles.statDescription}>Quizzes completed</p>
+              <StatsCard title="Total">
+                <div className={styles.statNumber}>{userData?.playedGames.length}</div>
+                <p className={styles.statDescription}>Quizzes completed </p>
               </StatsCard>
 
               {/* Earnings */}
