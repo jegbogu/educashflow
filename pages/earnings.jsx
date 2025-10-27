@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import Spinner from "@/components/icons/spinner";
 import { cn } from "@/lib/utils";
 import connectDB from "@/utils/connectmongo";
+import Register from "@/model/registerSchema";
+import { quizConfig } from "@/config/quizConfig";
 
 export default function EarningsPage() {
   const { data: session, status } = useSession();
@@ -43,62 +45,8 @@ export default function EarningsPage() {
     return null;
   }
 
-  const activities = [
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "-$6.00",
-      status: "pending",
-    },
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "-$10.00",
-      status: "failed",
-    },
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-  ];
+  const withdrawalNeeded = quizConfig.minimumAmount-userData.amountMade
+  const PendingWithdrawal = (Math.abs(quizConfig.minimumAmount-userData.amountMade)).toFixed(2)
 
   return (
     <div>
@@ -120,19 +68,19 @@ export default function EarningsPage() {
                 <span className={styles.balanceLabel}>Available Balance</span>
                 <span className={styles.balanceCurrency}>$</span>
               </div>
-              <div className={styles.balanceAmount}>$45.20</div>
-              <div className={styles.balanceRate}>Rate 100pts = $1.05</div>
+              <div className={styles.balanceAmount}>${userData?.amountMade}</div>
+              <div className={styles.balanceRate}>Rate 100pts = ${quizConfig.perPoint*100}</div>
             </div>
 
             <div className={cn(styles.balanceCard, styles.balanceMonthly)}>
               <div className={styles.balanceHeader}>
-                <span className={styles.balanceLabel}>This Month</span>
+                <span className={styles.balanceLabel}>Points</span>
                 <ChartLine className={styles.balanceTrendIcon} />
               </div>
-              <div className={styles.balanceAmount}>$89.50</div>
+              <div className={styles.balanceAmount}>{userData?.points}</div>
               <div className={styles.balanceGrowth}>
                 <TrendingUp className={styles.growthIcon} />
-                +33.0% from last month
+                
               </div>
             </div>
           </div>
@@ -142,36 +90,41 @@ export default function EarningsPage() {
               <span className={styles.withdrawalTitle}>
                 Withdrawal Progress
               </span>
-              <span className={styles.withdrawalMin}>Min. $50.00</span>
+              <span className={styles.withdrawalMin}>Min. ${quizConfig.minimumAmount}</span>
             </div>
-            <div className={styles.withdrawalNeeded}>$4.80 more needed</div>
+            {quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeeded} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`}
             <ProgressBar progress={90} />
 
-            <button
+           { quizConfig.minimumAmount>= userData?.amountMade?<button
               className={cn(disabled && styles.btnDisabled, styles.btn)}
               disabled={disabled}
             >
               <Clock className={styles.btnIcon} />
               Minimum Not Reached
             </button>
+            :
+            <button className="bg-blue-900 py-5 px-[30px] text-white w-full mt-5 rounded-md">
+            
+              Request For Withdrawal
+            </button>}
           </div>
           {/* Recent Activity */}
           <div className={styles.activitySection}>
-            <div className={styles.activityHeader}>
+            {/* <div className={styles.activityHeader}>
               <h3 className={styles.activityTitle}>Recent Activity</h3>
               <button className={styles.btnGhost}>View All</button>
-            </div>
+            </div> */}
 
              
           </div>
           <div className={styles.couponSummary}>
             <div>
-              <h3>$156.80</h3>
+              <h3>${userData?.amountMade}</h3>
               <p>Total Earned</p>
             </div>
             <div>
-              <h3>$12.00</h3>
-              <p>Pending Withdrawal</p>
+              <h3>{userData?.level}</h3>
+              <p>Current Level</p>
             </div>
           </div>
         </div>
@@ -185,15 +138,13 @@ export default function EarningsPage() {
 export async function getServerSideProps() {
   await connectDB();
 
-  const users = await Users.find({}).lean();
-  const activities = await Activity.find({}).lean();
-  const totalQuizzes = await Quiz.find({}).lean();
-
+  const users = await Register.find({}).lean();
+   
+console.log(users)
   return {
     props: {
       users: JSON.parse(JSON.stringify(users)),
-      activities: JSON.parse(JSON.stringify(activities)),
-      totalQuizzes: JSON.parse(JSON.stringify(totalQuizzes)),
+     
     },
   };
 }
