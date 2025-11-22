@@ -82,10 +82,10 @@ export default function Footer() {
             <Link href={"#"}>Privacy Policy</Link>
           </div>
           <Link href="https://www.mediaplur.com/" target="_blank">
-            <div class=" flex items-center space-x-2">
+            <div className=" flex items-center space-x-2">
               <p>Designed by Mediaplur</p>
               <span>
-                <img src="logo.webp" alt="Logo" class="w-19 h-8" />
+                <img src="logo.webp" alt="Logo" className="w-19 h-8" />
               </span>
             </div>
           </Link>

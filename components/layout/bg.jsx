@@ -12,7 +12,7 @@ export default function BgSvg() {
       <path
         d="M0 1392V692.215C530.846 692.215 1498.13 233.084 1715 0L1727 661.508V1372.18C809.5 1381.37 727 1381.37 0 1392Z"
         fill="#2874EC"
-        fill-opacity="0.05"
+        fillOpacity="0.05"
       />
     </svg>
   );

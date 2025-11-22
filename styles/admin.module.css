@@ -347,14 +347,92 @@
     flex-direction: column;
     gap: 12px;
     align-items: stretch;
+    padding: 16px 12px;
   }
 
   .headerSearch {
     max-width: 100%;
+    width: 100%;
+  }
+
+  .searchIcon {
+    left: 12px;
+  }
+
+  .searchInput {
+    padding: 10px 12px 10px 40px;
+    font-size: 13px;
   }
 
   .headerRight {
     justify-content: space-between;
+    gap: 8px;
+  }
+
+  .userIcon {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+  }
+}
+
+/* Added 350px specific styles for ultra-small screens */
+@media (max-width: 380px) {
+  .adminMain {
+    margin: 4px;
+  }
+
+  .adminHeader {
+    padding: 12px 8px;
+    gap: 8px;
+    border-radius: 12px;
+  }
+
+  .headerSearch {
+    width: 100%;
+  }
+
+  .searchInput {
+    padding: 8px 10px 8px 36px;
+    font-size: 12px;
+  }
+
+  .searchIcon {
+    width: 18px;
+    height: 18px;
+    left: 10px;
+  }
+
+  .headerRight {
+    display: none;
+  }
+
+  .userIcon {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+  }
+
+  .userIcon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .adminContent {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .mobileMenuButton {
+    width: 40px;
+    height: 40px;
+    top: 12px;
+    left: 12px;
+  }
+
+  .mobileMenuButton svg {
+    width: 20px;
+    height: 20px;
   }
 }
 

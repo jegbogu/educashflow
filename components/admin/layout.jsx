@@ -138,7 +138,10 @@ export default function DashboardLayout({ children, onPageChange }) {
     <div className={styles.adminLayout}>
       {/* Sidebar */}
       <button
-        className={styles.mobileMenuButton}
+        className={cn(
+          styles.mobileMenuButton,
+          isMobileMenuOpen ? "translate-x-52 translate-y-3" : ""
+        )}
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         aria-label="Toggle menu"
       >
@@ -212,12 +215,15 @@ export default function DashboardLayout({ children, onPageChange }) {
       <div className={styles.adminMain}>
         {/* Header */}
         <header className={styles.adminHeader}>
-          <div className={styles.headerSearch}>
+          <div className={cn(styles.headerSearch, "max-sm:ml-12")}>
             <Search className={styles.searchIcon} />
             <input
               type="text"
               placeholder="Search"
-              className={styles.searchInput}
+              className={cn(
+                styles.searchInput,
+                "max-sm:w-[(calc(100%-4rem))]!"
+              )}
             />
           </div>
 
