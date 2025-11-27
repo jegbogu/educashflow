@@ -21,7 +21,7 @@ export const authOptions = {
         try {
           const { email, password, role } = credentials
      
-          const response = await fetch('http://localhost:3000/api/login', {
+          const response = await fetch('https://eduquizzglobal.vercel.app/api/login', {
             method: 'POST',
             body: JSON.stringify({ email, password, role}),
             headers: {
