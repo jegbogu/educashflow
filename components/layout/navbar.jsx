@@ -40,7 +40,11 @@ export default function Navbar() {
       {/* Desktop Navbar */}
       <div className={cn(style.desktopContainer)}>
         <nav className={style.navbar}>
-          <ul className={style.navList}>
+             <div className="mr-[700px]">
+              <img src="logo.jpg"  alt="logo" width={60} className="border rounded-md"/>
+              </div>
+           
+              <ul className={style.navList}>
             <li>
               <Link href="#" className={style.navLink}>
                 Home
@@ -67,13 +71,15 @@ export default function Navbar() {
               </Button>
             </li>
           </ul>
+             
+          
         </nav>
       </div>
 
       {/* Mobile Navbar */}
       <div className={cn(style.mobileContainer)}>
         <div className={style.mobile}>
-          <h4>Logo</h4>
+          <div><img src="logo.jpg"  alt="logo" width={60} className="border rounded-md"/></div>
           <button
             className={cn(style.burger, open && style.burgerOpen)}
             onClick={() => setOpen(!open)}

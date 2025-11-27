@@ -8,7 +8,7 @@ export default function Footer() {
       <section className="max-w-7xl mx-auto p-4 py-8">
         <div className="flex flex-col md:flex-row">
           <div className="max-w-72 w-full min-h-32">
-            <Link href={'/'} className="text-xl">Educash Flow</Link>
+            <Link href={'/'} ><img src="logo.jpg" className="border rounded-md" width={180}/></Link>
           </div>
           <div className="links-groups">
             <div className="capitalize">
@@ -75,7 +75,7 @@ export default function Footer() {
         <div className="flex justify-between items-center mt-16 flex-col sm:flex-row">
           <div className="flex flex-col sm:flex-row gap-4 font-light">
             <p className="italic">
-              &copy; {new Date().getFullYear()} Educash Flow. All rights
+              &copy; {new Date().getFullYear()} Eduquizz Global Limited. All rights
               reserved.
             </p>
             <Link href={"#"}>Terms of Service</Link>

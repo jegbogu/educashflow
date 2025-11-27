@@ -35,7 +35,9 @@ export default function Userheader({ userData }) {
         <div className=" flex flex-wrap justify-between items-center px-4 py-3 md:py-2 max-w-7xl mx-auto gap-3">
           {/* Left Logo */}
           <div className="flex-shrink-0">
-            <p className="font-bold text-lg md:text-xl">Educash Flow</p>
+            <div>
+              <img src="logo.jpg"  alt="logo" width={60} className="border rounded-md"/>
+              </div>
           </div>
 
           {/* Right Section */}

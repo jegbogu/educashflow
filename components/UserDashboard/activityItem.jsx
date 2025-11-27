@@ -1,8 +1,10 @@
 import { cn } from "@/lib/utils";
 import style from "@/styles/userDashboard.module.css";
+
 export function ActivityItem({ title, timeAgo, amount, status }) {
   let badge;
   let amountTextColor;
+
   switch (status) {
     case "failed":
       badge = style.badgeFailed;
@@ -17,8 +19,7 @@ export function ActivityItem({ title, timeAgo, amount, status }) {
       amountTextColor = "text-green-600";
       break;
   }
-  
-  
+
   return (
     <div className={style.activityItem}>
       <div>

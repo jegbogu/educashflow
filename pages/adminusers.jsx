@@ -30,67 +30,73 @@ import Pagination from "@/components/utils/pagination";
 import UserForm from "@/components/admin/addOrEditUser";
 import DeleteModal from "@/components/admin/deleteUser";
 import BlockUserModal from "@/components/admin/blockUser";
+import Register from "@/model/registerSchema";
+import connectDB from "@/utils/connectmongo";
 
-const usersData = [
-  {
-    id: "001",
-    name: "Alice Smith",
-    email: "alice@example.com",
-    status: "Active",
-    type: "Premium",
-  },
-  {
-    id: "002",
-    name: "Bob Johnson",
-    email: "bob@example.com",
-    status: "Active",
-    type: "Regular",
-  },
-  {
-    id: "003",
-    name: "Charlie Brown",
-    email: "charlie@example.com",
-    status: "Blocked",
-    type: "Premium",
-  },
-  {
-    id: "004",
-    name: "Diana Prince",
-    email: "diana@example.com",
-    status: "Active",
-    type: "Regular",
-  },
-  {
-    id: "005",
-    name: "Ethan Hunt",
-    email: "ethan@example.com",
-    status: "Active",
-    type: "Premium",
-  },
-  {
-    id: "006",
-    name: "Fiona Green",
-    email: "fiona@example.com",
-    status: "Blocked",
-    type: "Regular",
-  },
-  {
-    id: "007",
-    name: "George Wilson",
-    email: "george@example.com",
-    status: "Active",
-    type: "Premium",
-  },
-  {
-    id: "008",
-    name: "Hannah Davis",
-    email: "hannah@example.com",
-    status: "Active",
-    type: "Regular",
-  },
-];
+// const usersData = [
+//   {
+//     id: "001",
+//     name: "Alice Smith",
+//     email: "alice@example.com",
+//     status: "Active",
+//     type: "Premium",
+//   },
+//   {
+//     id: "002",
+//     name: "Bob Johnson",
+//     email: "bob@example.com",
+//     status: "Active",
+//     type: "Regular",
+//   },
+//   {
+//     id: "003",
+//     name: "Charlie Brown",
+//     email: "charlie@example.com",
+//     status: "Blocked",
+//     type: "Premium",
+//   },
+//   {
+//     id: "004",
+//     name: "Diana Prince",
+//     email: "diana@example.com",
+//     status: "Active",
+//     type: "Regular",
+//   },
+//   {
+//     id: "005",
+//     name: "Ethan Hunt",
+//     email: "ethan@example.com",
+//     status: "Active",
+//     type: "Premium",
+//   },
+//   {
+//     id: "006",
+//     name: "Fiona Green",
+//     email: "fiona@example.com",
+//     status: "Blocked",
+//     type: "Regular",
+//   },
+//   {
+//     id: "007",
+//     name: "George Wilson",
+//     email: "george@example.com",
+//     status: "Active",
+//     type: "Premium",
+//   },
+//   {
+//     id: "008",
+//     name: "Hannah Davis",
+//     email: "hannah@example.com",
+//     status: "Active",
+//     type: "Regular",
+//   },
+// ];
 
-export default function UsersPage() {
+export default function UsersPage(props) {
+  console.log(props)
+
+const usersData = props.usersData
+
   const [showBulkMenu, setShowBulkMenu] = useState(false);
   const [users, setUsers] = useState(usersData);
   const [search, setSearch] = useState("");
@@ -107,12 +113,12 @@ export default function UsersPage() {
   const filteredUsers = users
     .filter((user) => {
       return (
-        user.name.toLowerCase().includes(search.toLowerCase()) ||
+        user.fullname.toLowerCase().includes(search.toLowerCase()) ||
         user.email.toLowerCase().includes(search.toLowerCase())
       );
     })
-    .filter((user) => (statusFilter ? user.status === statusFilter : true))
-    .filter((user) => (typeFilter ? user.type === typeFilter : true));
+    .filter((user) => (statusFilter ? user.activate === statusFilter : true))
+    .filter((user) => (typeFilter ? user.membership === typeFilter : true));
 
   // Toggle select user
   const toggleSelect = (id) => {
@@ -292,116 +298,160 @@ export default function UsersPage() {
               onChange={(e) => setTypeFilter(e.target.value)}
             >
               <option value="">All Types</option>
-              <option value="Premium">Premium</option>
-              <option value="Regular">Regular</option>
+              <option value="Premium Pack">Premium Pack</option>
+              <option value="Basic Pack">Basic Pack</option>
+              <option value="Pro Pack">Pro Pack</option>
+              <option value="Free plan">Free Plan</option>
             </select>
           </div>
         </div>
 
         {/* Users Table */}
-        <div className={styles.usersTableSection}>
-          <div className="w-full overflow-x-auto">
-            <div className={`${styles.usersTable} min-w-max`}>
-              <table className={`${styles.table} w-full text-sm`}>
-                <thead className={styles.tableHeader}>
-                  <tr>
-                    <th className={styles.tableTh}>
-                      <input
-                        type="checkbox"
-                        checked={allSelected}
-                        onChange={(e) =>
-                          e.target.checked ? selectAll() : deselectAll()
-                        }
-                      />
-                    </th>
-                    <th className={cn(styles.tableTh, "!text-left")}>
-                      User ID
-                    </th>
-                    <th className={styles.tableTh}>User</th>
-                    <th className={styles.tableTh}>Status</th>
-                    <th className={styles.tableTh}>User Type</th>
-                    <th className={styles.tableTh}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody className={styles.tableBody}>
-                  {paginatedUsers.map((user, index) => (
-                    <tr key={index} className={styles.tableRow}>
-                      <td className={styles.tableTd}>
-                        <input
-                          type="checkbox"
-                          checked={selected.includes(user.id)}
-                          onChange={() => toggleSelect(user.id)}
-                        />
-                      </td>
-                      <td className={cn(styles.tableTd, "!text-left")}>
-                        {user.id.slice(0, 3)}...{user.id.slice(-3)}
-                      </td>
-                      <td className={styles.tableTd}>
-                        <div className={styles.userInfo}>
-                          <div className={styles.userAvatar}>
-                            <span className={styles.avatarFallback}>
-                              {user.name.split(" ")[0].charAt(0)}
-                              {user.name.split(" ")[1]?.charAt(0)}
-                            </span>
-                          </div>
-                          <div className={styles.userDetails}>
-                            <div className={styles.userName}>{user.name}</div>
-                            <div className={styles.userEmail}>{user.email}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className={styles.tableTd}>
-                        <span
-                          className={`${styles.statusBadge} ${
-                            styles[`status${user.status}`]
-                          }`}
-                        >
-                          {user.status}
-                        </span>
-                      </td>
-                      <td className={styles.tableTd}>
-                        <span
-                          className={`${styles.typeBadge} ${
-                            styles[`type${user.type}`]
-                          }`}
-                        >
-                          {user.type}
-                        </span>
-                      </td>
-                      <td className={styles.tableTd}>
-                        <div className="relative">
-                          <div className={styles.actionButtons}>
-                            <button
-                              onClick={() => handleEditUser(user)}
-                              className={styles.actionBtn}
-                              title="Edit user"
-                            >
-                              <Pencil className={styles.actionIcon} />
-                            </button>
-                            <button
-                              className={styles.actionBtn}
-                              onClick={() => handleDeleteUser(user)}
-                              title="Delete user"
-                            >
-                              <Trash2 className={styles.actionIcon} />
-                            </button>
-                            <button
-                              className={styles.actionBtn}
-                              title="Verify user"
-                              onClick={() => handleBlockUser(user)}
-                            >
-                              <Ban className={styles.actionIcon} />
-                            </button>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+         <div className={styles.usersTableSection}>
+  <div className="w-full overflow-x-auto">
+    <div className={`${styles.usersTable} min-w-max`}>
+      <table className={`${styles.table} w-full text-sm`}>
+        <thead className={styles.tableHeader}>
+          <tr>
+            <th className={styles.tableTh}>
+              <input
+                type="checkbox"
+                checked={allSelected}
+                onChange={(e) =>
+                  e.target.checked ? selectAll() : deselectAll()
+                }
+              />
+            </th>
+            <th className={cn(styles.tableTh, "!text-left")}>User ID</th>
+            <th className={styles.tableTh}>User</th>
+            <th className={styles.tableTh}>Created Date</th>
+            <th className={styles.tableTh}>Status</th>
+            <th className={styles.tableTh}>User Type</th>
+            <th className={styles.tableTh}>Amount Made</th>
+            <th className={styles.tableTh}>Points</th>
+            <th className={styles.tableTh}>Level</th>
+            <th className={styles.tableTh}>Plan</th>
+            <th className={styles.tableTh}>Total Games</th>
+            <th className={styles.tableTh}>Games with coupon</th>
+            <th className={styles.tableTh}>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody className={styles.tableBody}>
+          {paginatedUsers.map((user, index) => (
+            <tr key={index} className={styles.tableRow}>
+              <td className={styles.tableTd}>
+                <input
+                  type="checkbox"
+                  checked={selected.includes(user._id)}
+                  onChange={() => toggleSelect(user._id)}
+                />
+              </td>
+
+              {/* User ID */}
+              <td className={cn(styles.tableTd, "!text-left")}>
+                {user._id.slice(0, 3)}...{user._id.slice(-3)}
+              </td>
+
+              {/* User (name + email) */}
+              <td className={cn(styles.tableTd, "!text-left")}>
+                <div className={styles.userInfo}>
+                  <div className={styles.userAvatar}>
+                    <span className={styles.avatarFallback}>
+                      {user.fullname.split(" ")[0].charAt(0)}
+                      {user.fullname.split(" ")[1]?.charAt(0)}
+                    </span>
+                  </div>
+
+                  <div className={styles.userDetails}>
+                    <div className={styles.userName}>{user.fullname}</div>
+                    <div className={styles.userEmail}>{user.email}</div>
+                  </div>
+                </div>
+              </td>
+
+              {/* Created Date */}
+              <td className={styles.tableTd}>{user.createdAt}</td>
+
+              {/* Status (activate: "true" | "false") */}
+              <td className={styles.tableTd}>
+                <span
+                  className={`${styles.statusBadge} ${
+                    user.activate === "true"
+                      ? styles.statusActive
+                      : styles.statusInactive
+                  }`}
+                >
+                  {user.activate === "true" ? "Active" : "Inactive"}
+                </span>
+              </td>
+
+              {/* User Type (role) */}
+              <td className={styles.tableTd}>
+                <span className={`${styles.typeBadge} ${styles[`type${user.role}`]}`}>
+                  {user.role}
+                </span>
+              </td>
+
+              {/* Amount Made */}
+              <td className={styles.tableTd}>{user.amountMade}</td>
+
+              {/* Points */}
+              <td className={styles.tableTd}>{user.points}</td>
+
+              {/* Level */}
+              <td className={styles.tableTd}>{user.level}</td>
+              {/* Plan */}
+              <td className={styles.tableTd}>{user.membership}</td>
+
+              {/* Total Games */}
+              <td className={styles.tableTd}>
+                {user.usergames?.length || 0}
+              </td>
+
+              {/* Games with coupons */}
+              <td className={styles.tableTd}>
+                {user.usedCoupons?.length || 0}
+              </td>
+
+              {/* Actions */}
+              <td className={styles.tableTd}>
+                <div className="relative">
+                  <div className={styles.actionButtons}>
+                    <button
+                      onClick={() => handleEditUser(user)}
+                      className={styles.actionBtn}
+                      title="Edit user"
+                    >
+                      <Pencil className={styles.actionIcon} />
+                    </button>
+
+                    <button
+                      className={styles.actionBtn}
+                      onClick={() => handleDeleteUser(user)}
+                      title="Delete user"
+                    >
+                      <Trash2 className={styles.actionIcon} />
+                    </button>
+
+                    <button
+                      className={styles.actionBtn}
+                      title="Block or Verify user"
+                      onClick={() => handleBlockUser(user)}
+                    >
+                      <Ban className={styles.actionIcon} />
+                    </button>
+                  </div>
+                </div>
+              </td>
+
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
         {/* Pagination */}
         <div className={styles.paginationSection}>
@@ -531,4 +581,16 @@ export default function UsersPage() {
       )}
     </DashboardLayout>
   );
+}
+
+export async function getServerSideProps() {
+  await connectDB();
+  const usersData = await Register.find({}).lean();
+  console.log(usersData)
+
+  return {
+    props: {
+      usersData: JSON.parse(JSON.stringify(usersData)),
+    },
+  };
 }

@@ -1,6 +1,6 @@
 import Userheader from "@/components/UserDashboard/userheader";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Spinner from "@/components/icons/spinner";
 import Usernavbar from "@/components/UserDashboard/usernavbar";
@@ -16,14 +16,201 @@ import { ProgressBar } from "@/components/UserDashboard/progressBar";
 import { QuizCard } from "@/components/UserDashboard/quizCard";
 import { ActivityItem } from "@/components/UserDashboard/activityItem";
 
-import UserQuizzes from "@/components/UserDashboard/userquizzes";
+ import UserQuizzes from "@/components/UserDashboard/userquizzes";
 import styles from "@/styles/userDashboard.module.css";
 import { cn } from "@/lib/utils";
 import Recent from "@/components/icons/recent";
+import { quizConfig } from "@/config/quizConfig";
+ 
+ 
+import connectDB from "@/utils/connectmongo";
+import Quiz from "../model/quizCreation";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const { data: session, status } = useSession();
+  const [disabled, setDisabled] = useState(true)
+
   const userData = session?.user;
+
+  //Withdrawals
+ const withdrawalNeeded = quizConfig.minimumAmount-userData?.amountMade
+  const PendingWithdrawal = (Math.abs(quizConfig.minimumAmount-userData?.amountMade)).toFixed(2)
+
+//Hadling the amount of games played
+const gamesStatus = amountOfGamesLeft(userData?.latestPurchase, userData?.latestPurchaseGames)
+
+function amountOfGamesLeft(latestPurchase, latestPurchaseGames){
+ if (!latestPurchase || latestPurchase.length === 0  ) {
+    return "No purchase found";
+  }
+ 
+
+   const planGamesNumber = latestPurchase[latestPurchase.length-1].gameLimit
+  const remainingAmountOfGames = planGamesNumber - latestPurchaseGames.length
+  return `${remainingAmountOfGames} of ${planGamesNumber} left`
+
+}
+const gameStatusProgress = amountOfGamesProgress(userData?.latestPurchase, userData?.latestPurchaseGames)
+ 
+
+function amountOfGamesProgress(latestPurchase, latestPurchaseGames){
+ if (!latestPurchase || latestPurchase.length === 0  ) {
+    return "No purchase found";
+  }
+ 
+
+   const planGamesNumber = latestPurchase[latestPurchase.length-1].gameLimit
+  const remainingAmountOfGames = planGamesNumber - latestPurchaseGames.length
+  return (remainingAmountOfGames/planGamesNumber)*100
+
+}
+
+   
+
+  //handling days left to expire
+  const statusPurchse = getExpiryStatus(userData?.latestPurchase);
+
+ 
+  function getExpiryStatus(latestPurchase) {
+  if (!latestPurchase || latestPurchase.length === 0) {
+    return "No purchase found";
+  }
+
+  const today = new Date();
+  const expiryDate = new Date(
+    latestPurchase[latestPurchase.length - 1].expiryDate
+  );
+
+  const diffInMs = expiryDate - today;
+  const daysLeft = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+
+  if (daysLeft > 0) {
+    return `${daysLeft} day${daysLeft > 1 ? "s" : ""} left`;
+  } 
+  
+  if (daysLeft === 0) {
+    return "Expires today";
+  }
+
+  // For expired licenses
+  return `Expired ${Math.abs(daysLeft)} day${Math.abs(daysLeft) > 1 ? "s" : ""} ago`;
+}
+
+function timeAgoFromTimestamp(timestamp) {
+  const [day, month, yearAndTime] = timestamp.split("-");
+  const [year, time] = yearAndTime.split(" ");
+  const date = new Date(`${year}-${month}-${day} ${time}`);
+  const now = new Date();
+  const diffMs = now - date;
+
+  const minutes = Math.floor(diffMs / 60000);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (minutes < 60) return `${minutes} mins ago`;
+  if (hours < 24) return `${hours} hrs ago`;
+  return `${days} days ago`;
+}
+
+
+//getting the amount in a month
+const amountinThisMonth = getAmountMadeThisMonth(userData?.usergames)
+function getAmountMadeThisMonth(records) {
+ 
+  if(!records || records.length===0){
+    return "No amount made"
+  }
+  const now = new Date();
+  const currentMonth = now.getMonth(); // 0 = Jan
+  const currentYear = now.getFullYear();
+
+  let total = 0;
+
+  records.forEach(record => {
+    const [day, month, yearAndTime] = record.timestamp.split("-");
+    const [year] = yearAndTime.split(" ");
+
+    const dateObj = new Date(`${year}-${month}-${day}`);
+
+    if (dateObj.getMonth() === currentMonth && dateObj.getFullYear() === currentYear) {
+      total += record.amountMade;
+    }
+  });
+
+  return total;
+}
+
+ // Usage:
+const changesinAmount = getPercentageChange(userData?.usergames);
+
+function parseDate(timestamp) {
+  // Format: DD-MM-YYYY HH:mm:ss
+  const [day, month, yearAndTime] = timestamp.split("-");
+  const [year] = yearAndTime.split(" ");
+  return new Date(`${year}-${month}-${day}`);
+}
+
+function getMonthlyTotals(data) {
+   if(!data || data.length===0){
+    return "No amount made"
+  }
+  const now = new Date();
+  const currentMonth = now.getMonth();   // 0–11
+  const currentYear = now.getFullYear();
+
+  // Last month logic
+  let lastMonth = currentMonth - 1;
+  let lastMonthYear = currentYear;
+
+  if (lastMonth < 0) {
+    lastMonth = 11;
+    lastMonthYear -= 1;
+  }
+
+  let thisMonthTotal = 0;
+  let lastMonthTotal = 0;
+
+  data.forEach(item => {
+    const date = parseDate(item.timestamp);
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    if (month === currentMonth && year === currentYear) {
+      thisMonthTotal += item.amountMade;
+    } else if (month === lastMonth && year === lastMonthYear) {
+      lastMonthTotal += item.amountMade;
+    }
+  });
+
+  return { thisMonthTotal, lastMonthTotal };
+}
+
+function getPercentageChange(data) {
+  const { thisMonthTotal, lastMonthTotal } = getMonthlyTotals(data);
+
+  if (lastMonthTotal === 0) {
+    return "No data for last month";
+  }
+
+  const change = ((thisMonthTotal - lastMonthTotal) / lastMonthTotal) * 100;
+
+  if (change > 0) {
+    return `+${change.toFixed(1)}% from last month`;
+  } else if (change < 0) {
+    return `${change.toFixed(1)}% reduction from last month`;
+  } else {
+    return "No change from last month";
+  }
+}
+
+
+
+
+
+
+
+
+
 
   const router = useRouter();
 
@@ -52,37 +239,37 @@ export default function Dashboard() {
     return null;
   }
 
-  const quizzes = [
-    {
-      title: "World Geography Masters",
-      difficulty: "Medium",
-      subject: "Geography",
-      duration: "15 mins",
-      questions: "20 questions",
-      points: "+250 pts",
-      accuracy: "85%",
-      completed: true,
-      buttonText: "Retry",
-    },
-    {
-      title: "Science Fundamentals",
-      difficulty: "Easy",
-      subject: "Science",
-      duration: "10 mins",
-      questions: "15 questions",
-      points: "+100 pts",
-      buttonText: "Start",
-    },
-    {
-      title: "Advanced Mathematics",
-      difficulty: "Hard",
-      subject: "Math",
-      duration: "30 mins",
-      questions: "25 questions",
-      points: "+500 pts",
-      buttonText: "Start",
-    },
-  ];
+  // const quizzes = [
+  //   {
+  //     title: "World Geography Masters",
+  //     difficulty: "Medium",
+  //     subject: "Geography",
+  //     duration: "15 mins",
+  //     questions: "20 questions",
+  //     points: "+250 pts",
+  //     accuracy: "85%",
+  //     completed: true,
+  //     buttonText: "Retry",
+  //   },
+  //   {
+  //     title: "Science Fundamentals",
+  //     difficulty: "Easy",
+  //     subject: "Science",
+  //     duration: "10 mins",
+  //     questions: "15 questions",
+  //     points: "+100 pts",
+  //     buttonText: "Start",
+  //   },
+  //   {
+  //     title: "Advanced Mathematics",
+  //     difficulty: "Hard",
+  //     subject: "Math",
+  //     duration: "30 mins",
+  //     questions: "25 questions",
+  //     points: "+500 pts",
+  //     buttonText: "Start",
+  //   },
+  // ];
   const activities = [
     {
       title: "Daily Goal Bonus",
@@ -127,14 +314,17 @@ export default function Dashboard() {
                 <div className={styles.timeRemaining}>
                   <Clock className={styles.timeIcon} />
                   <span>
-                    Time Remaining: <strong>26days, 14 hours</strong>
+                    Time Remaining: {userData?.membership==="Free plan"?<strong>Always Free</strong>:<strong>{statusPurchse}</strong>}
                   </span>
                 </div>
                 <div className={styles.progressSection}>
                   <div className={styles.progressLabel}>
-                    <span>7 of 15 quizzes left</span>
+                    
+                    {userData?.membership==="Free plan"?<strong>Always Free</strong>:<strong>{gamesStatus}</strong>}
                   </div>
-                  <ProgressBar progress={53} />
+
+                  {userData?.membership==="Free plan"? <ProgressBar progress={100} />:<strong> <ProgressBar progress={gameStatusProgress} /></strong>}
+                 
                 </div>
               </StatsCard>
 
@@ -146,9 +336,9 @@ export default function Dashboard() {
 
               {/* Earnings */}
               <StatsCard title="Earnings">
-                <div className={styles.statNumber}>$45.20</div>
-                <p className={styles.statDescription}>Available to withdraw</p>
-                <p className={styles.statTotal}>Total earned: $156.35</p>
+                <div className={styles.statNumber}>${userData?.amountMade}</div>
+                <p className={styles.statDescription}>Amount Made</p>
+           
               </StatsCard>
             </div>
 
@@ -163,7 +353,7 @@ export default function Dashboard() {
                     <h2 className={styles.sectionTitle}>Available Quizzes</h2>
                   </div>
                   <div>
-                    {userData?.paymentConfirmation==="Successful"?" ":<div className={styles.couponNotice}>
+                    {userData?.membership!=="Free plan"?" ":<div className={styles.couponNotice}>
                       <p className="">
                         Get more from every game. Purchase a coupon to increase
                         your earnings.
@@ -174,7 +364,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Daily Progress */}
-                <div className={cn("!bg-green-50", styles.sectionCard)}>
+                {/* <div className={cn("!bg-green-50", styles.sectionCard)}>
                   <div className={cn(styles.sectionHeader, "justify-between")}>
                     <div className="flex items-center gap-2">
                       <ChartLine className={styles.sectionIcon} />
@@ -187,25 +377,10 @@ export default function Dashboard() {
                   <div className={styles.sectionContent}>
                     <ProgressBar progress={60} />
                   </div>
-                </div>
+                </div> */}
 
                 {/* Quiz Categories */}
-                <div className={styles.quizCategories}>
-                  {quizzes.map((quiz, index) => (
-                    <QuizCard
-                      key={index}
-                      title={quiz.title}
-                      difficulty={quiz.difficulty}
-                      subject={quiz.subject}
-                      duration={quiz.duration}
-                      questions={quiz.questions}
-                      points={quiz.points}
-                      accuracy={quiz.accuracy}
-                      completed={quiz.completed}
-                      buttonText={quiz.buttonText}
-                    />
-                  ))}
-                </div>
+                        <UserQuizzes quiz={props.quiz.slice(Math.floor(Math.random() * 10),Math.floor(Math.random() * 21))} />
               </div>
 
               {/* Right Column - Earnings & Withdrawals */}
@@ -227,9 +402,9 @@ export default function Dashboard() {
                         )}
                       >
                         <p className={styles.balanceLabel}>Available Balance</p>
-                        <p className={cn(styles.balanceAmount)}>$45.20</p>
+                        <p className={cn(styles.balanceAmount)}>${userData?.amountMade}</p>
                         <p className={styles.balanceRate}>
-                          Rate 100pts = $1.05
+                          Rate 100pts = ${quizConfig.perPoint*100}
                         </p>
                       </div>
                       <div
@@ -239,32 +414,40 @@ export default function Dashboard() {
                         )}
                       >
                         <p className={styles.balanceLabel}>This Month</p>
-                        <p className={cn(styles.balanceAmount)}>$89.50</p>
+                        <p className={cn(styles.balanceAmount)}>${amountinThisMonth?? amountinThisMonth.toFixed(2)}</p>
                         <p className={styles.balanceGrowth}>
                           <TrendingUp className={styles.growthIcon} />
-                          +23.0% from last month
+                           {changesinAmount}
                         </p>
                       </div>
                     </div>
 
                     {/* Withdrawal Progress */}
-                    <div className={styles.withdrawalSection}>
-                      <div className={styles.withdrawalHeader}>
-                        <p className={styles.withdrawalTitle}>
-                          Withdrawal Progress
-                        </p>
-                        <p className={styles.withdrawalMin}>Min. $50.00</p>
-                      </div>
-                      <ProgressBar progress={90} />
-                      <p className={styles.withdrawalNeeded}>
-                        $4.80 more needed
-                      </p>
-                    </div>
+                      <div className={styles.withdrawalSection}>
+                                 <div className={styles.withdrawalHeader}>
+                                   <span className={styles.withdrawalTitle}>
+                                     Withdrawal Progress
+                                   </span>
+                                   <span className={styles.withdrawalMin}>Min. ${quizConfig.minimumAmount}</span>
+                                 </div>
+                                 {quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeeded} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`}
+                                 <ProgressBar progress={90} />
+                     
+                                { quizConfig.minimumAmount>= userData?.amountMade?<button
+                                   className={cn(disabled && styles.btnDisabled, styles.btn)}
+                                   disabled={disabled}
+                                 >
+                                   <Clock className={styles.btnIcon} />
+                                   Minimum Not Reached
+                                 </button>
+                                 :
+                                 <button className="bg-blue-900 py-5 px-[30px] text-white w-full mt-5 rounded-md">
+                                 
+                                   Request For Withdrawal
+                                 </button>}
+                               </div>
 
-                    {/* Minimum Not Reached Button */}
-                    <button className={cn(styles.btnDisabled, styles.disable)}>
-                      Minimum Not Reached
-                    </button>
+                    
 
                     {/* Recent Activity */}
                     <div className={styles.activitySection}>
@@ -275,17 +458,18 @@ export default function Dashboard() {
                         <button className={styles.btnGhost}>View All</button>
                       </div>
 
-                      <div className={styles.activityList}>
-                        {activities.map((activity, index) => (
-                          <ActivityItem
-                            key={index}
-                            title={activity.title}
-                            timeAgo={activity.timeAgo}
-                            amount={activity.amount}
-                            status={activity.status}
-                          />
-                        ))}
-                      </div>
+                       <div className={styles.activityList}>
+  {userData?.usergames.slice(0,5).map((activity, index) => (
+    <ActivityItem
+      key={index}
+      title={activity.subcategory}  // or activity.category or activity.timestamp
+      timeAgo={timeAgoFromTimestamp(activity.timestamp)}
+      amount={`$${activity.amountMade}`} // or plain activity.amountMade
+      status={activity.amountMade > 0 ? "completed" : "failed"}
+    />
+  ))}
+</div>
+
                     </div>
                   </div>
                 </div>
@@ -296,4 +480,75 @@ export default function Dashboard() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  await connectDB();
+  const quizList = await Quiz.find({}).lean();
+
+  const subcategories = [...new Set(quizList.map((el) => el.subcategory))];
+  const levels = [...new Set(quizList.map((el) => el.level))];
+
+  const quizBeginner = subcategories.map((sub) => {
+    const found = quizList.filter(
+      (el) => el.subcategory === sub && el.level == levels[0]
+    );
+    return {
+      subcategory: sub,
+
+      quizzes: found.map((el) => ({
+        id: el._id,
+        category: el.category,
+        question: el.question,
+        options: el.options,
+        correctAnswer: el.correctAnswer,
+        level: el.level,
+        createdAt: el.createdAt,
+      })),
+    };
+  });
+  const quizIntermediate = subcategories.map((sub) => {
+    const found = quizList.filter(
+      (el) => el.subcategory === sub && el.level == levels[1]
+    );
+    return {
+      subcategory: sub,
+
+      quizzes: found.map((el) => ({
+        id: el._id,
+        category: el.category,
+        question: el.question,
+        options: el.options,
+        correctAnswer: el.correctAnswer,
+        level: el.level,
+        createdAt: el.createdAt,
+      })),
+    };
+  });
+  const quizAdvanced = subcategories.map((sub) => {
+    const found = quizList.filter(
+      (el) => el.subcategory === sub && el.level == levels[2]
+    );
+    return {
+      subcategory: sub,
+
+      quizzes: found.map((el) => ({
+        id: el._id,
+        category: el.category,
+        question: el.question,
+        options: el.options,
+        correctAnswer: el.correctAnswer,
+        level: el.level,
+        createdAt: el.createdAt,
+      })),
+    };
+  });
+
+  const quiz = quizBeginner.concat(quizIntermediate, quizAdvanced);
+
+  return {
+    props: {
+      quiz: JSON.parse(JSON.stringify(quiz)),
+    },
+  };
 }

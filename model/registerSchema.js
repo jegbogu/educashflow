@@ -62,6 +62,11 @@ const registerSchema = new Schema({
     type: Array,
     default:[]
   },
+  usergames:{
+    type: Array,
+    default:[]
+  },
+   
   usedCoupons:{
      type: Array,
     default:[]

@@ -66,8 +66,10 @@ async function handler(req, res) {
   { _id: userId }, // match document
   { $push: { playedGames: updatedFoundGame } } // remove from array
 );
-   
+  
  
+
+  
 
     //updating levles
 
@@ -77,6 +79,7 @@ async function handler(req, res) {
 
     //check the user plan and level of game played
     let newUserPoints;
+    let latestGamePoints;
     if (user.membership === "Free plan") {
       //checking the level of the game the user played
       if (level === "Beginner") {
@@ -84,15 +87,26 @@ async function handler(req, res) {
           user.points +
           (correctCount * quizConfig.perQuestionPoint) +
           quizConfig.extraPointsBeginner;
+
+
+          latestGamePoints = (correctCount * quizConfig.perQuestionPoint) +
+          quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
           (correctCount * quizConfig.perQuestionPoint) +
           quizConfig.extraPointsIntermediate;
+
+          latestGamePoints = (correctCount * quizConfig.perQuestionPoint) +
+          quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
           (correctCount * quizConfig.perQuestionPoint) +
+          quizConfig.extraPointsAdvanced;
+
+
+          latestGamePoints = (correctCount * quizConfig.perQuestionPoint) +
           quizConfig.extraPointsAdvanced;
       }
     } else if (user.membership === "Basic Pack") {
@@ -102,15 +116,24 @@ async function handler(req, res) {
           user.points +
           (correctCount * quizConfig.basicPointPerQuestion) +
           quizConfig.extraPointsBeginner;
+
+          latestGamePoints = (correctCount * quizConfig.basicPointPerQuestion) +
+          quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
           (correctCount * quizConfig.basicPointPerQuestion) +
           quizConfig.extraPointsIntermediate;
+
+          latestGamePoints = (correctCount * quizConfig.basicPointPerQuestion) +
+          quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
           (correctCount * quizConfig.basicPointPerQuestion) +
+          quizConfig.extraPointsAdvanced;
+
+          latestGamePoints = (correctCount * quizConfig.basicPointPerQuestion) +
           quizConfig.extraPointsAdvanced;
       }
     } else if (user.membership === "Premium Pack") {
@@ -120,16 +143,26 @@ async function handler(req, res) {
           user.points +
           (correctCount * quizConfig.premiumPointPerQuestion) +
           quizConfig.extraPointsBeginner;
+
+
+          latestGamePoints =  (correctCount * quizConfig.premiumPointPerQuestion) +
+          quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
           (correctCount * quizConfig.premiumPointPerQuestion) +
+          quizConfig.extraPointsIntermediate;
+
+          latestGamePoints = (correctCount * quizConfig.premiumPointPerQuestion) +
           quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
           (correctCount * quizConfig.premiumPointPerQuestion) +
           quizConfig.extraPointsAdvanced;
+
+          latestGamePoints =  (correctCount * quizConfig.premiumPointPerQuestion) +
+          quizConfig.extraPointsAdvanced
       }
     } else if (user.membership === "Pro Pack") {
       //checking the level of the game the user played
@@ -138,27 +171,54 @@ async function handler(req, res) {
           user.points +
           (correctCount * quizConfig.proPointPerQuestion) +
           quizConfig.extraPointsBeginner;
+
+          latestGamePoints =  (correctCount * quizConfig.proPointPerQuestion) +
+          quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
           (correctCount * quizConfig.proPointPerQuestion) +
+          quizConfig.extraPointsIntermediate;
+
+
+          latestGamePoints = (correctCount * quizConfig.proPointPerQuestion) +
           quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
           (correctCount * quizConfig.proPointPerQuestion) +
           quizConfig.extraPointsAdvanced;
+
+
+          latestGamePoints = (correctCount * quizConfig.proPointPerQuestion) +
+          quizConfig.extraPointsAdvanced;
       }
     }
 
 
-    //updating amountMade and points gotten
-//updating amount made for first game
-// if(user.playedGames.length<1){
-// newamountMade = newUserPoints
-// }
+     
+
 
     const newamountMade = (user.points + newUserPoints) * (quizConfig.perPoint);
+     
+
+ //updating usergames
+ const ug = {
+  timestamp: getFormattedDateTime(),
+  quizId: quizId,
+      subcategory:subcategory,
+      category:category,
+      level:level,
+      correctCount: correctCount,
+        pointsMade: latestGamePoints,
+   amountMade:  latestGamePoints * quizConfig.perPoint ,
+  membership: user.membership
+ }
+ //add it to array
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { usergames: ug } }  
+);
 
     const updatedUser = await Register.findByIdAndUpdate(
       userId,
@@ -173,7 +233,14 @@ async function handler(req, res) {
     );
 
 
-
+//this checks if the user plan so as to update the latestPurchasedGames
+if(user.membership !=="Free plan"){
+  //add it to array
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { latestPurchaseGames: ug } }  
+);
+}
  
 
 

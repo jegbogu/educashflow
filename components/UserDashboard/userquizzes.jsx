@@ -10,7 +10,7 @@ export default function UserQuizzes(props) {
         <p>Available Quizzes</p>
       </div>
 
-      <div className=" rounded-md mt-5 p-5 bg-green-50">
+      {/* <div className=" rounded-md mt-5 p-5 bg-green-50">
         <div className="flex justify-between">
           <div className="flex gap-5">
             <span>
@@ -25,7 +25,7 @@ export default function UserQuizzes(props) {
         <div className="mt-5">
           <ProgressBar progress={70} />
         </div>
-      </div>
+      </div> */}
       <div>
         <Playingquiz quiz={props.quiz} />
       </div>
