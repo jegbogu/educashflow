@@ -24,7 +24,7 @@ export default function Footer() {
                   <Link href={"#rewards"}>Rewards</Link>
                 </li>
                 <li>
-                  <Link href={"#"}>admin Login</Link>
+                  <Link href={"/login"}>Login</Link>
                 </li>
               </ul>
             </div>
@@ -33,8 +33,9 @@ export default function Footer() {
               <ul>
                 <li>
                   Email:{" "}
-                  <Link href={"mailto:support@uiwallet.com"}>
-                    support@uiwallet.com
+                  <Link href={"mailto:eduquizz5457@gmail.com"}>
+                     eduquizz5457@gmail.com 
+
                   </Link>
                 </li>
                 <li>
