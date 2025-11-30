@@ -40,7 +40,7 @@ export default function Footer() {
                 </li>
                 <li>
                   Phone:{" "}
-                  <Link href={"tel:+1 01234567890"}>+ 1-234-567-890</Link>
+                  <Link href={"tel:+2348039420442"}>+234-803-942-0442</Link>
                 </li>
               </ul>
             </div>
