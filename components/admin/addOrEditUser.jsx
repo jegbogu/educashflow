@@ -100,7 +100,7 @@ export default function UserForm({ onClose, formTitle, onSave, user }) {
         >
           <option value="Regular">Regular</option>
           <option value="Admin">Admin</option>
-          <option value="Premium">Premium</option>
+          <option value="Silver">Silver</option>
         </select>
         <button
           type="submit"

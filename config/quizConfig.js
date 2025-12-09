@@ -34,8 +34,8 @@ export const quizConfig = {
   levels: ["Beginner", "Intermediate", "Advanced"],
   perQuestionTime: 12,
   perQuestionPoint:5,
-  basicPointPerQuestion: 10, //2x earning
-  premiumPointPerQuestion: 20, //4x earning
+  BronzePointPerQuestion: 10, //2x earning
+  SilverPointPerQuestion: 20, //4x earning
   proPointPerQuestion: 40, //8x earning
 
   minimumAmount: 3.00, //Minimum Amount before you can ask for withdrawal

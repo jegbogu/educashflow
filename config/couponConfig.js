@@ -1,7 +1,7 @@
  export const couponPlans = [
     {
-      name: "Basic Pack",
-      price: "$9.99",
+      name: "Bronze Pack",
+      price: "$0.37 || N500",
       features: [
         "10 quiz attempt",
         "Valid for 7 days", 
@@ -9,7 +9,7 @@
         "Standard earning rate",
         "Email support",
       ],
-      buttonStyle: "planButtonBasic",
+      buttonStyle: "planButtonBronze",
       popular: false,
       gameLimit:10,
       validDays: 7,
@@ -17,8 +17,8 @@
 
     },
     {
-      name: "Premium Pack",
-      price: "$19.99",
+      name: "Silver Pack",
+      price: "$10 || 1000",
       features: [
         "25 quiz attempt",
         "Valid for 14 days",
@@ -26,7 +26,7 @@
         "Priority Support",
         "Bonus Challenges",
       ],
-      buttonStyle: "planButtonPremium",
+      buttonStyle: "planButtonSilver",
       popular: true, // has badge "Most Popular"
       badgeText: "Most Popular",
        gameLimit:25,
@@ -34,8 +34,8 @@
       earningRate:4
     },
     {
-      name: "Pro Pack",
-      price: "$39.99",
+      name: "Gold Pack",
+      price: "$20 || 2000",
       features: [
         "50 quiz attempt",
         "Valid for 30 days",
@@ -44,7 +44,7 @@
         "Exclusive Quizzes",
         "Weekly Bonuses",
       ],
-      buttonStyle: "planButtonBasic",
+      buttonStyle: "planButtonBronze",
       popular: false, 
       gameLimit:50,
       validDays: 30,

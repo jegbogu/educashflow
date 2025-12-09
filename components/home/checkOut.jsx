@@ -61,7 +61,8 @@ const { data: session, status } = useSession();
                 <span className="font-bold">Account Number: </span> 0987654321
                 </div>
                 <div className="text-center">
-                <span className="font-bold">Account Name: </span> John Doe
+                <span className="font-bold">Account Name: </span> EDUQUIZZ GLOBAL LIMITED 
+
                 </div>
                <div className="text-center mt-5">
                 <span className="font-bold">Bank: </span> ABC Bank Plc.

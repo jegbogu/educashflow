@@ -109,62 +109,62 @@ async function handler(req, res) {
           latestGamePoints = (correctCount * quizConfig.perQuestionPoint) +
           quizConfig.extraPointsAdvanced;
       }
-    } else if (user.membership === "Basic Pack") {
+    } else if (user.membership === "Bronze Pack") {
       //checking the level of the game the user played
       if (level === "Beginner") {
         newUserPoints =
           user.points +
-          (correctCount * quizConfig.basicPointPerQuestion) +
+          (correctCount * quizConfig.BronzePointPerQuestion) +
           quizConfig.extraPointsBeginner;
 
-          latestGamePoints = (correctCount * quizConfig.basicPointPerQuestion) +
+          latestGamePoints = (correctCount * quizConfig.BronzePointPerQuestion) +
           quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
-          (correctCount * quizConfig.basicPointPerQuestion) +
+          (correctCount * quizConfig.BronzePointPerQuestion) +
           quizConfig.extraPointsIntermediate;
 
-          latestGamePoints = (correctCount * quizConfig.basicPointPerQuestion) +
+          latestGamePoints = (correctCount * quizConfig.BronzePointPerQuestion) +
           quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
-          (correctCount * quizConfig.basicPointPerQuestion) +
+          (correctCount * quizConfig.BronzePointPerQuestion) +
           quizConfig.extraPointsAdvanced;
 
-          latestGamePoints = (correctCount * quizConfig.basicPointPerQuestion) +
+          latestGamePoints = (correctCount * quizConfig.BronzePointPerQuestion) +
           quizConfig.extraPointsAdvanced;
       }
-    } else if (user.membership === "Premium Pack") {
+    } else if (user.membership === "Silver Pack") {
       //checking the level of the game the user played
       if (level === "Beginner") {
         newUserPoints =
           user.points +
-          (correctCount * quizConfig.premiumPointPerQuestion) +
+          (correctCount * quizConfig.SilverPointPerQuestion) +
           quizConfig.extraPointsBeginner;
 
 
-          latestGamePoints =  (correctCount * quizConfig.premiumPointPerQuestion) +
+          latestGamePoints =  (correctCount * quizConfig.SilverPointPerQuestion) +
           quizConfig.extraPointsBeginner;
       } else if (level === "Intermidiate") {
         newUserPoints =
           user.points +
-          (correctCount * quizConfig.premiumPointPerQuestion) +
+          (correctCount * quizConfig.SilverPointPerQuestion) +
           quizConfig.extraPointsIntermediate;
 
-          latestGamePoints = (correctCount * quizConfig.premiumPointPerQuestion) +
+          latestGamePoints = (correctCount * quizConfig.SilverPointPerQuestion) +
           quizConfig.extraPointsIntermediate;
       } else {
         newUserPoints =
           user.points +
-          (correctCount * quizConfig.premiumPointPerQuestion) +
+          (correctCount * quizConfig.SilverPointPerQuestion) +
           quizConfig.extraPointsAdvanced;
 
-          latestGamePoints =  (correctCount * quizConfig.premiumPointPerQuestion) +
+          latestGamePoints =  (correctCount * quizConfig.SilverPointPerQuestion) +
           quizConfig.extraPointsAdvanced
       }
-    } else if (user.membership === "Pro Pack") {
+    } else if (user.membership === "Gold Pack") {
       //checking the level of the game the user played
       if (level === "Beginner") {
         newUserPoints =

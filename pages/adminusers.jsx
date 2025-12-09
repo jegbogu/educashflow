@@ -39,7 +39,7 @@ import connectDB from "@/utils/connectmongo";
 //     name: "Alice Smith",
 //     email: "alice@example.com",
 //     status: "Active",
-//     type: "Premium",
+//     type: "Silver",
 //   },
 //   {
 //     id: "002",
@@ -53,7 +53,7 @@ import connectDB from "@/utils/connectmongo";
 //     name: "Charlie Brown",
 //     email: "charlie@example.com",
 //     status: "Blocked",
-//     type: "Premium",
+//     type: "Silver",
 //   },
 //   {
 //     id: "004",
@@ -67,7 +67,7 @@ import connectDB from "@/utils/connectmongo";
 //     name: "Ethan Hunt",
 //     email: "ethan@example.com",
 //     status: "Active",
-//     type: "Premium",
+//     type: "Silver",
 //   },
 //   {
 //     id: "006",
@@ -81,7 +81,7 @@ import connectDB from "@/utils/connectmongo";
 //     name: "George Wilson",
 //     email: "george@example.com",
 //     status: "Active",
-//     type: "Premium",
+//     type: "Silver",
 //   },
 //   {
 //     id: "008",
@@ -195,12 +195,12 @@ const usersData = props.usersData
 
   const activeUsers = users.filter((u) => u.status === "Active").length;
   const blockedUsers = users.filter((u) => u.status === "Blocked").length;
-  const premiumUsers = users.filter((u) => u.type === "Premium").length;
+  const SilverUsers = users.filter((u) => u.type === "Silver").length;
   const regularUsers = users.filter((u) => u.type === "Regular").length;
   const itemsPerPage = 10;
 
   const pieData = [
-    { name: "Premium", value: premiumUsers },
+    { name: "Silver", value: SilverUsers },
     { name: "Regular", value: regularUsers },
   ];
   const COLORS = ["#3b82f6", "#10b981"];
@@ -298,9 +298,9 @@ const usersData = props.usersData
               onChange={(e) => setTypeFilter(e.target.value)}
             >
               <option value="">All Types</option>
-              <option value="Premium Pack">Premium Pack</option>
-              <option value="Basic Pack">Basic Pack</option>
-              <option value="Pro Pack">Pro Pack</option>
+              <option value="Silver Pack">Silver Pack</option>
+              <option value="Bronze Pack">Bronze Pack</option>
+              <option value="Gold Pack">Gold Pack</option>
               <option value="Free plan">Free Plan</option>
             </select>
           </div>

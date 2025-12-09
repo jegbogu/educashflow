@@ -114,7 +114,7 @@ function validate({ fullname, username, email, password }) {
   const isPlaceholderEmail = email === "noemail@gmail.com";
   const isPlaceholderFullname = fullname === "nofullname";
 
-  // Basic field presence:
+  // Bronze field presence:
   if (!username) return { ok: false, message: "Username is required" };
   if (!password) return { ok: false, message: "Password is required" };
 

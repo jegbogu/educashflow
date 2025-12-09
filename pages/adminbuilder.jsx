@@ -19,7 +19,7 @@ const initialQuestions = [
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
     points:
-      quizConfig.basicPointPerQuestion + quizConfig.extraPointsIntermediate,
+      quizConfig.BronzePointPerQuestion + quizConfig.extraPointsIntermediate,
     options: ["Elon Musk", "Jeff Bezos", "Bernard Arnault", "Bill Gates"],
     correctAnswer: "Bernard Arnault",
   },
@@ -31,7 +31,7 @@ const initialQuestions = [
     level: "Beginner",
     completed: true,
     timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsBeginner,
+    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsBeginner,
     options: ["Cub", "Calf", "Pup", "Foal"],
     correctAnswer: "Cub",
   },
@@ -44,7 +44,7 @@ const initialQuestions = [
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
     points:
-      quizConfig.basicPointPerQuestion + quizConfig.extraPointsIntermediate,
+      quizConfig.BronzePointPerQuestion + quizConfig.extraPointsIntermediate,
     options: [
       "Vincent van Gogh",
       "Pablo Picasso",
@@ -61,7 +61,7 @@ const initialQuestions = [
     level: "Beginner",
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsBeginner,
+    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsBeginner,
     options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
     correctAnswer: "Carbon Dioxide",
   },
@@ -73,7 +73,7 @@ const initialQuestions = [
     level: "Advanced",
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsAdvanced,
+    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsAdvanced,
     options: ["mv", "1/2 mv²", "mgh", "F × d"],
     correctAnswer: "1/2 mv²",
   },
@@ -85,7 +85,7 @@ const initialQuestions = [
     level: "Beginner",
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsBeginner,
+    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsBeginner,
     options: ["Joule", "Newton", "Pascal", "Watt"],
     correctAnswer: "Newton",
   },
@@ -98,7 +98,7 @@ const initialQuestions = [
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
     points:
-      quizConfig.basicPointPerQuestion + quizConfig.extraPointsIntermediate,
+      quizConfig.BronzePointPerQuestion + quizConfig.extraPointsIntermediate,
     options: [
       "Alexander Fleming",
       "Louis Pasteur",
@@ -116,7 +116,7 @@ const initialQuestions = [
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
     points:
-      quizConfig.basicPointPerQuestion + quizConfig.extraPointsIntermediate,
+      quizConfig.BronzePointPerQuestion + quizConfig.extraPointsIntermediate,
     options: [
       "Indira Gandhi",
       "Margaret Thatcher",
@@ -133,7 +133,7 @@ const initialQuestions = [
     level: "Advanced",
     completed: false,
     timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.basicPointPerQuestion + quizConfig.extraPointsAdvanced,
+    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsAdvanced,
     options: ["1942", "1945", "1948", "1950"],
     correctAnswer: "1945",
   },

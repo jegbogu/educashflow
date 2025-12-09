@@ -25,15 +25,15 @@ export default function Playingquiz({ quiz }) {
   if (session?.user?.membership === "Free plan") {
     points = quizConfig.constantNumberofQuestions * quizConfig.perQuestionPoint;
   }
-  if (session?.user?.membership === "Basic Pack") {
+  if (session?.user?.membership === "Bronze Pack") {
     points =
-      quizConfig.constantNumberofQuestions * quizConfig.basicPointPerQuestion;
+      quizConfig.constantNumberofQuestions * quizConfig.BronzePointPerQuestion;
   }
-  if (session?.user?.membership === "Premium Pack") {
+  if (session?.user?.membership === "Silver Pack") {
     points =
-      quizConfig.constantNumberofQuestions * quizConfig.premiumPointPerQuestion;
+      quizConfig.constantNumberofQuestions * quizConfig.SilverPointPerQuestion;
   }
-  if (session?.user?.membership === "Pro Pack") {
+  if (session?.user?.membership === "Gold Pack") {
     points =
       quizConfig.constantNumberofQuestions * quizConfig.proPointPerQuestion;
   }
