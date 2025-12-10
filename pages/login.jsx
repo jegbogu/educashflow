@@ -122,7 +122,7 @@ export default function Login() {
               />
               <span className="ml-2 text-gray-600">Remember me</span>
             </label>
-            <Link href="#">Forgot Password?</Link>
+            <Link href="/forgetPassword">Forgot Password?</Link>
           </div>
 
           {/* Login button */}

@@ -286,7 +286,7 @@ export default function Playingquiz({ quiz }) {
                     <span>
                       {quizConfig.constantNumberofQuestions} questions
                     </span>
-                    <span className="font-medium">
+                    {/* <span className="font-medium">
                       +{" "}
                       {points +
                         {
@@ -301,7 +301,7 @@ export default function Playingquiz({ quiz }) {
                             quizConfig.perQuestionPoint,
                         }[r.level]}{" "}
                       pts
-                    </span>
+                    </span> */}
                   </div>
                 </div>
 

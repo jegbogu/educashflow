@@ -157,6 +157,12 @@ export default function Playingrealquiz({
         },
       }
     );
+const result = await response.json()
+if(!response.ok){
+  alert(result.message || "Something went wrong")
+  router.push("/login")
+}
+    
 
 
 
