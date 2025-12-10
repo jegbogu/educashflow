@@ -43,12 +43,12 @@ export default function Userheader({ userData }) {
           {/* Right Section */}
           <div className="flex flex-wrap items-center gap-4 md:gap-6 justify-end">
             {/* Level Badge */}
-            <div className="bg-yellow-300 hidden sm:block px-2 py-1 rounded-full border text-orange-500 font-medium text-sm md:text-base">
+            <div className="bg-orange-300 hidden sm:block px-2 py-1 rounded-full border text-orange-900 font-medium text-sm md:text-base">
               Level {userData.level}
             </div>
 
             {/* Balance Badge */}
-            <div className="bg-green-300 hidden sm:block px-2 py-1 rounded-full border text-blue-500 font-medium text-sm md:text-base">
+            <div className="bg-blue-300 hidden sm:block px-2 py-1 rounded-full border text-blue-900 font-medium text-sm md:text-base">
               ${userData.amountMade}
             </div>
 
