@@ -43,12 +43,12 @@ export default function Userheader({ userData }) {
           {/* Right Section */}
           <div className="flex flex-wrap items-center gap-4 md:gap-6 justify-end">
             {/* Level Badge */}
-            <div className="bg-yellow-300 hidden sm:block px-2 py-1 rounded-full border text-yellow-900 font-medium text-sm md:text-base">
+            <div className="bg-yellow-300 hidden sm:block px-2 py-1 rounded-full border text-orange-500 font-medium text-sm md:text-base">
               Level {userData.level}
             </div>
 
             {/* Balance Badge */}
-            <div className="bg-green-300 hidden sm:block px-2 py-1 rounded-full border text-green-900 font-medium text-sm md:text-base">
+            <div className="bg-green-300 hidden sm:block px-2 py-1 rounded-full border text-blue-500 font-medium text-sm md:text-base">
               ${userData.amountMade}
             </div>
 
@@ -66,7 +66,7 @@ export default function Userheader({ userData }) {
                 className="w-8 h-8 text-gray-700"
               />
               <span className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full leading-none">
-                3
+                0
               </span>
 
               {showNotifications && (
