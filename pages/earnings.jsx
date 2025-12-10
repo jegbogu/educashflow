@@ -117,7 +117,7 @@ export default function EarningsPage() {
 
              
           </div>
-          <div className={styles.couponSummary}>
+          {/* <div className={styles.couponSummary}>
             <div>
               <h3 className="py-2">$156.80</h3>
               <p>Total Earned</p>
@@ -126,7 +126,7 @@ export default function EarningsPage() {
               <h3 className="py-2">$12.00</h3>
               <p>Pending Withdrawal</p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
