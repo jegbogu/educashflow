@@ -72,7 +72,7 @@ export default function CheckOut({ onClose, plan }) {
                 <div className="font-bold mt-3">Bank:</div> First Bank Plc.
               </div>
 
-              <div className="text-center bg-green-300 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 ml-[50px]">
+              <div className="text-center bg-orange-300 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 ml-[50px]">
                 <h3 className="text-lg">Payment In Naira</h3>
                 <div className="font-bold mt-3">Account Number:</div> 2047740103
                 <div className="font-bold mt-3">Account Name:</div> EDUQUIZZ GLOBAL LIMITED
