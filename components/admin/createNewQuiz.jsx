@@ -66,7 +66,7 @@ export default function CreateQuizModal({ onClose }) {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch("http://localhost:3000/api/upload-csv", {
+      const res = await fetch("api/upload-csv", {
         method: "POST",
         body: formData,
       });
