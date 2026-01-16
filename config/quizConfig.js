@@ -29,7 +29,64 @@ export const quizConfig = {
     {
       name: "Current Affairs",
       subcategories: ["Politics", "Economy", "Sports", "Technology"]
-    }
+    },
+    {
+    name: "Geography",
+    subcategories: ["Map Reading"]
+  },
+  {
+    name: "Government",
+    subcategories: ["Constitution"]
+  },
+  {
+    name: "Civic Education",
+    subcategories: ["Citizenship"]
+  },
+  {
+    name: "Agricultural Science",
+    subcategories: ["Crop Production"]
+  },
+  {
+    name: "Fisheries",
+    subcategories: ["Aquaculture"]
+  },
+  {
+    name: "Economics",
+    subcategories: ["Demand and Supply"]
+  },
+  {
+    name: "Data Processing",
+    subcategories: ["Data Storage"]
+  },
+  {
+    name: "General Knowledge",
+    subcategories: ["Everyday Facts"]
+  },
+  {
+    name: "Sports",
+    subcategories: ["Olympics"]
+  },
+  {
+    name: "Commerce",
+    subcategories: ["Trade"]
+  },
+  {
+    name: "Accounting",
+    subcategories: ["Financial Statements"]
+  },
+  {
+    name: "Astrology",
+    subcategories: ["Zodiac Signs"]
+  },
+  {
+    name: "Sociology",
+    subcategories: ["Social Institutions"]
+  },
+  {
+    name: "GMAT",
+    subcategories: ["Quantitative Reasoning"]
+  }
+
   ],
   levels: ["Beginner", "Intermediate", "Advanced"],
   perQuestionTime: 12,
