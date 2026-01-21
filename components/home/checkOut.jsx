@@ -51,7 +51,7 @@ export default function CheckOut({ onClose, plan }) {
           " "
         ) : (
           <div>
-            <p className="text-center font-bold text-2xl">Check Out</p>
+            <p className="text-center font-bold text-2xl md:text-red-900">Check Out</p>
 
             <button
               onClick={onClose}
@@ -64,21 +64,36 @@ export default function CheckOut({ onClose, plan }) {
               Make your payment to this account
             </p>
 
-            <div className="border-2 gray box-shadow p-5 mt-3 rounded-md flex">
-              <div className="text-center bg-blue-300 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 ml-[15px]">
-                <h3 className="text-lg">Payment In Dollars</h3>
-                <div className="font-bold mt-3">Account Number:</div> 2047740387
-                <div className="font-bold mt-3">Account Name:</div> EDUQUIZZ GLOBAL LIMITED
-                <div className="font-bold mt-3">Bank:</div> First Bank Plc.
-              </div>
+             <div className="border-2 gray box-shadow p-5 mt-3 rounded-md flex flex-col gap-6 md:flex-row md:justify-center">
+  
+  <div className="text-center bg-blue-300 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 w-full md:w-[320px]">
+    <h3 className="text-lg font-semibold">Payment In Dollars</h3>
 
-              <div className="text-center bg-orange-300 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 ml-[50px]">
-                <h3 className="text-lg">Payment In Naira</h3>
-                <div className="font-bold mt-3">Account Number:</div> 2047740103
-                <div className="font-bold mt-3">Account Name:</div> EDUQUIZZ GLOBAL LIMITED
-                <div className="font-bold mt-3">Bank:</div> First Bank Plc.
-              </div>
-            </div>
+    <div className="font-bold mt-3">Account Number:</div>
+    2047740387
+
+    <div className="font-bold mt-3">Account Name:</div>
+    EDUQUIZZ GLOBAL LIMITED
+
+    <div className="font-bold mt-3">Bank:</div>
+    First Bank Plc.
+  </div>
+
+  <div className="text-center bg-orange-300 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 w-full md:w-[320px]">
+    <h3 className="text-lg font-semibold">Payment In Naira</h3>
+
+    <div className="font-bold mt-3">Account Number:</div>
+    2047740103
+
+    <div className="font-bold mt-3">Account Name:</div>
+    EDUQUIZZ GLOBAL LIMITED
+
+    <div className="font-bold mt-3">Bank:</div>
+    First Bank Plc.
+  </div>
+
+</div>
+
 
             <div className="mt-5">
               Package: <span className="font-bold">{plan.name}</span>
