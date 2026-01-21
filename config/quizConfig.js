@@ -2,11 +2,31 @@
 
 export const quizConfig = {
   categories: [
-    {
+     {
+    name: "Commerce",
+    subcategories: ["Trade"]
+  },
+  {
+    name: "Accounting",
+    subcategories: ["Financial Statements"]
+  },
+  {
+    name: "Astrology",
+    subcategories: ["Zodiac Signs"]
+  },
+  {
+    name: "Sociology",
+    subcategories: ["Social Institutions"]
+  },
+  {
+    name: "GMAT",
+    subcategories: ["Quantitative Reasoning"]
+  },
+  {
       name: "Math",
       subcategories: ["Algebra", "Geometry", "Calculus", "Statistics"]
     },
-    {
+  {
       name: "Science",
       subcategories: ["Physics", "Chemistry", "Biology", "Astronomy"]
     },
@@ -65,27 +85,8 @@ export const quizConfig = {
   {
     name: "Sports",
     subcategories: ["Olympics"]
-  },
-  {
-    name: "Commerce",
-    subcategories: ["Trade"]
-  },
-  {
-    name: "Accounting",
-    subcategories: ["Financial Statements"]
-  },
-  {
-    name: "Astrology",
-    subcategories: ["Zodiac Signs"]
-  },
-  {
-    name: "Sociology",
-    subcategories: ["Social Institutions"]
-  },
-  {
-    name: "GMAT",
-    subcategories: ["Quantitative Reasoning"]
   }
+ 
 
   ],
   levels: ["Beginner", "Intermediate", "Advanced"],
