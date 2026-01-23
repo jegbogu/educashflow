@@ -32,7 +32,7 @@ export default async function handler(req, res) {
 
     // Generate secure token
     const token = crypto.randomBytes(32).toString("hex");
-    console.log("token", token)
+  
 
     // Store in memory (expires in 15 min)
     const userID = user._id.toString()

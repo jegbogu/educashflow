@@ -1,4 +1,5 @@
 import Userheader from "@/components/UserDashboard/userheader";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -7,9 +8,11 @@ import Usernavbar from "@/components/UserDashboard/usernavbar";
 import UserQuizzes from "@/components/UserDashboard/userquizzes";
 import connectDB from "@/utils/connectmongo";
 import Quiz from "../model/quizCreation";
+import CurrencyAndPhone from "@/components/currencyandphone";
 
 export default function Quizzes(props) {
   const { data: session, status } = useSession();
+  const [currencyandphone, setCurrencyandPhone] = useState(true)
   const userData = session?.user;
 
   const router = useRouter();
@@ -22,6 +25,15 @@ export default function Quizzes(props) {
       router.replace("/login");
     }
   }, [status, session, router]);
+
+ useEffect(()=>{
+  console.log("userdata", userData)
+ if(userData?.spaceOne =="Null" ){
+    setCurrencyandPhone(true)
+  }else if(userData?.spaceOne.includes("Naira") || userData?.spaceOne.includes("Dollar")  ) {
+    setCurrencyandPhone(false)
+  }
+  },[currencyandphone, session])
 
   // Show loading state while session is being checked
   if (status === "loading") {
@@ -38,11 +50,15 @@ export default function Quizzes(props) {
   if (status !== "authenticated" || session?.user.role !== "user") {
     return null;
   }
+
+ 
+ 
   return (
     <div>
       <Userheader userData={userData} />
       <div className="p-5">
         <Usernavbar />
+        {currencyandphone && <CurrencyAndPhone userData={userData}/>}
         <UserQuizzes quiz={props.quiz} />
       </div>
     </div>
