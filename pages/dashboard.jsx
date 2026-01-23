@@ -33,7 +33,9 @@ export default function Dashboard(props) {
   const userData = session?.user;
 
   //Withdrawals
- const withdrawalNeeded = quizConfig.minimumAmount-userData?.amountMade
+ const withdrawalNeededDollar = quizConfig.minimumAmount-userData?.amountMade
+
+ const withdrawalNeededNaira = quizConfig.minimumAmountNaira-userData?.amountMade
   const PendingWithdrawal = (Math.abs(quizConfig.minimumAmount-userData?.amountMade)).toFixed(2)
 
 //Hadling the amount of games played
@@ -238,6 +240,16 @@ function getPercentageChange(data) {
   if (status !== "authenticated" || session?.user.role !== "user") {
     return null;
   }
+  let minimumInCurrency;
+  if(userData?.spaceOne.includes("Naira")){
+    minimumInCurrency = <div>
+  {quizConfig.minimumAmountNaira> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`}
+    </div>
+  }else{
+   minimumInCurrency = <div>
+{quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeededDollar} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`} 
+    </div>
+  }
 
   // const quizzes = [
   //   {
@@ -336,7 +348,7 @@ function getPercentageChange(data) {
 
               {/* Earnings */}
               <StatsCard title="Earnings">
-                <div className={styles.statNumber}>${userData?.amountMade}</div>
+                <div className={styles.statNumber}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade}`: `$${userData?.amountMade}`}</div>
                 <p className={styles.statDescription}>Amount Made</p>
            
               </StatsCard>
@@ -402,9 +414,11 @@ function getPercentageChange(data) {
                         )}
                       >
                         <p className={styles.balanceLabel}>Available Balance</p>
-                        <p className={cn(styles.balanceAmount)}>${userData?.amountMade}</p>
+                        
+                        <p className={cn(styles.balanceAmount)}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade}`: `$${userData?.amountMade}`}</p>
                         <p className={styles.balanceRate}>
-                          Rate 100pts = ${quizConfig.perPoint*100}
+                           Rate 100pts = {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${quizConfig.perPoint*100}`: `$${quizConfig.perPoint*100}`}
+                         
                         </p>
                       </div>
                       <div
@@ -414,7 +428,11 @@ function getPercentageChange(data) {
                         )}
                       >
                         <p className={styles.balanceLabel}>This Month</p>
-                        <p className={cn(styles.balanceAmount)}>${amountinThisMonth?? amountinThisMonth.toFixed(2)}</p>
+                        <p className={cn(styles.balanceAmount)}>
+                          {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${amountinThisMonth?? amountinThisMonth.toFixed(2)}`: `$${amountinThisMonth?? amountinThisMonth.toFixed(2)}`}
+                           </p>
+
+
                         <p className={styles.balanceGrowth}>
                           <TrendingUp className={styles.growthIcon} />
                            {changesinAmount}
@@ -428,10 +446,15 @@ function getPercentageChange(data) {
                                    <span className={styles.withdrawalTitle}>
                                      Withdrawal Progress
                                    </span>
-                                   <span className={styles.withdrawalMin}>Min. ${quizConfig.minimumAmount}</span>
+                                   <span className={styles.withdrawalMin}>Min.
+
+
+                                     {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? ` ₦${quizConfig.minimumAmountNaira}`: ` $${quizConfig.minimumAmount}`}
+                                    
+                                   </span>
                                  </div>
-                                 {quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeeded} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`}
-                                 <ProgressBar progress={90} />
+                                  {minimumInCurrency}
+                            <ProgressBar progress={90} />
                      
                                 { quizConfig.minimumAmount>= userData?.amountMade?<button
                                    className={cn(disabled && styles.btnDisabled, styles.btn)}
@@ -464,7 +487,7 @@ function getPercentageChange(data) {
       key={index}
       title={activity.subcategory}  // or activity.category or activity.timestamp
       timeAgo={timeAgoFromTimestamp(activity.timestamp)}
-      amount={`$${activity.amountMade}`} // or plain activity.amountMade
+      amount={`₦${activity.amountMade}`} // or plain activity.amountMade
       status={activity.amountMade > 0 ? "completed" : "failed"}
     />
   ))}

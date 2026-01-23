@@ -65,7 +65,8 @@ export default function CheckOut({ onClose, plan }) {
             </p>
 
              <div className="border-2 gray box-shadow p-5 mt-3 rounded-md flex flex-col gap-6 md:flex-row md:justify-center">
-  
+  {
+  userData?.spaceOne.includes("Dollar")?
   <div className="text-center bg-blue-300 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 w-full md:w-[320px]">
     <h3 className="text-lg font-semibold">Payment In Dollars</h3>
 
@@ -77,9 +78,9 @@ export default function CheckOut({ onClose, plan }) {
 
     <div className="font-bold mt-3">Bank:</div>
     First Bank Plc.
-  </div>
+  </div>:
 
-  <div className="text-center bg-orange-300 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 w-full md:w-[320px]">
+ <div className="text-center bg-orange-300 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 w-full md:w-[320px]">
     <h3 className="text-lg font-semibold">Payment In Naira</h3>
 
     <div className="font-bold mt-3">Account Number:</div>
@@ -91,6 +92,10 @@ export default function CheckOut({ onClose, plan }) {
     <div className="font-bold mt-3">Bank:</div>
     First Bank Plc.
   </div>
+}
+  
+
+ 
 
 </div>
 
@@ -101,7 +106,7 @@ export default function CheckOut({ onClose, plan }) {
 
             <div className="flex justify-between mt-5">
               <p>Total</p>
-              <p className="font-bold text-[1.2em]">{plan.price}</p>
+              <p className="font-bold text-[1.2em]">{userData?.spaceOne.includes("Naira")?plan.priceNaira: plan.priceDollar}</p>
             </div>
           </div>
         )}

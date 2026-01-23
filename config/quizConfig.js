@@ -97,8 +97,14 @@ export const quizConfig = {
   proPointPerQuestion: 40, //8x earning
 
   minimumAmount: 3.00, //Minimum Amount before you can ask for withdrawal
+  minimumAmountNaira: 1500, //Minimum Amount before you can ask for withdrawal
+
   minUserCanWithdraw :1,
+  minUserCanWithdrawNaira :1000,
+
   maxUserCanWithdraw: 10,
+  maxUserCanWithdrawNaira: 5000,
+
   perPoint: 0.002, //Standard earning
 
   constantNumberofQuestions:20,

@@ -48,6 +48,17 @@ export default function EarningsPage() {
   const withdrawalNeeded = quizConfig.minimumAmount-userData.amountMade
   const PendingWithdrawal = (Math.abs(quizConfig.minimumAmount-userData.amountMade)).toFixed(2)
 
+   let minimumInCurrency;
+    if(userData?.spaceOne.includes("Naira")){
+      minimumInCurrency = <div>
+    {quizConfig.minimumAmountNaira> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`}
+      </div>
+    }else{
+     minimumInCurrency = <div>
+  {quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeededDollar} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`} 
+      </div>
+    }
+
   return (
     <div>
       <Userheader userData={userData} />
@@ -66,10 +77,22 @@ export default function EarningsPage() {
             <div className={cn(styles.balanceCard, styles.balanceAvailable)}>
               <div className={styles.balanceHeader}>
                 <span className={styles.balanceLabel}>Available Balance</span>
-                <span className={styles.balanceCurrency}>$</span>
+                <span className={styles.balanceCurrency}>
+
+                  {userData?.spaceOne == "Null"?
+                   "No Currency":userData?.spaceOne.includes("Naira")? `₦`: `$`}
+                </span>
               </div>
-              <div className={styles.balanceAmount}>${userData?.amountMade}</div>
-              <div className={styles.balanceRate}>Rate 100pts = ${quizConfig.perPoint*100}</div>
+               
+                <p className={cn(styles.balanceAmount)}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade}`: `$${userData?.amountMade}`}</p>
+                                       <p className={styles.balanceRate}>
+                                          Rate 100pts = {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${quizConfig.perPoint*100}`: `$${quizConfig.perPoint*100}`}
+                                        
+                                       </p>
+
+
+
+
             </div>
 
             <div className={cn(styles.balanceCard, styles.balanceMonthly)}>
@@ -92,8 +115,13 @@ export default function EarningsPage() {
               </span>
               <span className={styles.withdrawalMin}>Min. ${quizConfig.minimumAmount}</span>
             </div>
-            {quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeeded} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`}
+
+           
+
+               {minimumInCurrency}
             <ProgressBar progress={90} />
+
+            
 
            { quizConfig.minimumAmount>= userData?.amountMade?<button
               className={cn(disabled && styles.btnDisabled, styles.btn)}

@@ -1,7 +1,8 @@
  export const couponPlans = [
     {
       name: "Bronze Pack",
-      price: "$0.37 || N500",
+      priceDollar: "$5",
+      priceNaira: "₦500",
       features: [
         "10 quiz attempt",
         "Valid for 7 days", 
@@ -18,7 +19,8 @@
     },
     {
       name: "Silver Pack",
-      price: "$10 || 1000",
+      priceDollar: "$10",
+      priceNaira: "₦1000",
       features: [
         "25 quiz attempt",
         "Valid for 14 days",
@@ -35,7 +37,8 @@
     },
     {
       name: "Gold Pack",
-      price: "$20 || 2000",
+      priceNaira: "₦2000",
+      priceDollar: "$20",
       features: [
         "50 quiz attempt",
         "Valid for 30 days",

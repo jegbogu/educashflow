@@ -95,7 +95,7 @@ function findPlan(plan){
                   <div>
                     <div className={styles.planHeader}>
                       <h3 className={styles.planName}>{plan.name}</h3>
-                      <div className={styles.planPrice}>{plan.price}</div>
+                      <div className={styles.planPrice}>{userData?.spaceOne.includes("Naira")?plan.priceNaira:plan.priceDollar}</div>
                     </div>
                     <div className={styles.planFeatures}>
                       {plan.features.map((feature, i) => (

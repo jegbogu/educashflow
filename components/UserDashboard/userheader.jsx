@@ -49,7 +49,7 @@ export default function Userheader({ userData }) {
 
             {/* Balance Badge */}
             <div className="bg-blue-300 hidden sm:block px-2 py-1 rounded-full border text-blue-900 font-medium text-sm md:text-base">
-              ${userData.amountMade}
+              {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade}`: `$${userData?.amountMade}`}
             </div>
 
             {/* Points - hidden on very small screens */}
