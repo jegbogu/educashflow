@@ -12,7 +12,7 @@ export default function CheckOut({ onClose, plan }) {
 
   async function ConfirmationFnc() {
     if (isSubmitting) return; // Prevent clicking twice
-
+    let price = userData?.spaceOne.includes("Naira")?plan.priceNaira: plan.priceDollar
     setIsSubmitting(true);
 
     const data = {
@@ -20,7 +20,7 @@ export default function CheckOut({ onClose, plan }) {
       gameLimit: plan.gameLimit,
       validDays: plan.validDays,
       earningRate: plan.earningRate,
-      price: plan.price,
+      price: price,
       userData: userData,
     };
 

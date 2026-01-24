@@ -8,139 +8,15 @@ import Pagination from "@/components/utils/pagination";
 import QuestionModal from "@/components/admin/quizModal";
 import DeleteItemModal from "@/components/admin/deleteuestion";
 import { cn } from "@/lib/utils";
+ 
+import connectDB from "@/utils/connectmongo";
+import Quiz from "@/model/quizCreation";
 
-const initialQuestions = [
-  {
-    id: "001",
-    question: "Who is the richest man in the World?",
-    category: "Current Affairs",
-    subcategory: "Economy",
-    level: "Intermediate",
-    completed: false,
-    timeLimit: quizConfig.perQuestionTime,
-    points:
-      quizConfig.BronzePointPerQuestion + quizConfig.extraPointsIntermediate,
-    options: ["Elon Musk", "Jeff Bezos", "Bernard Arnault", "Bill Gates"],
-    correctAnswer: "Bernard Arnault",
-  },
-  {
-    id: "002",
-    question: "A child of a lion is called?",
-    category: "Science",
-    subcategory: "Biology",
-    level: "Beginner",
-    completed: true,
-    timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsBeginner,
-    options: ["Cub", "Calf", "Pup", "Foal"],
-    correctAnswer: "Cub",
-  },
-  {
-    id: "003",
-    question: "Who painted the Mona Lisa?",
-    category: "History",
-    subcategory: "Modern",
-    level: "Intermediate",
-    completed: false,
-    timeLimit: quizConfig.perQuestionTime,
-    points:
-      quizConfig.BronzePointPerQuestion + quizConfig.extraPointsIntermediate,
-    options: [
-      "Vincent van Gogh",
-      "Pablo Picasso",
-      "Leonardo da Vinci",
-      "Michelangelo",
-    ],
-    correctAnswer: "Leonardo da Vinci",
-  },
-  {
-    id: "004",
-    question: "What gas do humans exhale the most?",
-    category: "Science",
-    subcategory: "Biology",
-    level: "Beginner",
-    completed: false,
-    timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsBeginner,
-    options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
-    correctAnswer: "Carbon Dioxide",
-  },
-  {
-    id: "005",
-    question: "What is the formula for kinetic energy?",
-    category: "Science",
-    subcategory: "Physics",
-    level: "Advanced",
-    completed: false,
-    timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsAdvanced,
-    options: ["mv", "1/2 mv²", "mgh", "F × d"],
-    correctAnswer: "1/2 mv²",
-  },
-  {
-    id: "006",
-    question: "What is the SI unit of force?",
-    category: "Science",
-    subcategory: "Physics",
-    level: "Beginner",
-    completed: false,
-    timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsBeginner,
-    options: ["Joule", "Newton", "Pascal", "Watt"],
-    correctAnswer: "Newton",
-  },
-  {
-    id: "007",
-    question: "Who discovered penicillin?",
-    category: "Science",
-    subcategory: "Biology",
-    level: "Intermediate",
-    completed: false,
-    timeLimit: quizConfig.perQuestionTime,
-    points:
-      quizConfig.BronzePointPerQuestion + quizConfig.extraPointsIntermediate,
-    options: [
-      "Alexander Fleming",
-      "Louis Pasteur",
-      "Marie Curie",
-      "Isaac Newton",
-    ],
-    correctAnswer: "Alexander Fleming",
-  },
-  {
-    id: "008",
-    question: 'Who was known as the "Iron Lady"?',
-    category: "History",
-    subcategory: "Modern",
-    level: "Intermediate",
-    completed: false,
-    timeLimit: quizConfig.perQuestionTime,
-    points:
-      quizConfig.BronzePointPerQuestion + quizConfig.extraPointsIntermediate,
-    options: [
-      "Indira Gandhi",
-      "Margaret Thatcher",
-      "Angela Merkel",
-      "Golda Meir",
-    ],
-    correctAnswer: "Margaret Thatcher",
-  },
-  {
-    id: "009",
-    question: "In what year did World War II end?",
-    category: "History",
-    subcategory: "World Wars",
-    level: "Advanced",
-    completed: false,
-    timeLimit: quizConfig.perQuestionTime,
-    points: quizConfig.BronzePointPerQuestion + quizConfig.extraPointsAdvanced,
-    options: ["1942", "1945", "1948", "1950"],
-    correctAnswer: "1945",
-  },
-];
+ 
 
-export default function QuizBuilderPage() {
-  const [questions, setQuestions] = useState(initialQuestions);
+export default function QuizBuilderPage(props) {
+  
+  const [questions, setQuestions] = useState(props.quizzes);
   const [filters, setFilters] = useState({
     month: "",
     year: "",
@@ -251,15 +127,9 @@ export default function QuizBuilderPage() {
               onClick={() => setModalQuiz(true)}
             >
               <Upload className={styles.btnIcon} />
-              Bulk Import
-            </button>
-            <button
-              className={styles.btnPrimary}
-              onClick={() => setShowModal(true)}
-            >
-              <Plus className={styles.btnIcon} />
               Create New Quiz
             </button>
+            
           </div>
         </div>
 
@@ -458,4 +328,16 @@ export default function QuizBuilderPage() {
       )}
     </DashboardLayout>
   );
+}
+
+export async function getServerSideProps(){
+  await connectDB()
+
+  const quizzes = await Quiz.find({}).lean()
+  return{
+    props:{
+      quizzes:JSON.parse(JSON.stringify(quizzes))
+    }
+  }
+
 }
