@@ -3,6 +3,8 @@ import { X } from "lucide-react";
 import { quizConfig } from "@/config/quizConfig";
 
 export default function QuestionModal({ question, onSave, onClose }) {
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     id: "",
     question: "",
@@ -37,16 +39,13 @@ export default function QuestionModal({ question, onSave, onClose }) {
     const { name, value } = e.target;
 
     if (["a", "b", "c", "d"].includes(name)) {
-      // Update option text
       setFormData((prev) => ({
         ...prev,
         options: { ...prev.options, [name]: value },
       }));
     } else if (name === "correctAnswer") {
-      // Update correct answer selection
       setFormData((prev) => ({ ...prev, correctAnswer: value }));
     } else {
-      // Other fields
       setFormData((prev) => ({
         ...prev,
         [name]: value,
@@ -55,13 +54,47 @@ export default function QuestionModal({ question, onSave, onClose }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.correctAnswer) {
       alert("Please select the correct answer before saving.");
       return;
     }
-    onSave(formData);
+
+    try {
+      setLoading(true);
+
+      const payload = {
+        ...formData,
+        createdAt: question ? question.createdAt : new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const response = await fetch("/api/questions", {
+        method: question ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save question");
+      }
+
+      const savedQuestion = await response.json();
+
+      // Return saved data to parent
+      onSave(savedQuestion);
+
+      onClose();
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong while saving the question.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const selectedCategory = quizConfig.categories.find(
@@ -155,7 +188,7 @@ export default function QuestionModal({ question, onSave, onClose }) {
               name="difficulty"
               value={formData.difficulty}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent]"
+              className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent"
             >
               <option value="">Choose Difficulty</option>
               {quizConfig.levels.map((item, index) => (
@@ -166,17 +199,14 @@ export default function QuestionModal({ question, onSave, onClose }) {
             </select>
           </div>
 
-          {/* Multiple Choice Options */}
+          {/* Options */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Options (Select the correct one)
             </label>
             <div className="space-y-2">
               {["a", "b", "c", "d"].map((opt) => (
-                <label
-                  key={opt}
-                  className="flex items-center gap-2 rounded"
-                >
+                <label key={opt} className="flex items-center gap-2 rounded">
                   <input
                     type="radio"
                     name="correctAnswer"
@@ -209,9 +239,10 @@ export default function QuestionModal({ question, onSave, onClose }) {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-dashboard-primary text-white rounded hover:opacity-90 transition"
+              disabled={loading}
+              className="px-4 py-2 bg-dashboard-primary text-white rounded hover:opacity-90 transition disabled:opacity-60"
             >
-              {question ? "Update" : "Add"}
+              {loading ? "Saving..." : question ? "Update" : "Add"}
             </button>
           </div>
         </form>

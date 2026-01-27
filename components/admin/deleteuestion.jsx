@@ -20,7 +20,7 @@ export default function DeleteItemModal({ item, onClose, onConfirm }) {
           <X />
         </button>
 
-        <h2 className="text-xl font-bold mb-4 text-text">Delete User</h2>
+        <h2 className="text-xl font-bold mb-4 text-text">Delete Question</h2>
 
         <p className="text-gray-700 mb-4">
           Are you sure you want to delete <strong>{item.question}</strong>?
@@ -34,7 +34,7 @@ export default function DeleteItemModal({ item, onClose, onConfirm }) {
             Cancel
           </button>
           <button
-            onClick={() => onConfirm(item.id)}
+            onClick={() => onConfirm(item._id)}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
           >
             Delete

@@ -4,19 +4,23 @@ import DashboardLayout from "@/components/admin/layout";
 import { useState } from "react";
 import { quizConfig } from "@/config/quizConfig";
 import CreateQuizModal from "@/components/admin/createNewQuiz";
+ 
 import Pagination from "@/components/utils/pagination";
 import QuestionModal from "@/components/admin/quizModal";
 import DeleteItemModal from "@/components/admin/deleteuestion";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/router";
  
 import connectDB from "@/utils/connectmongo";
 import Quiz from "@/model/quizCreation";
+ 
 
  
 
 export default function QuizBuilderPage(props) {
   
   const [questions, setQuestions] = useState(props.quizzes);
+  const router = useRouter()
   const [filters, setFilters] = useState({
     month: "",
     year: "",
@@ -46,11 +50,17 @@ export default function QuizBuilderPage(props) {
 
   // Selection logic
   const toggleSelect = (id) => {
+     
     setSelected((prev) =>
       prev.includes(id) ? prev.filter((uid) => uid !== id) : [...prev, id]
     );
+  
   };
-  const selectAll = () => setSelected(filteredQuestions.map((u) => u.id));
+
+
+
+
+  const selectAll = () => setSelected(filteredQuestions.map((u) => u._id));
   const deselectAll = () => setSelected([]);
   const allSelected =
     filteredQuestions.length > 0 &&
@@ -67,14 +77,15 @@ export default function QuizBuilderPage(props) {
     setCurrentPage(page);
   };
 
-  // Open for adding new
-  const handleAddQuestion = () => {
-    setSelectedQuestion(null);
-    setShowModal(true);
-  };
+  // // Open for adding new
+  // const handleAddQuestion = () => {
+  //   setSelectedQuestion(null);
+  //   setShowModal(true);
+  // };
 
   // Open for editing
   const handleEditQuestion = (question) => {
+    
     setSelectedQuestion(question);
     setShowModal(true);
   };
@@ -86,28 +97,67 @@ export default function QuizBuilderPage(props) {
 
   // Save or update question
   const handleSaveQuestion = (data) => {
-    setQuestions((prev) => {
-      const index = prev.findIndex((q) => q.id === data.id);
-      if (index !== -1) {
-        const updated = [...prev];
-        updated[index] = data;
-        return updated;
-      }
-      return [...prev, data];
-    });
+    
     setShowModal(false);
   };
 
   // Delete
-  const deleteQuestion = (id) => {
-    setQuestions((prev) => prev.filter((q) => q.id !== id));
+  const deleteQuestion = async (id) => {
+    
+    try {
+      const response = await fetch(`/api/deleteQuestion/${id}`,{
+      method:'DELETE',
+       
+    });
+    const res = await response.json()
+    if(!response.ok){
+      alert(res.message || "Something went wrong")
+    }else{
+      alert(res.message)
+      router.reload("/adminbuilder")
+    }
+
     setShowDeleteModal(false);
+      
+    } catch (error) {
+      console.error(error)
+    }
+    
+
   };
 
   // Bulk delete
-  const bulkDelete = () => {
-    setQuestions((prev) => prev.filter((u) => !selected.includes(u.id)));
-    setSelected([]);
+  const bulkDelete = async () => {
+    
+const bulkDeleteItems = {
+  data: selected
+}
+
+ 
+  try {
+      const response = await fetch('/api/deleteItems',{
+      method:'post',
+      body: JSON.stringify(bulkDeleteItems),
+      headers:{
+        "Content-Type":"application/json"
+      }
+       
+    });
+    const res = await response.json()
+    if(!response.ok){
+      alert(res.message || "Something went wrong")
+    }else{
+      alert(res.message)
+      router.reload("/adminbuilder")
+    }
+
+    setShowDeleteModal(false);
+      
+    } catch (error) {
+      console.error(error)
+    }
+
+   
   };
 
   return (
@@ -260,8 +310,8 @@ export default function QuizBuilderPage(props) {
                     <td className={styles.tableTd}>
                       <input
                         type="checkbox"
-                        checked={selected.includes(question.id)}
-                        onChange={() => toggleSelect(question.id)}
+                        checked={selected.includes(question._id)}
+                        onChange={() => toggleSelect(question._id)}
                       />
                     </td>
                     <td className={styles.tableTd}>
