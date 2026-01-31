@@ -17,20 +17,21 @@ export default function QuickActions() {
     },
     {
       title: "Manage Users",
-      description: "View all users",
+      description: "View All Users",
       icon: UsersIcon,
       onClick: () => router.replace("/adminusers"),
     },
     {
-      title: "Payment Analytics",
-      description: "Check performance",
+      title: "Payment Status",
+      description: "Manage All Payments From One Place",
       icon: TrendingUp,
       onClick: () => router.replace("/adminpayment"),
     },
     {
-      title: "Activity Log",
-      description: "Recent activities",
+      title: "Questions ",
+      description: "Delete, Filter, and Edit Questions",
       icon: ActivityIcon,
+       onClick: () => router.replace("/adminbuilder"),
     },
   ];
 

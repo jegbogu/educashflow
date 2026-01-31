@@ -130,7 +130,7 @@ export default function Dashboard(props) {
         <div className={styles.contentGrid}>
           {/* Recent Activity */}
           <div className={styles.activitySection}>
-            <h2 className={styles.sectionTitle}>Recent Activity</h2>
+            <h2 className={styles.sectionTitle}>Recent Activities</h2>
             <RecentActivity allActivities={allActivities} />
           </div>
 

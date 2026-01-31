@@ -33,7 +33,7 @@ const menuItems = [
     link: "adminpayment",
   },
   { id: "adminusers", label: "Users", icon: Users, link: "adminusers" },
-  { id: "admincoupons", label: "Coupon", icon: Ticket, link: "admincoupons" },
+  // { id: "admincoupons", label: "Coupon", icon: Ticket, link: "admincoupons" },
   {
     id: "adminbuilder",
     label: "Quiz Builder",
