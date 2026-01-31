@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
   try {
     const { uniqueID, userID, startQuiz } = req.body;
-
+     
     await connectDB();
 
     // Find user
@@ -80,7 +80,7 @@ export default async function handler(req, res) {
     const newActivity = new Activity({
       _id: new mongoose.Types.ObjectId(),
       activity: "A User Just Started a Quiz",
-      description: uniqueID,
+      description: `${startQuiz} || ${user.email}`,
       createdAt: new Date(),
     });
 

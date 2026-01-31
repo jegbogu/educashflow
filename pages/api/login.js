@@ -24,9 +24,6 @@ function getFormattedDateTime() {
     if(req.method === 'POST'){
         try {
         await connectDB()
-//        const Q =  await Quiz.deleteMany({
-//   question: { $regex: "^Hard Science Question ", $options: "i" }
-// })
  
         const{email, password, role} = req.body
        
@@ -68,7 +65,7 @@ function getFormattedDateTime() {
          //saving activities for record sake
           const newActivity = new Activity({
                  _id: new mongoose.Types.ObjectId(),
-                 activity:"A User logged in",
+                 activity:"A User Logged In",
                  description:email,
                  createdAt: getFormattedDateTime()
                 

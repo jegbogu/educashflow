@@ -32,72 +32,21 @@ import DeleteModal from "@/components/admin/deleteUser";
 import BlockUserModal from "@/components/admin/blockUser";
 import Register from "@/model/registerSchema";
 import connectDB from "@/utils/connectmongo";
+import { useSession } from "next-auth/react";
 
-// const usersData = [
-//   {
-//     id: "001",
-//     name: "Alice Smith",
-//     email: "alice@example.com",
-//     status: "Active",
-//     type: "Silver",
-//   },
-//   {
-//     id: "002",
-//     name: "Bob Johnson",
-//     email: "bob@example.com",
-//     status: "Active",
-//     type: "Regular",
-//   },
-//   {
-//     id: "003",
-//     name: "Charlie Brown",
-//     email: "charlie@example.com",
-//     status: "Blocked",
-//     type: "Silver",
-//   },
-//   {
-//     id: "004",
-//     name: "Diana Prince",
-//     email: "diana@example.com",
-//     status: "Active",
-//     type: "Regular",
-//   },
-//   {
-//     id: "005",
-//     name: "Ethan Hunt",
-//     email: "ethan@example.com",
-//     status: "Active",
-//     type: "Silver",
-//   },
-//   {
-//     id: "006",
-//     name: "Fiona Green",
-//     email: "fiona@example.com",
-//     status: "Blocked",
-//     type: "Regular",
-//   },
-//   {
-//     id: "007",
-//     name: "George Wilson",
-//     email: "george@example.com",
-//     status: "Active",
-//     type: "Silver",
-//   },
-//   {
-//     id: "008",
-//     name: "Hannah Davis",
-//     email: "hannah@example.com",
-//     status: "Active",
-//     type: "Regular",
-//   },
-// ];
+
+
+ 
 
 export default function UsersPage(props) {
-  console.log(props)
+  
 
 const usersData = props.usersData
-
-  const [showBulkMenu, setShowBulkMenu] = useState(false);
+ const { data: session, status } = useSession();
+ 
+  const userData = session?.user;
+ 
+ 
   const [users, setUsers] = useState(usersData);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -131,17 +80,70 @@ const usersData = props.usersData
   const allSelected =
     filteredUsers.length > 0 && selected.length === filteredUsers.length;
 
-  // Bulk delete
-  const bulkDelete = () => {
-    setUsers((prev) => prev.filter((u) => !selected.includes(u.id)));
-    setSelected([]);
+  
+
+  // Delete
+  const deleteUser = async (user) => {
+     const cd = `${user._id}-${userData.email}-${user.email}`
+      
+    try {
+      const response = await fetch(`/api/deleteUser/${cd}`,{
+      method:'DELETE',
+       
+    });
+    const res = await response.json()
+    if(!response.ok){
+      alert(res.message || "Something went wrong")
+    }else{
+      alert(res.message)
+      router.reload("/adminuser")
+    }
+
+    setShowDelete(false);
+      
+    } catch (error) {
+      console.error(error)
+    }
+    
+
   };
 
-  // Delete single user
-  const deleteUser = (user) => {
-    setUsers((prev) => prev.filter((u) => u.id !== user.id));
+  // Bulk delete
+  const bulkDelete = async () => {
+    
+const bulkDeleteItems = {
+  data: selected
+}
+
+ 
+  try {
+      const response = await fetch('/api/deleteItems',{
+      method:'post',
+      body: JSON.stringify(bulkDeleteItems),
+      headers:{
+        "Content-Type":"application/json"
+      }
+       
+    });
+    const res = await response.json()
+    if(!response.ok){
+      alert(res.message || "Something went wrong")
+    }else{
+      alert(res.message)
+      router.reload("/adminbuilder")
+    }
+
     setShowDelete(false);
+      
+    } catch (error) {
+      console.error(error)
+    }
+
+   
   };
+  
+
+
 
   const toggleBlockUser = (user) => {
     if (user.status === "Blocked") {
@@ -162,15 +164,15 @@ const usersData = props.usersData
   };
 
   // Add / Edit User
-  const handleAddUser = () => {
-    setSelectedUser(null); // new user
-    setShowModal(true);
-  };
+  // const handleAddUser = () => {
+  //   setSelectedUser(null); // new user
+  //   setShowModal(true);
+  // };
 
-  const handleEditUser = (user) => {
-    setSelectedUser(user);
-    setShowModal(true);
-  };
+  // const handleEditUser = (user) => {
+  //   setSelectedUser(user);
+  //   setShowModal(true);
+  // };
 
   const handleBlockUser = (user) => {
     setSelectedUser(user);
@@ -235,13 +237,13 @@ const usersData = props.usersData
             </p>
           </div>
           <div className={styles.headerActions}>
-            <button
+            {/* <button
               className={styles.btnPrimary}
               onClick={() => handleAddUser()}
             >
               <Plus className={styles.btnIcon} />
               Add User
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -324,8 +326,10 @@ const usersData = props.usersData
             </th>
             <th className={cn(styles.tableTh, "!text-left")}>User ID</th>
             <th className={styles.tableTh}>User</th>
+            <th className={styles.tableTh}>Actions</th>
             <th className={styles.tableTh}>Created Date</th>
             <th className={styles.tableTh}>Status</th>
+              
             <th className={styles.tableTh}>User Type</th>
             <th className={styles.tableTh}>Amount Made</th>
             <th className={styles.tableTh}>Points</th>
@@ -333,7 +337,7 @@ const usersData = props.usersData
             <th className={styles.tableTh}>Plan</th>
             <th className={styles.tableTh}>Total Games</th>
             <th className={styles.tableTh}>Games with coupon</th>
-            <th className={styles.tableTh}>Actions</th>
+          
           </tr>
         </thead>
 
@@ -369,6 +373,36 @@ const usersData = props.usersData
                   </div>
                 </div>
               </td>
+              {/* Actions */}
+              <td className={styles.tableTd}>
+                <div className="relative">
+                  <div className={styles.actionButtons}>
+                    {/* <button
+                      onClick={() => handleEditUser(user)}
+                      className={styles.actionBtn}
+                      title="Edit user"
+                    >
+                      <Pencil className={styles.actionIcon} />
+                    </button> */}
+
+                    <button
+                      className={styles.actionBtn}
+                      onClick={() => handleDeleteUser(user)}
+                      title="Delete user"
+                    >
+                      <Trash2 className={styles.actionIcon} />
+                    </button>
+
+                    <button
+                      className={styles.actionBtn}
+                      title="Block or Verify user"
+                      onClick={() => handleBlockUser(user)}
+                    >
+                      <Ban className={styles.actionIcon} />
+                    </button>
+                  </div>
+                </div>
+              </td>
 
               {/* Created Date */}
               <td className={styles.tableTd}>{user.createdAt}</td>
@@ -385,6 +419,7 @@ const usersData = props.usersData
                   {user.activate === "true" ? "Active" : "Inactive"}
                 </span>
               </td>
+              
 
               {/* User Type (role) */}
               <td className={styles.tableTd}>
@@ -414,36 +449,7 @@ const usersData = props.usersData
                 {user.usedCoupons?.length || 0}
               </td>
 
-              {/* Actions */}
-              <td className={styles.tableTd}>
-                <div className="relative">
-                  <div className={styles.actionButtons}>
-                    <button
-                      onClick={() => handleEditUser(user)}
-                      className={styles.actionBtn}
-                      title="Edit user"
-                    >
-                      <Pencil className={styles.actionIcon} />
-                    </button>
-
-                    <button
-                      className={styles.actionBtn}
-                      onClick={() => handleDeleteUser(user)}
-                      title="Delete user"
-                    >
-                      <Trash2 className={styles.actionIcon} />
-                    </button>
-
-                    <button
-                      className={styles.actionBtn}
-                      title="Block or Verify user"
-                      onClick={() => handleBlockUser(user)}
-                    >
-                      <Ban className={styles.actionIcon} />
-                    </button>
-                  </div>
-                </div>
-              </td>
+              
 
             </tr>
           ))}
@@ -586,7 +592,7 @@ const usersData = props.usersData
 export async function getServerSideProps() {
   await connectDB();
   const usersData = await Register.find({}).lean();
-  console.log(usersData)
+ 
 
   return {
     props: {

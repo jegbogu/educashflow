@@ -247,7 +247,7 @@ if(user.membership !=="Free plan"){
  //saving activities for record sake
           const newActivity = new Activity({
                  _id: new mongoose.Types.ObjectId(),
-                 activity:"A User just completed a quiz",
+                 activity:"A User Just Completed a Quiz",
                  description:`${user.username} || ${category} || ${subcategory}`,
                  createdAt: getFormattedDateTime()
                 
