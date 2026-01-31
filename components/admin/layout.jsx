@@ -159,8 +159,8 @@ export default function DashboardLayout({ children, onPageChange }) {
       >
         {/* Logo */}
         <div className={styles.sidebarLogo}>
-          <Logo />
-          <span className={styles.logoText}>EduCashflow</span>
+          <img src="https://eduquizzglobal.vercel.app/logo.jpg" alt="logo" width={80} />
+          <span className="text-sm font-bold">Eduquizz Global Limited</span>
         </div>
 
         {/* Navigation */}
@@ -211,17 +211,17 @@ export default function DashboardLayout({ children, onPageChange }) {
       {/* Main Content */}
       <div className={styles.adminMain}>
         {/* Header */}
-        <header className={styles.adminHeader}>
-          <div className={styles.headerSearch}>
+        <header className="p-5 ">
+          {/* <div className={styles.headerSearch}>
             <Search className={styles.searchIcon} />
             <input
               type="text"
               placeholder="Search"
               className={styles.searchInput}
             />
-          </div>
+          </div> */}
 
-          <div className={styles.headerRight}>
+          <div className="flex items-center justify-between">
             <div className={styles.headerDate}>{formatCustomDate()}</div>
             <div className={styles.headerUser}>
               <User className={styles.userIcon} />
