@@ -33,6 +33,7 @@ import BlockUserModal from "@/components/admin/blockUser";
 import Register from "@/model/registerSchema";
 import connectDB from "@/utils/connectmongo";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 
 
@@ -57,7 +58,7 @@ const usersData = props.usersData
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
   const [showBlock, setShowBlock] = useState(false);
-
+  const router = useRouter()
   // Apply filters
   const filteredUsers = users
     .filter((user) => {
@@ -369,6 +370,7 @@ const bulkDeleteItems = {
 
                   <div className={styles.userDetails}>
                     <div className={styles.userName}>{user.fullname}</div>
+                    <div className="italic text-orange-800">{user.username}</div>
                     <div className={styles.userEmail}>{user.email}</div>
                   </div>
                 </div>

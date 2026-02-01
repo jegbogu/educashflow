@@ -1,13 +1,26 @@
- import connectDB from "../../../utils/connectmongo";
-//  import Activity from "../../model/recentactivities";
+import connectDB from "../../../utils/connectmongo";
+import Activity from "@/model/recentactivities";
 import Register from "@/model/registerSchema";
+import mongoose from "mongoose";
+
+
+/** ---------- Helpers ---------- **/
+
+// Format date and time (for logs or DB entries)
+function getFormattedDateTime() {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(
+    now.getHours()
+  )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+}
 
 async function handler(req, res) {
   if (req.method === "DELETE") {
     try {
       await connectDB()
       const { cd } = req.query;
-     console.log(cd)
+      
  
   const [userid, adminEmail, useremail ] = cd.split("-")
    const deleteItem =  await Register.findByIdAndDelete(userid)
