@@ -7,7 +7,7 @@ async function handler(req, res) {
     try {
       await connectDB()
       const { cd } = req.query;
-     
+     console.log(cd)
  
   const [userid, adminEmail, useremail ] = cd.split("-")
    const deleteItem =  await Register.findByIdAndDelete(userid)
