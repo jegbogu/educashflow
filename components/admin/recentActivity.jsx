@@ -53,7 +53,7 @@ export default function RecentActivity(props) {
 
   return (
     <div className={styles.activityList}>
-      {recentActivities.map((activity, index) => (
+      {recentActivities.reverse().map((activity, index) => (
         <div key={index} className={styles.activityItem}>
           <div className={styles.activityInfo}>
             <h3 className={styles.activityTitle}>{activity?.activity}</h3>

@@ -22,7 +22,7 @@ async function handler(req, res) {
     await connectDB();
 
     const { cd } = req.query;
-    const [userid, adminEmail, useremail] = cd.split("-");
+    const [userid, adminEmail, username] = cd.split("-");
 
     const user = await Register.findById(userid);
 
@@ -43,7 +43,7 @@ async function handler(req, res) {
     const newActivity = new Activity({
       _id: new mongoose.Types.ObjectId(),
       activity: actionText,
-      description: `User with email ${useremail} was ${isBlocked ? "unblocked" : "blocked"} by ${adminEmail}`,
+      description: `User with username ${username} was ${isBlocked ? "unblocked" : "blocked"} by ${adminEmail}`,
       createdAt: getFormattedDateTime(),
     });
 

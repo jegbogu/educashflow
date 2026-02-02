@@ -179,10 +179,10 @@ const bulkDeleteItems = {
 
 
   const toggleBlockUser = async (user) => {
-    console.log("user", user)
+   
 
-    const cd = `${user._id}-${userData.email}-${user.email}`
-    console.log("cd", cd)
+    const cd = `${user._id}-${userData.email}-${user.username}`
+     
 
      try {
       const response = await fetch(`/api/blockUser/${cd}`,{
