@@ -28,15 +28,15 @@ async function handler(req, res) {
     // ✅ Save activity FIRST
     const newActivity = new Activity({
       _id: new mongoose.Types.ObjectId(),
-      activity: "Bulk Questions Deleted",
-      description: `${deleted.deletedCount} question(s) deleted by ${adminemail}`,
+      activity: "Bulk Users Deleted",
+      description: `${deleted.deletedCount} users(s) deleted by ${adminemail}`,
       createdAt: getFormattedDateTime(),
     });
 
     await newActivity.save();
 
     return res.status(200).json({
-      message: "Selected questions were successfully deleted",
+      message: "Selected users were successfully deleted",
       deletedCount: deleted.deletedCount,
     });
 

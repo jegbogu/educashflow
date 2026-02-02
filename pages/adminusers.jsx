@@ -145,12 +145,13 @@ const usersData = props.usersData
   const bulkDelete = async () => {
     
 const bulkDeleteItems = {
-  data: selected
+  data: selected,
+   adminemail: userData.email
 }
-
+ 
  
   try {
-      const response = await fetch('/api/deleteItems',{
+      const response = await fetch('/api/deleteBulkUsers',{
       method:'post',
       body: JSON.stringify(bulkDeleteItems),
       headers:{

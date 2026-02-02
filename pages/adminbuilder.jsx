@@ -165,7 +165,8 @@ console.log("paginatedQuestions", paginatedQuestions)
   const bulkDelete = async () => {
     
 const bulkDeleteItems = {
-  data: selected
+  data: selected,
+  adminemail: userData.email
 }
 
  
