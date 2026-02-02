@@ -34,20 +34,21 @@ import Register from "@/model/registerSchema";
 import connectDB from "@/utils/connectmongo";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import Spinner from "@/components/icons/spinner";
 
 
 
  
 
 export default function UsersPage(props) {
-  
-
 const usersData = props.usersData
  const { data: session, status } = useSession();
- 
   const userData = session?.user;
- 
- 
+
+   
+  const [disabled, setDisabled] = useState(true);
+
   const [users, setUsers] = useState(usersData);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -59,6 +60,37 @@ const usersData = props.usersData
   const [showDelete, setShowDelete] = useState(false);
   const [showBlock, setShowBlock] = useState(false);
   const router = useRouter()
+  
+
+
+
+  // Handle redirects in useEffect
+  useEffect(() => {
+    if (status === "authenticated" && session?.user.role !== "admin") {
+      router.replace("/adminlogin");
+    } else if (status === "unauthenticated") {
+      router.replace("/adminlogin");
+    }
+  }, [status, session, router]);
+
+  // Show loading state while session is being checked
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-3xl font-bold">
+          <Spinner className="w-12 h-12" />
+        </div>
+      </div>
+    );
+  }
+
+  // If user is not allowed, return null to prevent flashing content
+  if (status !== "authenticated" || session?.user.role !== "admin") {
+    return null;
+  }
+ 
+ 
+
   // Apply filters
   const filteredUsers = users
     .filter((user) => {
