@@ -146,17 +146,31 @@ const bulkDeleteItems = {
 
 
 
-  const toggleBlockUser = (user) => {
-    if (user.status === "Blocked") {
-      setUsers((prev) =>
-        prev.map((u) => (u.id === user.id ? { ...u, status: "Active" } : u))
-      );
-    } else {
-      setUsers((prev) =>
-        prev.map((u) => (u.id === user.id ? { ...u, status: "Blocked" } : u))
-      );
+  const toggleBlockUser = async (user) => {
+    console.log("user", user)
+
+    const cd = `${user._id}-${userData.email}-${user.email}`
+    console.log("cd", cd)
+
+     try {
+      const response = await fetch(`/api/blockUser/${cd}`,{
+      method:'GET',
+       
+       
+    });
+    const res = await response.json()
+    if(!response.ok){
+      alert(res.message || "Something went wrong")
+    }else{
+      alert(res.message)
+      router.reload("/adminuser")
     }
-    setShowBlock(false);
+
+    setShowDelete(false);
+      
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const handleDeleteUser = (user) => {
@@ -343,7 +357,7 @@ const bulkDeleteItems = {
         </thead>
 
         <tbody className={styles.tableBody}>
-          {paginatedUsers.map((user, index) => (
+          {paginatedUsers.reverse().map((user, index) => (
             <tr key={index} className={styles.tableRow}>
               <td className={styles.tableTd}>
                 <input
@@ -371,7 +385,7 @@ const bulkDeleteItems = {
                   <div className={styles.userDetails}>
                     <div className={styles.userName}>{user.fullname}</div>
                     <div className="italic text-orange-800">{user.username}</div>
-                    <div className={styles.userEmail}>{user.email}</div>
+                    <div className={styles.userEmail}>{user.email.includes("noemail")?"Email: Null": user.email}</div>
                   </div>
                 </div>
               </td>
@@ -400,7 +414,7 @@ const bulkDeleteItems = {
                       title="Block or Verify user"
                       onClick={() => handleBlockUser(user)}
                     >
-                      <Ban className={styles.actionIcon} />
+                      {user.role.includes("blocked")?"UNBLOCK":<Ban className={styles.actionIcon} />}
                     </button>
                   </div>
                 </div>

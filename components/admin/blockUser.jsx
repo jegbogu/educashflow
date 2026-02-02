@@ -23,14 +23,14 @@ export default function BlockUserModal({ user, onClose, onConfirm }) {
 
         {/* Title */}
         <h2 className="text-xl font-bold mb-4 text-text">
-          {user.status === "Blocked" ? "Unblock User" : "Block User"}
+          {user.role.includes("blocked") ? "Unblock User" : "Block User"}
         </h2>
 
         {/* Message */}
         <p className="text-gray-700 mb-4">
           Are you sure you want to{" "}
-          <strong>{user.status === "Blocked" ? "Unblock" : "Block"}</strong>{" "}
-          <strong>{user.name}</strong> ({user.email})?
+          <strong>{user.role.includes("blocked") ? "Unblock" : "Block"}</strong>{" "}
+          <strong>{user.name}</strong> ({user.username})?
         </p>
 
         {/* Buttons */}
@@ -44,12 +44,12 @@ export default function BlockUserModal({ user, onClose, onConfirm }) {
           <button
             onClick={() => onConfirm(user)}
             className={`px-4 py-2 text-white rounded transition ${
-              user.status === "Blocked"
+             user.role.includes("blocked")
                 ? "bg-green-600 hover:bg-green-700"
                 : "bg-yellow-500 hover:bg-yellow-600"
             }`}
           >
-            {user.status === "Blocked" ? "Unblock" : "Block"}
+            {user.role.includes("blocked") ? "Unblock" : "Block"}
           </button>
         </div>
       </div>

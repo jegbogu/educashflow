@@ -18,8 +18,9 @@ import Quiz from "@/model/quizCreation";
  
 
 export default function QuizBuilderPage(props) {
+   
   
-  const [questions, setQuestions] = useState(props.quizzes);
+  const [questions, setQuestions] = useState(props.quizzes.reverse());
   const router = useRouter()
   const [filters, setFilters] = useState({
     month: "",
@@ -41,13 +42,14 @@ export default function QuizBuilderPage(props) {
 
   // Filtering
   const filteredQuestions = questions
+ 
     .filter((q) => q.question.toLowerCase().includes(search.toLowerCase()))
     .filter((q) => (filters.category ? q.category === filters.category : true))
     .filter((q) =>
       filters.subcategory ? q.subcategory === filters.subcategory : true
     )
     .filter((q) => (filters.level ? q.level === filters.level : true));
-
+  
   // Selection logic
   const toggleSelect = (id) => {
      
@@ -71,12 +73,12 @@ export default function QuizBuilderPage(props) {
   const start = (currentPage - 1) * itemsPerPage;
   const paginatedQuestions = filteredQuestions.slice(
     start,
-    start + itemsPerPage
+    start + itemsPerPage 
   );
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
+console.log("paginatedQuestions", paginatedQuestions)
   // // Open for adding new
   // const handleAddQuestion = () => {
   //   setSelectedQuestion(null);
@@ -284,7 +286,9 @@ const bulkDeleteItems = {
         {/* Questions Table */}
         <div className={styles.questionsSection}>
           <h2 className={styles.sectionTitle}>Existing Questions</h2>
-
+          <div className="border p-5 rounded-xl">
+            <span className="font-bold text-orange-700">Current Total Question: </span><span>{filteredQuestions.length}</span>
+          </div>
           <div className={styles.questionsTable}>
             <table className={styles.table}>
               <thead className={styles.tableHeader}>
@@ -298,6 +302,7 @@ const bulkDeleteItems = {
                       }
                     />
                   </th>
+                  <th className={styles.tableTh}>Created Date</th>
                   <th className={styles.tableTh}>Questions</th>
                   <th className={styles.tableTh}>Category</th>
                   <th className={styles.tableTh}>Subcategory</th>
@@ -305,8 +310,9 @@ const bulkDeleteItems = {
                 </tr>
               </thead>
               <tbody className={styles.tableBody}>
-                {paginatedQuestions.map((question) => (
+                {paginatedQuestions.reverse().map((question) => (
                   <tr key={question.id} className={styles.tableRow}>
+
                     <td className={styles.tableTd}>
                       <input
                         type="checkbox"
@@ -314,6 +320,7 @@ const bulkDeleteItems = {
                         onChange={() => toggleSelect(question._id)}
                       />
                     </td>
+                    <td className={styles.tableTd}>{question.createdAt}</td>
                     <td className={styles.tableTd}>
                       <div className={styles.questionCell}>
                         <span className={styles.questionText}>
