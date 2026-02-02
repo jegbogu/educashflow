@@ -2,11 +2,40 @@ import { User, Shield } from "lucide-react";
 import styles from "@/styles/settings.module.css";
 import DashboardLayout from "@/components/admin/layout";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import Spinner from "@/components/icons/spinner";
+import { useRouter } from "next/router";
 
 export default function SettingsPage() {
   const [profile, setProfile] = useState({ username: "", email: "" });
   const [password, setPassword] = useState({ current: "", new: "" });
-
+  const { data: session, status } = useSession();
+  const router  = useRouter()
+ // Handle redirects in useEffect
+      useEffect(() => {
+        if (status === "authenticated" && session?.user.role !== "admin") {
+          router.replace("/adminlogin");
+        } else if (status === "unauthenticated") {
+          router.replace("/adminlogin");
+        }
+      }, [status, session, router]);
+    
+      // Show loading state while session is being checked
+      if (status === "loading") {
+        return (
+          <div className="flex items-center justify-center h-screen">
+            <div className="text-3xl font-bold">
+              <Spinner className="w-12 h-12" />
+            </div>
+          </div>
+        );
+      }
+    
+      // If user is not allowed, return null to prevent flashing content
+      if (status !== "authenticated" || session?.user.role !== "admin") {
+        return null;
+      }
   
   return (
     <DashboardLayout>

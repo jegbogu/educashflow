@@ -27,6 +27,10 @@ import {
   Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import Spinner from "@/components/icons/spinner";
+import { useRouter } from "next/router";
 
 export function PaymentDonutChart({ transactions }) {
   const pending = transactions.filter(
@@ -111,8 +115,38 @@ export default function PaymentPage({ transactions }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [paymentData, setPaymentData] = useState(transactions);
   const [search, setSearch] = useState("");
-
+const router = useRouter()
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+
+   
+   const { data: session, status } = useSession();
+   
+
+
+  // Handle redirects in useEffect
+      useEffect(() => {
+        if (status === "authenticated" && session?.user.role !== "admin") {
+          router.replace("/adminlogin");
+        } else if (status === "unauthenticated") {
+          router.replace("/adminlogin");
+        }
+      }, [status, session, router]);
+    
+      // Show loading state while session is being checked
+      if (status === "loading") {
+        return (
+          <div className="flex items-center justify-center h-screen">
+            <div className="text-3xl font-bold">
+              <Spinner className="w-12 h-12" />
+            </div>
+          </div>
+        );
+      }
+    
+      // If user is not allowed, return null to prevent flashing content
+      if (status !== "authenticated" || session?.user.role !== "admin") {
+        return null;
+      }
 
   // Filter based on search input
   const filteredBySearch = paymentData.filter(

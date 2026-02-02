@@ -10,16 +10,20 @@ import QuestionModal from "@/components/admin/quizModal";
 import DeleteItemModal from "@/components/admin/deleteuestion";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
- 
+ import { useSession } from "next-auth/react";
+ import { useEffect } from "react";
 import connectDB from "@/utils/connectmongo";
 import Quiz from "@/model/quizCreation";
+import Spinner from "@/components/icons/spinner";
  
 
  
 
 export default function QuizBuilderPage(props) {
    
-  
+  const usersData = props.usersData
+   const { data: session, status } = useSession();
+    const userData = session?.user;
   const [questions, setQuestions] = useState(props.quizzes.reverse());
   const router = useRouter()
   const [filters, setFilters] = useState({
@@ -39,6 +43,35 @@ export default function QuizBuilderPage(props) {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+
+
+
+
+  // Handle redirects in useEffect
+    useEffect(() => {
+      if (status === "authenticated" && session?.user.role !== "admin") {
+        router.replace("/adminlogin");
+      } else if (status === "unauthenticated") {
+        router.replace("/adminlogin");
+      }
+    }, [status, session, router]);
+  
+    // Show loading state while session is being checked
+    if (status === "loading") {
+      return (
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-3xl font-bold">
+            <Spinner className="w-12 h-12" />
+          </div>
+        </div>
+      );
+    }
+  
+    // If user is not allowed, return null to prevent flashing content
+    if (status !== "authenticated" || session?.user.role !== "admin") {
+      return null;
+    }
 
   // Filtering
   const filteredQuestions = questions
