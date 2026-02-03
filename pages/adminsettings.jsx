@@ -11,6 +11,7 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState({ username: "", email: "" });
   const [password, setPassword] = useState({ current: "", new: "" });
   const { data: session, status } = useSession();
+  const userData = session?.user;
   const router  = useRouter()
  // Handle redirects in useEffect
       useEffect(() => {
@@ -36,7 +37,44 @@ export default function SettingsPage() {
       if (status !== "authenticated" || session?.user.role !== "admin") {
         return null;
       }
-  
+    
+      const data = {
+        currentPassword: password.current,
+        newPassword : password.new,
+        adminEmail: userData.email,
+        id: userData._id
+      }
+      
+        
+  async function submitData(){
+     console.log(password)
+  try {
+    
+      const response = await fetch('/api/updateAdminPassword',{
+      method:'POST',
+      body: JSON.stringify({data}),
+      headers:{
+        "Content-Type":"application/json"
+      }
+       
+    });
+    const res = await response.json()
+    if(!response.ok){
+      alert(res.message || "Something went wrong")
+    }else{
+      alert(res.message)
+      router.reload()
+    }
+
+    
+      
+    } catch (error) {
+      console.error(error)
+    }
+
+   
+  };
+
   return (
     <DashboardLayout>
       <div className={styles.settingsPage}>
@@ -119,7 +157,7 @@ export default function SettingsPage() {
               />
             </div>
 
-            <button className={styles.btnPrimary}>Update Password</button>
+            <button className={styles.btnPrimary} type="button" onClick={submitData}>Update Password</button>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ async function handler(req, res) {
     const { data, adminemail } = req.body;
 
     if (!Array.isArray(data) || data.length === 0) {
-      return res.status(400).json({ message: "No quiz IDs provided" });
+      return res.status(400).json({ message: "No users IDs provided" });
     }
 
     const deleted = await Quiz.deleteMany({
