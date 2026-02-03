@@ -1,7 +1,7 @@
 import connectDB from "../../utils/connectmongo";
  import Admin from "@/model/adminSchema";
 import Activity from "../../model/recentactivities";
-import bcrypt from "bcrypt";
+ 
 import mongoose from "mongoose";
  
 
@@ -26,49 +26,37 @@ export default async function handler(req, res) {
     await connectDB();
 
     // ✅ MATCH FRONTEND PAYLOAD
-    const { data } = req.body;
+    const { profileData } = req.body;
+    console.log("profileData",profileData)
 
-    if (!data.currentPassword || !data.newPassword) {
+    if (!profileData.email || !profileData.newUsername) {
       return res.status(400).json({
-        message: "Current password and new password are required",
+        message: "Email and Username are both required",
       });
     }
 
     // 🔐 Get admin user (adjust query if needed)
-    const user = await Admin.findById(data.id);
+    const user = await Admin.findById(profileData.id);
  
      
 
-    if (!user) {
+    if (user.email !== profileData.email) {
       return res.status(404).json({ message: "Admin not found" });
     }
 
-    // 🔑 Verify current password
-    const isValid = await bcrypt.compare(data.currentPassword, user.password);
-    if (!isValid) {
-      return res.status(401).json({ message: "Current password is incorrect" });
-    }
+     
 
-    // 🚫 Prevent same password reuse
-    const isSame = await bcrypt.compare(data.newPassword, user.password);
-    if (isSame) {
-      return res.status(400).json({
-        message: "New password cannot be the same as the old password",
-      });
-    }
-
-    // 🔐 Hash new password
-    const hashedPassword = await bcrypt.hash(data.newPassword, 12);
+    
 
     // ✅ Update password
     await Admin.findByIdAndUpdate(user._id, {
-      password: hashedPassword,
+      username: profileData.newUsername,
     });
 
     // 📝 Save activity log
     const newActivity = new Activity({
       _id: new mongoose.Types.ObjectId(),
-      activity: "Admin updated password",
+      activity: "Admin updated username",
       description: `${user._id.toString()} || ${user.email}`,
       createdAt: getFormattedDateTime(),
     });
@@ -76,10 +64,10 @@ export default async function handler(req, res) {
     await newActivity.save();
 
     return res.status(200).json({
-      message: "Password updated successfully",
+      message: "Username updated successfully",
     });
   } catch (error) {
-    console.error("Password update error:", error);
+    console.error("Username update error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }

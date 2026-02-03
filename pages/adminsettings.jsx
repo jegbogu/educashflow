@@ -47,12 +47,48 @@ export default function SettingsPage() {
       
         
   async function submitData(){
-     console.log(password)
+ 
   try {
     
       const response = await fetch('/api/updateAdminPassword',{
       method:'POST',
       body: JSON.stringify({data}),
+      headers:{
+        "Content-Type":"application/json"
+      }
+       
+    });
+    const res = await response.json()
+    if(!response.ok){
+      alert(res.message || "Something went wrong")
+    }else{
+      alert(res.message)
+      router.reload()
+    }
+
+    
+      
+    } catch (error) {
+      console.error(error)
+    }
+
+   
+  };
+      const profileData = {
+        newUsername: profile.username,
+        email : profile.email,
+        adminEmail: userData.email,
+        id: userData._id
+      }
+      
+        
+  async function updateProfile(){
+ console.log(profile)
+  try {
+    
+      const response = await fetch('/api/updateAdminProfile',{
+      method:'POST',
+      body: JSON.stringify({profileData}),
       headers:{
         "Content-Type":"application/json"
       }
@@ -98,7 +134,7 @@ export default function SettingsPage() {
               <input
                 type="text"
                 className={styles.formInput}
-                placeholder="Enter username"
+                placeholder="Enter New Username"
                 value={profile.username}
                 onChange={(e) =>
                   setProfile((prev) => ({ ...prev, username: e.target.value }))
@@ -111,7 +147,7 @@ export default function SettingsPage() {
               <input
                 type="email"
                 className={styles.formInput}
-                placeholder="Enter email"
+                placeholder="Enter Current Email"
                 value={profile.email}
                 onChange={(e) =>
                   setProfile((prev) => ({ ...prev, email: e.target.value }))
@@ -119,7 +155,7 @@ export default function SettingsPage() {
               />
             </div>
 
-            <button className={styles.btnPrimary}>Update Username</button>
+            <button className={styles.btnPrimary} type="button" onClick={updateProfile}>Update Username</button>
           </div>
 
           {/* Security Settings */}
