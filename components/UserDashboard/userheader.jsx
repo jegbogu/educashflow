@@ -77,12 +77,7 @@ export default function Userheader({ userData }) {
                       <h2 className="text-lg font-semibold text-gray-800">
                         Notifications
                       </h2>
-                      <button
-                        onClick={toggleNotifications}
-                        className="text-gray-400 hover:text-red-500 transition-colors"
-                      >
-                        <X />
-                      </button>
+                      
                     </div>
 
                     {/* Notifications List */}
