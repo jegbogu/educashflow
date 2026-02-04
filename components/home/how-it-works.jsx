@@ -71,7 +71,7 @@ export default function HowItWorks() {
         <div className="howItWorks flex items-center gap-6 overflow-hidden">
           {trail.map((style, i) => (
             <React.Fragment key={i}>
-              <animated.div className="card" style={style}>
+              <div className="card" style={style}>
                 <div className="works-icon">
                   <Image
                     src={steps[i].icon}
@@ -82,7 +82,7 @@ export default function HowItWorks() {
                 </div>
                 <p className="card-title">{steps[i].title}</p>
                 <p>{steps[i].desc}</p>
-              </animated.div>
+              </div>
 
               {i < steps.length - 1 && (
                 <span>

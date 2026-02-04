@@ -414,8 +414,8 @@ const router = useRouter()
 
 export async function getServerSideProps() {
   await connectDB();
-  const transactions = await ConfirmPayment.find({}).lean();
-
+  const trans = await ConfirmPayment.find({}).lean();
+const transactions = trans.reverse()
   return {
     props: {
       transactions: JSON.parse(JSON.stringify(transactions)),

@@ -27,7 +27,7 @@ export default async function handler(req, res) {
 
     // ✅ MATCH FRONTEND PAYLOAD
     const { profileData } = req.body;
-    console.log("profileData",profileData)
+     
 
     if (!profileData.email || !profileData.newUsername) {
       return res.status(400).json({

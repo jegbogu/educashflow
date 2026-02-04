@@ -44,37 +44,32 @@ export default function Testimonials() {
   );
 
   const testimonies = [
-    {
-      testimony:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do\
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut\
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-      name: "Arden Price",
-      contact: "arden@lytbot",
-      image: "/testimonial-img1.png",
-      occupation: "Tutor",
-    },
-    {
-      testimony:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do\
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut\
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-      name: "Emery Blake",
-      contact: "emery@lytbot",
-      image: "/testimonial-img2.png",
-      occupation: "Instructor",
-    },
-    {
-      testimony:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do\
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut\
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-      name: "Maren Caldwel",
-      contact: "maren@lytbot",
-      image: "/testimonial-img3.png",
-      occupation: "CEO",
-    },
-  ];
+  {
+    testimony:
+      "The quiz system is simple and fun to use. Answering questions and earning points keeps me motivated, and I love being able to track everything in my wallet.",
+    name: "Arden Price",
+    contact: "arden@lytbot",
+    image: "/testimonial-img1.png",
+    occupation: "Participant",
+  },
+  {
+    testimony:
+      "Registration was quick, the coupon worked instantly, and I was able to start quizzes right away. Earning rewards for knowledge makes the experience exciting and engaging.",
+    name: "Emery Blake",
+    contact: "emery@lytbot",
+    image: "/testimonial-img2.png",
+    occupation: "Quiz User",
+  },
+  {
+    testimony:
+      "This platform turns learning into real value. The secure system, reward tracking, and smooth quiz experience make it perfect for engaging users and encouraging participation.",
+    name: "Maren Caldwell",
+    contact: "maren@lytbot",
+    image: "/testimonial-img3.png",
+    occupation: "Platform Manager",
+  },
+];
+
 
   return (
     <section className="max-w-7xl mx-auto my-16 py-4 space-y-16 px-4">

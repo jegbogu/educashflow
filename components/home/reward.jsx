@@ -38,7 +38,7 @@ export default function Reward() {
                    
                 </div>
             
-              <button className="w-full bg-[#21294F] py-6 rounded-xl text-white hover:bg-[#21294F]/90">
+              <button type="button"  onClick={()=>router.push("/dashboard")} className="w-full bg-[#21294F] py-6 rounded-xl text-white hover:bg-[#21294F]/90" >
                  Redeem Now
               </button>
                 {/* <button className="w-full bg-[#21294F] py-6 rounded-xl text-white hover:bg-[#21294F]/90" onClick={router.push("/dashboard")}>

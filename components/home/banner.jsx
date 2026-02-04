@@ -95,7 +95,7 @@ export default function Banner(props) {
       </animated.div>
       <animated.div className="img my-12 lg:my-0" style={{ ...img }}>
         <Image
-          src="home-img.svg"
+          src="/home-img.png"
           width={400}
           height={400}
           alt="home image"
