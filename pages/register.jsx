@@ -7,6 +7,7 @@ import EyeIcon from "@/components/icons/eyeicon";
 import EyeOffIcon from "@/components/icons/eyeofficon";
 import Link from "next/link";
 import Spinner from "@/components/icons/spinner";
+ 
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -211,6 +212,13 @@ text-red-700"
 
   return (
     <div className="p-6">
+     
+ <Link
+  href="/"
+  className="inline-flex items-center text-secondary p-2 rounded-md hover:bg-gray-50 transition"
+>
+  ←
+</Link>
       <div className="max-w-xl mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
         {/* Header */}
         <h1 className="text-center p-2 text-2xl font-bold text-gray-800">

@@ -16,6 +16,11 @@ import { quizConfig } from "@/config/quizConfig";
 export default function EarningsPage() {
   const { data: session, status } = useSession();
   const userData = session?.user;
+    //Withdrawals
+   const withdrawalNeededDollar = quizConfig.minimumAmount-userData?.amountMade
+  
+   const withdrawalNeededNaira = quizConfig.minimumAmountNaira-userData?.amountMade
+ 
 
   const router = useRouter();
   const [disabled, setDisabled] = useState(true);

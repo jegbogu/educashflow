@@ -255,12 +255,22 @@ export default async function handler(req, res) {
       return;
     }
 
-    res
+    if(email.includes("noemail")){
+      res
+      .status(201)
+      .json({
+        message:
+          "Registration successful",
+      });
+    }else{
+      res
       .status(201)
       .json({
         message:
           "Registration successful, please check your email to activate your account",
       });
+    }
+    
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });

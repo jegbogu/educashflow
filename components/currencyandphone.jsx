@@ -39,7 +39,7 @@ export default function CurrencyAndPhone({userData}) {
         alert(newPostData.message||"Something went wrong");
         setIsSubmitting(false); // Allow user to retry if request fails
       } else {
-        alert("Thank you for the update");
+        alert("Thank you for the update, please you will have to login again to continue. Thank you");
         moveIt()
         async function moveIt(){
         
@@ -55,8 +55,8 @@ export default function CurrencyAndPhone({userData}) {
 
       <form className="space-y-6 bg-white p-6 rounded-lg shadow-lg w-[95%] max-w-2xl mx-auto my-10 max-h-[90vh] overflow-y-auto">
              
-        <h3 className="text-sm text-gray-700">
-          Please note that this will affect your coupon purchase and earning, so choose wisely.
+        <h3 className="text-sm text-gray-700 text-center">
+          Please note that this cannot be changed on this account and it will affect your coupon purchase and earning, so choose wisely.
         </h3>
 
       
@@ -83,10 +83,10 @@ export default function CurrencyAndPhone({userData}) {
           <label className="font-semibold">
             Phone Number
           </label>
-
+          <p className="text-sm text-gray-700">Just type your country code without + eg: 234</p>
           <PhoneInput
             country="ng"
-            placeholder="+234 812 345 6789"
+            placeholder="234 812 345 6789"
             value={phone}
             enableSearch={true}
             onChange={(value, country) => {
