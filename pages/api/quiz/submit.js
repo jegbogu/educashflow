@@ -35,7 +35,7 @@ async function handler(req, res) {
       answers,
       finishedAt,
     } = req.body;
-
+ 
     // Make sure userId exists
     if (!userId) {
       return res.status(400).json({ message: "userId is required" });
@@ -43,6 +43,7 @@ async function handler(req, res) {
 
     // Find user by MongoDB _id
     const user = await Register.findById(userId);
+    console.log(user)
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -201,7 +202,9 @@ async function handler(req, res) {
 
     const newamountMade = (user.points + newUserPoints) * (quizConfig.perPoint);
      
-
+if(user.membership !=="Free plan"){
+  
+}
  //updating usergames
  const ug = {
   timestamp: getFormattedDateTime(),

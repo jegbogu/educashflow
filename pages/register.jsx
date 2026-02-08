@@ -217,7 +217,7 @@ text-red-700"
   href="/"
   className="inline-flex items-center text-secondary p-2 rounded-md hover:bg-gray-50 transition"
 >
-  ←
+  ← Home
 </Link>
       <div className="max-w-xl mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
         {/* Header */}

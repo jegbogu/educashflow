@@ -51,7 +51,7 @@ export default function Login() {
   href="/"
   className="inline-flex items-center text-secondary p-2 rounded-md hover:bg-gray-50 transition"
 >
-  ←
+  ← Home
 </Link>
       <div className="max-w-xl mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
         <h1 className="text-center text-2xl font-bold text-gray-800 p-2">Login</h1>
