@@ -159,7 +159,7 @@ export default function DashboardLayout({ children, onPageChange }) {
       >
         {/* Logo */}
         <div className={styles.sidebarLogo}>
-          <img src="https://eduquizzglobal/logo.jpg" alt="logo" width={80} />
+          <img src="https://www.eduquizzglobal.com/logo.jpg" alt="logo" width={80} />
           <span className="text-sm font-bold">Eduquizz Global Limited</span>
         </div>
 
