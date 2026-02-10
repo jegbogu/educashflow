@@ -103,7 +103,7 @@ text-green-700"
       email: enteredemail,
     };
 
-    const response = await fetch("http://localhost:3000/api/admin-register", {
+    const response = await fetch("/api/admin-register", {
       body: JSON.stringify(data),
       method: "POST",
       headers: {
