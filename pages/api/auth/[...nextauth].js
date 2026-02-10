@@ -21,7 +21,7 @@ export const authOptions = {
         try {
           const { email, password, role } = credentials
      
-          const response = await fetch('https://eduquizzglobal/api/login', {
+          const response = await fetch('/api/login', {
             method: 'POST',
             body: JSON.stringify({ email, password, role}),
             headers: {
