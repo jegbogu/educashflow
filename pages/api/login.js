@@ -26,6 +26,7 @@ function getFormattedDateTime() {
         await connectDB()
  
         const{email, password, role} = req.body
+        console.log({email, password, role})
        
         if(role==='admin'){
             
