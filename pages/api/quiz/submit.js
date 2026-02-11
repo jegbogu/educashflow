@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import Register from "@/model/registerSchema";
 import { quizConfig } from "@/config/quizConfig";
+import { couponConfig } from "@/config/couponConfig";
+ 
 import Activity from "@/model/recentactivities";
 
 
@@ -201,12 +203,13 @@ async function handler(req, res) {
 
 
     const newamountMade = (user.points + newUserPoints) * (quizConfig.perPoint);
-     
-if(user.membership !=="Free plan"){
-  
-}
- //updating usergames
+
+
+
+    if(user.membership =="Free plan"){
+  //updating usergames
  const ug = {
+   
   timestamp: getFormattedDateTime(),
   quizId: quizId,
       subcategory:subcategory,
@@ -217,12 +220,12 @@ if(user.membership !=="Free plan"){
    amountMade:  latestGamePoints * quizConfig.perPoint ,
   membership: user.membership
  }
- //add it to array
+ //add it to array of general games played
     await Register.updateOne(
   { _id: userId }, // match document
   { $push: { usergames: ug } }  
 );
-
+//update the amount and points and change the user membership to free
     const updatedUser = await Register.findByIdAndUpdate(
       userId,
       {
@@ -230,33 +233,102 @@ if(user.membership !=="Free plan"){
           level: newUserlevel,
           points: newUserPoints,
           amountMade: newamountMade,
+          
         },
       },
       { new: true }
     );
 
 
-//this checks if the user plan so as to update the latestPurchasedGames
-if(user.membership !=="Free plan"){
-  //add it to array
+ 
+ 
+  //add it to array to latestpurchasedgames played
     await Register.updateOne(
   { _id: userId }, // match document
   { $push: { latestPurchaseGames: ug } }  
 );
-}
+
  
 
-
- //saving activities for record sake
+/////record that a user has completed his purchased game limit
+//saving activities for record sake
           const newActivity = new Activity({
                  _id: new mongoose.Types.ObjectId(),
                  activity:"A User Just Completed a Quiz",
-                 description:`${user.username} || ${category} || ${subcategory}`,
+                 description:`${user.username} || ${category} || ${subcategory} || ${user.membership}` ,
                  createdAt: getFormattedDateTime()
                 
                });
          
                await newActivity.save();
+ 
+  
+}
+//this is to get the length of games the user is to play from his package, so as to prevent the user from playing more than the stated number of games
+
+ 
+   const foundPackage =  couponConfig.find((el)=>el.name == user.membership)
+if(user.membership !=="Free plan" && user.latestPurchaseGames.length== foundPackage.gameLimit){
+  //updating usergames
+ const ug = {
+  completedRound: getFormattedDateTime(),
+  timestamp: getFormattedDateTime(),
+  quizId: quizId,
+      subcategory:subcategory,
+      category:category,
+      level:level,
+      correctCount: correctCount,
+        pointsMade: latestGamePoints,
+   amountMade:  latestGamePoints * quizConfig.perPoint ,
+  membership: user.membership
+ }
+ //add it to array of general games played
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { usergames: ug } }  
+);
+//update the amount and points and change the user membership to free
+    const updatedUser = await Register.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          membership: "Free plan"
+        },
+      },
+      { new: true }
+    );
+
+
+ 
+ 
+  //add it to array to latestpurchasedgames played
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { latestPurchaseGames: ug } }  
+);
+
+ 
+
+/////record that a user has completed his purchased game limit
+//saving activities for record sake
+          const newActivity = new Activity({
+                 _id: new mongoose.Types.ObjectId(),
+                 activity:"A User Just Completed a Quiz- and has completed package circle",
+                 description:`${user.username} || ${category} || ${subcategory} || ${user.membership}` ,
+                 createdAt: getFormattedDateTime()
+                
+               });
+         
+               await newActivity.save();
+ 
+  
+}
+
+ 
+ 
+ 
+
+
  
     // Example: you could now save quiz results, etc.
     return res.status(200).json({ message: "User fetched successfully", user });

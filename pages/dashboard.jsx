@@ -31,6 +31,40 @@ export default function Dashboard(props) {
   const [disabled, setDisabled] = useState(true)
 
   const userData = session?.user;
+    const router = useRouter();
+
+
+  // Handle redirects in useEffect
+  useEffect(() => {
+    if (status === "authenticated" && session?.user.role !== "user") {
+      router.replace("/login");
+    } else if (status === "unauthenticated") {
+      router.replace("/login");
+    }
+  }, [status, session, router]);
+
+  // Show loading state while session is being checked
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-3xl font-bold">
+          <Spinner className="w-12 h-12" />
+        </div>
+      </div>
+    );
+  }
+
+  // If user is not allowed, return null to prevent flashing content
+  if (status !== "authenticated" || session?.user.role !== "user" || session?.user.spaceOne== "Null") {
+   router.replace("/login");
+  }
+
+
+
+
+
+
+
 
   //Withdrawals
  const withdrawalNeededDollar = quizConfig.minimumAmount-userData?.amountMade
@@ -207,39 +241,6 @@ function getPercentageChange(data) {
 
 
 
-
-
-
-
-
-
-
-  const router = useRouter();
-
-  // Handle redirects in useEffect
-  useEffect(() => {
-    if (status === "authenticated" && session?.user.role !== "user") {
-      router.replace("/login");
-    } else if (status === "unauthenticated") {
-      router.replace("/login");
-    }
-  }, [status, session, router]);
-
-  // Show loading state while session is being checked
-  if (status === "loading") {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-3xl font-bold">
-          <Spinner className="w-12 h-12" />
-        </div>
-      </div>
-    );
-  }
-
-  // If user is not allowed, return null to prevent flashing content
-  if (status !== "authenticated" || session?.user.role !== "user") {
-    return null;
-  }
   let minimumInCurrency;
   if(userData?.spaceOne.includes("Naira")){
     minimumInCurrency = <div>

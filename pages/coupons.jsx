@@ -40,9 +40,10 @@ export default function Coupons() {
   }
 
   // If user is not allowed, return null to prevent flashing content
-  if (status !== "authenticated" || session?.user.role !== "user") {
-    return null;
+  if (status !== "authenticated" || session?.user.role !== "user" || session?.user.spaceOne== "Null") {
+   router.replace("/login");
   }
+   
 function findPlan(plan){
    
  setFoundPlan(plan)

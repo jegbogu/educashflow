@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     // ================================
     const latestPurchase = user.latestPurchase;
 
-    if (latestPurchase && latestPurchase.length > 0) {
+    if ( latestPurchase && latestPurchase.length > 0 && user.membership !=="Free plan") {
       const expiryDate = latestPurchase[latestPurchase.length - 1].expiryDate;
 
       if (expiryDate) {
@@ -53,6 +53,17 @@ export default async function handler(req, res) {
 
         // ❌ Package expired already
         if (diffDays < 0) {
+
+ const updatedUser = await Register.findByIdAndUpdate(
+      userID,
+      {
+        $set: {
+          membership: "Free plan"
+        },
+      },
+      { new: true }
+    );
+
           return res.status(403).json({
             message: `Package expired ${Math.abs(diffDays)} day(s) ago`,
           });
@@ -60,6 +71,17 @@ export default async function handler(req, res) {
 
         // ❌ Package expires today
         if (diffDays === 0) {
+
+const updatedUser = await Register.findByIdAndUpdate(
+      userID,
+      {
+        $set: {
+          membership: "Free plan"
+        },
+      },
+      { new: true }
+    );
+
           return res.status(403).json({
             message: "Package expired today",
           });
