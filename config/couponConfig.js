@@ -4,7 +4,7 @@
       priceDollar: "$5",
       priceNaira: "₦500",
       features: [
-        "10 quiz attempt",
+        "3 quiz attempt",
         "Valid for 7 days", 
         "2x earning rate",
         "Standard earning rate",
@@ -12,7 +12,7 @@
       ],
       buttonStyle: "planButtonBronze",
       popular: false,
-      gameLimit:10,
+      gameLimit:3,
       validDays: 7,
       earningRate:2
 
@@ -22,7 +22,7 @@
       priceDollar: "$10",
       priceNaira: "₦1000",
       features: [
-        "25 quiz attempt",
+        "5 quiz attempt",
         "Valid for 14 days",
         "4x earning rate",
         "Priority Support",
@@ -31,7 +31,7 @@
       buttonStyle: "planButtonSilver",
       popular: true, // has badge "Most Popular"
       badgeText: "Most Popular",
-       gameLimit:25,
+       gameLimit:5,
       validDays: 14,
       earningRate:4
     },

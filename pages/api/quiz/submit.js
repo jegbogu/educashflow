@@ -206,7 +206,8 @@ async function handler(req, res) {
 
 
 
-    if(user.membership =="Free plan"){
+  if(user.membership =="Free plan"){
+      console.log('free play')
   //updating usergames
  const ug = {
    
@@ -256,8 +257,28 @@ async function handler(req, res) {
  
   
 }
-    if(user.membership !="Free plan"){
+
+
+
+
+
+
+
+
+
+
+//this is to catch the exact time the user completed his package limit
+let foundPackage
+if(user.membership !="Free plan"){
+   foundPackage =  couponPlans.find((el)=>el.name == user.membership)
+   console.log("foundPackage", foundPackage)
+}
+
+
+  if(user.membership !="Free plan" && user.latestPurchase.length==1 && user.latestPurchaseGames.length < foundPackage.gameLimit && user.latestPurchaseGames.length +1 != foundPackage.gameLimit ){
   //updating usergames
+  console.log("not free plan" , user.latestPurchaseGames.length, user.latestPurchaseGames.length+1)
+  
  const ug = {
    
   timestamp: getFormattedDateTime(),
@@ -320,10 +341,180 @@ async function handler(req, res) {
 //this is to get the length of games the user is to play from his package, so as to prevent the user from playing more than the stated number of games
  
  
-//this is to catch the exact time the user completed his package limit
-   const foundPackage =  couponPlans.find((el)=>el.name == user.membership)
-   //This to capture the last game for that circle pens it, and then put the user back to a free plan
-if(user.membership !=="Free plan" && user.latestPurchaseGames.length + 2 == foundPackage.gameLimit){
+
+   //This to capture the  first time the user completes his first game circle, the logic captures it and places the user back to free plan
+if(user.membership !=="Free plan" && user.latestPurchase.length == 1 && user.latestPurchaseGames.length + 1 == foundPackage.gameLimit){
+  //updating usergames
+  console.log("user.latestPurchaseGames.length",user.latestPurchaseGames.length)
+  console.log('first play')
+ const ug = {
+  completedRound: getFormattedDateTime(),
+  timestamp: getFormattedDateTime(),
+  quizId: quizId,
+      subcategory:subcategory,
+      category:category,
+      level:level,
+      correctCount: correctCount,
+        pointsMade: latestGamePoints,
+   amountMade:  latestGamePoints * quizConfig.perPoint ,
+  membership: user.membership
+ }
+ //add it to array of general games played
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { usergames: ug } }  
+);
+//update the amount and points and change the user membership to free
+    const updatedUser = await Register.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          level: newUserlevel,
+          points: newUserPoints,
+          amountMade: newamountMade,
+          membership: "Free plan"
+           
+        },
+      },
+      { new: true }
+    );
+
+
+ 
+ 
+  //add it to array to latestpurchasedgames played
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { latestPurchaseGames: ug } }  
+);
+
+ 
+
+/////record that a user has completed his purchased game limit
+//saving activities for record sake
+          const newActivity = new Activity({
+                 _id: new mongoose.Types.ObjectId(),
+                 activity:"A User Just Completed a Quiz- and has completed package circle",
+                 description:`${user.username} || ${category} || ${subcategory} || ${user.membership}` ,
+                 createdAt: getFormattedDateTime()
+                
+               });
+         
+               await newActivity.save();
+ 
+  
+}
+//Index number of the last limit which shows completed round
+ 
+
+function parseDate(dateStr) {
+  const [datePart, timePart] = dateStr.split(" ");
+  const [day, month, year] = datePart.split("-");
+  return new Date(`${year}-${month}-${day}T${timePart}`);
+}
+
+const foundIndex = user.latestPurchaseGames.reduce((latestIndex, obj, currentIndex) => {
+  if (!obj.completedRound) return latestIndex;
+
+  const currentDate = parseDate(obj.completedRound);
+
+  if (latestIndex === -1) return currentIndex;
+
+  const latestDate = parseDate(user.latestPurchaseGames[latestIndex].completedRound);
+
+  return currentDate > latestDate ? currentIndex : latestIndex;
+}, -1);
+
+
+
+
+
+if(foundIndex!=-1 && user.membership !="Free plan"){
+//Add the foundIndex number to the current user game limit purchase
+const addUp = Number(foundIndex) + foundPackage.gameLimit
+console.log("addUp",addUp)
+console.log("user.latestPurchaseGames.length", user.latestPurchaseGames.length)
+
+console.log(user.latestPurchaseGames)
+
+// this is when the user has already gone other a first circle
+if(user.membership !=="Free plan" && user. latestPurchase.length > 1 && user.latestPurchaseGames.length  != addUp ){
+  console.log('second play', 'onplay')
+  //updating usergames
+ const ug = {
+   
+  timestamp: getFormattedDateTime(),
+  quizId: quizId,
+      subcategory:subcategory,
+      category:category,
+      level:level,
+      correctCount: correctCount,
+        pointsMade: latestGamePoints,
+   amountMade:  latestGamePoints * quizConfig.perPoint ,
+  membership: user.membership
+ }
+ //add it to array of general games played
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { usergames: ug } }  
+);
+//update the amount and points and change the user membership to free
+    const updatedUser = await Register.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          level: newUserlevel,
+          points: newUserPoints,
+          amountMade: newamountMade,
+         
+           
+        },
+      },
+      { new: true }
+    );
+
+
+ 
+ 
+  //add it to array to latestpurchasedgames played
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { latestPurchaseGames: ug } }  
+);
+
+ 
+
+/////record that a user has completed his purchased game limit
+//saving activities for record sake
+          const newActivity = new Activity({
+                 _id: new mongoose.Types.ObjectId(),
+                 activity:"A User Just Completed a Quiz- and has completed package circle",
+                 description:`${user.username} || ${category} || ${subcategory} || ${user.membership}` ,
+                 createdAt: getFormattedDateTime()
+                
+               });
+         
+               await newActivity.save();
+ 
+  
+}
+}
+
+
+ 
+
+
+
+if(foundIndex!=-1 && user.membership !="Free plan"){
+//Add the foundIndex number to the current user game limit purchase
+const addUp = Number(foundIndex) + foundPackage.gameLimit
+
+ 
+
+console.log(user.latestPurchaseGames)
+// this is when the user has already gone other a first circle
+if(user.membership !=="Free plan" && user. latestPurchase.length > 1 && user.latestPurchaseGames.length  == addUp){
+  console.log('second play')
   //updating usergames
  const ug = {
   completedRound: getFormattedDateTime(),
@@ -382,66 +573,6 @@ if(user.membership !=="Free plan" && user.latestPurchaseGames.length + 2 == foun
  
   
 }
-
-// this is when the user has already gone other a first circle
-if(user.membership !=="Free plan" && user. latestPurchase.length > 1 && user){
-  //updating usergames
- const ug = {
-  completedRound: getFormattedDateTime(),
-  timestamp: getFormattedDateTime(),
-  quizId: quizId,
-      subcategory:subcategory,
-      category:category,
-      level:level,
-      correctCount: correctCount,
-        pointsMade: latestGamePoints,
-   amountMade:  latestGamePoints * quizConfig.perPoint ,
-  membership: user.membership
- }
- //add it to array of general games played
-    await Register.updateOne(
-  { _id: userId }, // match document
-  { $push: { usergames: ug } }  
-);
-//update the amount and points and change the user membership to free
-    const updatedUser = await Register.findByIdAndUpdate(
-      userId,
-      {
-        $set: {
-          level: newUserlevel,
-          points: newUserPoints,
-          amountMade: newamountMade,
-          membership: "Free plan"
-           
-        },
-      },
-      { new: true }
-    );
-
-
- 
- 
-  //add it to array to latestpurchasedgames played
-    await Register.updateOne(
-  { _id: userId }, // match document
-  { $push: { latestPurchaseGames: ug } }  
-);
-
- 
-
-/////record that a user has completed his purchased game limit
-//saving activities for record sake
-          const newActivity = new Activity({
-                 _id: new mongoose.Types.ObjectId(),
-                 activity:"A User Just Completed a Quiz- and has completed package circle",
-                 description:`${user.username} || ${category} || ${subcategory} || ${user.membership}` ,
-                 createdAt: getFormattedDateTime()
-                
-               });
-         
-               await newActivity.save();
- 
-  
 }
 
  

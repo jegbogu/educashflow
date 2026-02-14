@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useSpring, animated } from "@react-spring/web";
 import style from "@/styles/Home.module.css";
 import UsersQuiz from "../UserQuiz/quiz";
+import Link from "next/link";
 
 export default function Banner(props) {
   const [modal, setModal] = useState(false);
@@ -36,7 +37,7 @@ export default function Banner(props) {
           <br /> winning points you can spend in your wallet
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button size="lg">Register Now </Button>
+          <Link href="/register"><Button size="lg">Register Now </Button></Link>
           <Button
             variant="outline"
             size="lg"

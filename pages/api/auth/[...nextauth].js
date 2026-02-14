@@ -20,7 +20,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         try {
           const { email, password, role } = credentials
-          console.log({ email, password, role })
+   
           const response = await fetch('https://www.eduquizzglobal.com/api/login', {
             method: 'POST',
             body: JSON.stringify({ email, password, role}),

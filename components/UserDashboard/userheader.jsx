@@ -44,7 +44,7 @@ export default function Userheader({ userData }) {
           <div className="flex flex-wrap items-center gap-4 md:gap-6 justify-end">
             {/* Level Badge */}
             <div className="bg-orange-300 hidden sm:block px-2 py-1 rounded-full border text-orange-900 font-medium text-sm md:text-base">
-              Level {userData.level}
+              Level {userData?.level}
             </div>
 
             {/* Balance Badge */}
@@ -53,7 +53,7 @@ export default function Userheader({ userData }) {
             </div>
 
             {/* Points - hidden on very small screens */}
-            <p className="font-medium hidden sm:block">{userData.points} pts</p>
+            <p className="font-medium hidden sm:block">{userData?.points} pts</p>
 
             {/* Notifications */}
             <div
