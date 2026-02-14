@@ -241,14 +241,6 @@ async function handler(req, res) {
 
 
  
- 
-  //add it to array to latestpurchasedgames played
-    await Register.updateOne(
-  { _id: userId }, // match document
-  { $push: { latestPurchaseGames: ug } }  
-);
-
- 
 
 /////record that a user has completed his purchased game limit
 //saving activities for record sake
@@ -264,13 +256,74 @@ async function handler(req, res) {
  
   
 }
+    if(user.membership !="Free plan"){
+  //updating usergames
+ const ug = {
+   
+  timestamp: getFormattedDateTime(),
+  quizId: quizId,
+      subcategory:subcategory,
+      category:category,
+      level:level,
+      correctCount: correctCount,
+        pointsMade: latestGamePoints,
+   amountMade:  latestGamePoints * quizConfig.perPoint ,
+  membership: user.membership
+ }
+ //add it to array of general games played
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { usergames: ug } }  
+);
+//update the amount and points and change the user membership to free
+    const updatedUser = await Register.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          level: newUserlevel,
+          points: newUserPoints,
+          amountMade: newamountMade,
+          
+        },
+      },
+      { new: true }
+    );
+
+
+  //add it to array to latestpurchasedgames played
+    await Register.updateOne(
+  { _id: userId }, // match document
+  { $push: { latestPurchaseGames: ug } }  
+);
+
+/////record that a user has completed his purchased game limit
+//saving activities for record sake
+          const newActivity = new Activity({
+                 _id: new mongoose.Types.ObjectId(),
+                 activity:"A User Just Completed a Quiz",
+                 description:`${user.username} || ${category} || ${subcategory} || ${user.membership}` ,
+                 createdAt: getFormattedDateTime()
+                
+               });
+         
+               await newActivity.save();
+ 
+  
+}
+
+
+
+
+
+
+
 //this is to get the length of games the user is to play from his package, so as to prevent the user from playing more than the stated number of games
  
  
 //this is to catch the exact time the user completed his package limit
    const foundPackage =  couponPlans.find((el)=>el.name == user.membership)
    //This to capture the last game for that circle pens it, and then put the user back to a free plan
-if(user.membership !=="Free plan" && user.latestPurchaseGames.length + 1 == foundPackage.gameLimit){
+if(user.membership !=="Free plan" && user.latestPurchaseGames.length + 2 == foundPackage.gameLimit){
   //updating usergames
  const ug = {
   completedRound: getFormattedDateTime(),

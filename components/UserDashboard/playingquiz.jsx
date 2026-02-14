@@ -20,7 +20,7 @@ export default function Playingquiz({ quiz }) {
   const perQSeconds = Number(quizConfig?.perQuestionTime ?? 60);
   const ptsPerQ = Number(quizConfig?.pointsPerQuestion ?? 5);
 
-  console.log(quizConfig)
+  
 
 
   //setting points
@@ -73,7 +73,7 @@ export default function Playingquiz({ quiz }) {
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
 
-console.log("category", categoryFilter)
+ 
 
   const [subCategoryFilter, setSubCategoryFilter] = useState("");
   const [levelFilter, setLevelFilter] = useState("");

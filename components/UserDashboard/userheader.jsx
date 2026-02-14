@@ -106,9 +106,9 @@ export default function Userheader({ userData }) {
             {/* User Info - hidden on small screens */}
             <div className="hidden sm:block text-right">
               <p className="font-semibold truncate max-w-[100px] md:max-w-none">
-                {userData.username}
+                {userData?.username}
               </p>
-              <p className="text-sm text-gray-500">{userData.membership}</p>
+              <p className="text-sm text-gray-500">{userData?.membership}</p>
             </div>
 
             {/* Profile Avatar */}
@@ -131,25 +131,25 @@ export default function Userheader({ userData }) {
                   <div className="md:hidden flex flex-col space-y-2 border-b border-gray-100 pb-3">
                     <div className="flex justify-between items-center">
                       <span className="capitalize font-semibold text-gray-800">
-                        {userData.username}
+                        {userData?.username}
                       </span>
                       <span className="text-sm text-purple-600 font-medium">
-                        {userData.membership}
+                        {userData?.membership}
                       </span>
                     </div>
 
                     <div className="flex justify-between text-sm text-gray-700">
                       <span className="flex items-center gap-2">
                         <TrendingUp className="w-4 h-4 text-purple-500" />
-                        Level {userData.level}
+                        Level {userData?.level}
                       </span>
-                      <span>{userData.points} pts</span>
+                      <span>{userData?.points} pts</span>
                     </div>
 
                     <div className="flex justify-between text-sm text-gray-700">
                       <span className="flex items-center gap-2">
                         <Coins className="w-4 h-4 text-yellow-500" />$
-                        {userData.amountMade}
+                        {userData?.amountMade}
                       </span>
                     </div>
                   </div>
@@ -186,7 +186,7 @@ export default function Userheader({ userData }) {
       {/* Welcome Section */}
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <h1 className="text-xl md:text-2xl font-semibold">
-          Welcome back, {userData.username}!
+          Welcome back, {userData?.username}!
         </h1>
         <p className="text-gray-500 text-sm md:text-base">
           Ready to earn more points today? Let&apos;s dive into some exciting

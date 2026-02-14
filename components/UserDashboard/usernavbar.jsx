@@ -39,7 +39,7 @@ export default function Usernavbar() {
           ))}
         </ul>
       </nav>
-{userData?.paymentConfirmation==="Successful"?" ": <Buycouponbanner/>}
+{userData?.membership!=="Free plan"?" ": <Buycouponbanner/>}
      
     </div>
   );
