@@ -56,7 +56,7 @@ export default function EarningsPage() {
    let minimumInCurrency;
     if(userData?.spaceOne.includes("Naira")){
       minimumInCurrency = <div>
-    {quizConfig.minimumAmountNaira> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`}
+    {quizConfig.minimumAmountNaira> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`₦${PendingWithdrawal} Available in your account for withdrawal`}
       </div>
     }else{
      minimumInCurrency = <div>

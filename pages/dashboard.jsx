@@ -244,7 +244,7 @@ function getPercentageChange(data) {
   let minimumInCurrency;
   if(userData?.spaceOne.includes("Naira")){
     minimumInCurrency = <div>
-  {quizConfig.minimumAmountNaira> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`}
+  {quizConfig.minimumAmountNaira> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`₦${PendingWithdrawal} Available in your account for withdrawal`}
     </div>
   }else{
    minimumInCurrency = <div>
@@ -465,7 +465,7 @@ function getPercentageChange(data) {
                                    Minimum Not Reached
                                  </button>
                                  :
-                                 <button className="bg-blue-900 py-5 px-[30px] text-white w-full mt-5 rounded-md">
+                                 <button className="bg-blue-900 py-5 px-[30px] text-white w-full mt-5 rounded-md" >
                                  
                                    Request For Withdrawal
                                  </button>}
