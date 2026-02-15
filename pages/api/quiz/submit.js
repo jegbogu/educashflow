@@ -345,8 +345,7 @@ if(user.membership !="Free plan"){
    //This to capture the  first time the user completes his first game circle, the logic captures it and places the user back to free plan
 if(user.membership !=="Free plan" && user.latestPurchase.length == 1 && user.latestPurchaseGames.length + 1 == foundPackage.gameLimit){
   //updating usergames
-  console.log("user.latestPurchaseGames.length",user.latestPurchaseGames.length)
-  console.log('first play')
+  
  const ug = {
   completedRound: getFormattedDateTime(),
   timestamp: getFormattedDateTime(),
@@ -432,14 +431,11 @@ const foundIndex = user.latestPurchaseGames.reduce((latestIndex, obj, currentInd
 if(foundIndex!=-1 && user.membership !="Free plan"){
 //Add the foundIndex number to the current user game limit purchase
 const addUp = Number(foundIndex) + foundPackage.gameLimit
-console.log("addUp",addUp)
-console.log("user.latestPurchaseGames.length", user.latestPurchaseGames.length)
-
-console.log(user.latestPurchaseGames)
+ 
 
 // this is when the user has already gone other a first circle
 if(user.membership !=="Free plan" && user. latestPurchase.length > 1 && user.latestPurchaseGames.length  != addUp ){
-  console.log('second play', 'onplay')
+   
   //updating usergames
  const ug = {
    
@@ -511,10 +507,10 @@ const addUp = Number(foundIndex) + foundPackage.gameLimit
 
  
 
-console.log(user.latestPurchaseGames)
+ 
 // this is when the user has already gone other a first circle
 if(user.membership !=="Free plan" && user. latestPurchase.length > 1 && user.latestPurchaseGames.length  == addUp){
-  console.log('second play')
+  
   //updating usergames
  const ug = {
   completedRound: getFormattedDateTime(),

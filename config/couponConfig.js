@@ -4,7 +4,7 @@
       priceDollar: "$5",
       priceNaira: "₦500",
       features: [
-        "3 quiz attempt",
+        "10 quiz attempt",
         "Valid for 7 days", 
         "2x earning rate",
         "Standard earning rate",
@@ -22,7 +22,7 @@
       priceDollar: "$10",
       priceNaira: "₦1000",
       features: [
-        "5 quiz attempt",
+        "25 quiz attempt",
         "Valid for 14 days",
         "4x earning rate",
         "Priority Support",
