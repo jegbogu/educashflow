@@ -15,6 +15,8 @@ import { StatsCard } from "@/components/UserDashboard/statsCard";
 import { ProgressBar } from "@/components/UserDashboard/progressBar";
 import { QuizCard } from "@/components/UserDashboard/quizCard";
 import { ActivityItem } from "@/components/UserDashboard/activityItem";
+import UserFormupdate from "@/components/home/userformUpdate";
+import UserWithdrawalForm from "@/components/home/userWithdrawalForm";
 
  import UserQuizzes from "@/components/UserDashboard/userquizzes";
 import styles from "@/styles/userDashboard.module.css";
@@ -29,6 +31,7 @@ import Quiz from "../model/quizCreation";
 export default function Dashboard(props) {
   const { data: session, status } = useSession();
   const [disabled, setDisabled] = useState(true)
+  const [formDisplayed, setFormDisplayed] = useState(false)
 
   const userData = session?.user;
     const router = useRouter();
@@ -62,7 +65,14 @@ export default function Dashboard(props) {
 
 
 
-
+function userFormDisplay(){
+  if(userData?.email.includes("noemail")){
+setFormDisplayed(<UserFormupdate/>)
+  }else{
+    setFormDisplayed(<UserWithdrawalForm onClose={()=>setFormDisplayed(false)}/>)
+  }
+  
+}
 
 
 
@@ -251,67 +261,11 @@ function getPercentageChange(data) {
 {quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeededDollar} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`} 
     </div>
   }
-
-  // const quizzes = [
-  //   {
-  //     title: "World Geography Masters",
-  //     difficulty: "Medium",
-  //     subject: "Geography",
-  //     duration: "15 mins",
-  //     questions: "20 questions",
-  //     points: "+250 pts",
-  //     accuracy: "85%",
-  //     completed: true,
-  //     buttonText: "Retry",
-  //   },
-  //   {
-  //     title: "Science Fundamentals",
-  //     difficulty: "Easy",
-  //     subject: "Science",
-  //     duration: "10 mins",
-  //     questions: "15 questions",
-  //     points: "+100 pts",
-  //     buttonText: "Start",
-  //   },
-  //   {
-  //     title: "Advanced Mathematics",
-  //     difficulty: "Hard",
-  //     subject: "Math",
-  //     duration: "30 mins",
-  //     questions: "25 questions",
-  //     points: "+500 pts",
-  //     buttonText: "Start",
-  //   },
-  // ];
-  const activities = [
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-    {
-      title: "Daily Goal Bonus",
-      timeAgo: "1 day ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-    {
-      title: "Advanced Math Quiz",
-      timeAgo: "2 days ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-    {
-      title: "Advanced Math Quiz",
-      timeAgo: "2 days ago",
-      amount: "+$4.00",
-      status: "completed",
-    },
-  ];
+ 
 
   return (
     <div>
+      {formDisplayed}
       <Userheader userData={userData} />
       <div className="p-5">
         <Usernavbar />
@@ -376,23 +330,7 @@ function getPercentageChange(data) {
                   </div>
                 </div>
 
-                {/* Daily Progress */}
-                {/* <div className={cn("!bg-green-50", styles.sectionCard)}>
-                  <div className={cn(styles.sectionHeader, "justify-between")}>
-                    <div className="flex items-center gap-2">
-                      <ChartLine className={styles.sectionIcon} />
-                      <h2 className={styles.sectionTitle}>Daily Progress</h2>
-                    </div>
-                    <div className={styles.progressLabel}>
-                      <span>3/5 completed</span>
-                    </div>
-                  </div>
-                  <div className={styles.sectionContent}>
-                    <ProgressBar progress={60} />
-                  </div>
-                </div> */}
-
-                {/* Quiz Categories */}
+                 
                         <UserQuizzes quiz={props.quiz.slice(Math.floor(Math.random() * 10),Math.floor(Math.random() * 21))} />
               </div>
 
@@ -465,7 +403,7 @@ function getPercentageChange(data) {
                                    Minimum Not Reached
                                  </button>
                                  :
-                                 <button className="bg-blue-900 py-5 px-[30px] text-white w-full mt-5 rounded-md" >
+                                 <button className="bg-blue-900 py-5 px-[30px] text-white w-full mt-5 rounded-md hover:bg-green-900" onClick={userFormDisplay}>
                                  
                                    Request For Withdrawal
                                  </button>}

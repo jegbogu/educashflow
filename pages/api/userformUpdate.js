@@ -110,7 +110,7 @@ export default async function handler(req, res) {
   try {
     const raw = req.body || {};
     const { fullname, username, email } = sanitizeInput(raw);
-    console.log({ fullname, username, email });
+   
 
     const verdict = validate({ fullname, username, email });
     if (!verdict.ok) {

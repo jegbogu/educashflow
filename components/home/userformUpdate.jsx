@@ -74,7 +74,7 @@ text-green-700">Correct Email </p>)
       email: enteredemail,
  
     };
-console.log(data)
+ 
    
     
     const response = await fetch(
@@ -106,7 +106,8 @@ text-red-700">{newPostData.message}</p>)
   }
 
   return (
-    <div className="w-[100%] mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-[95%] max-w-2xl mx-auto my-10 max-h-[90vh] overflow-y-auto">
       {/* Header */}
       <h1 className="text-center text-2xl font-bold text-gray-800">Update Profile</h1>
       <p className="text-center">You have to update your profile </p>
@@ -181,6 +182,7 @@ text-red-700">{newPostData.message}</p>)
       </form>
 
       
+    </div>
     </div>
   );
 }
