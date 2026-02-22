@@ -27,7 +27,7 @@ export default function Quizzes(props) {
   }, [status, session, router]);
 
  useEffect(()=>{
-  console.log("userdata", userData)
+  
  if(userData?.spaceOne =="Null" ){
     setCurrencyandPhone(true)
   }else if(userData?.spaceOne.includes("Naira") || userData?.spaceOne.includes("Dollar")  ) {

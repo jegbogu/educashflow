@@ -122,10 +122,8 @@ function validate({ accountName, accountNumber, bankName, amount , amountAvailab
     return { ok: false, message: `Amount to withdrawal must be more than ${minUserCanWithdraw}` };
 
   if (amount > amountAvailableForUser)
-    return { ok: false, message: `Amount to withdrawal should not be more than ${min}` };
-
-  if (amount > amountAvailableForUser)
-    return { ok: false, message: `Amount to withdrawal should not be more than ${min}` };
+    return { ok: false, message: `Amount to withdrawal should not be more than ${amountAvailableForUser}` };
+ 
 
   if (!accountName || accountName.length < 5)
     return { ok: false, message: "Account name is required" };
@@ -154,9 +152,8 @@ export default async function handler(req, res) {
     const { accountName, accountNumber, bankName, amount , amountAvailableForUser, minUserCanWithdraw, maxUserCanWithdraw} =
       sanitizeInput(raw);
 
-    console.log({ accountName, accountNumber, bankName, amount , amountAvailableForUser, minUserCanWithdraw, maxUserCanWithdraw})
-   
-
+     
+  
     const verdict = validate({
       accountName,
       accountNumber,

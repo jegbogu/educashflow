@@ -112,7 +112,7 @@ export default function UserWithdrawalForm({onClose}) {
           </p>
         );
         setLoading(false);
-        setTimeout(() => router.reload, 2000);
+        router.reload();
       }
     } catch (error) {
       setFinalMessage(
