@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { quizConfig } from "@/config/quizConfig";
 
 export default function UserWithdrawalForm({onClose}) {
+ 
   const router = useRouter();
   const { data: session } = useSession();
   const userData = session?.user;
@@ -79,8 +80,13 @@ export default function UserWithdrawalForm({onClose}) {
       bankName: enteredBankName,
       amount: enteredAmount,
       userData: userData,
-    };
+      amountAvailableForUser: PendingWithdrawal,
+      minUserCanWithdraw: userData?.spaceOne.includes("Naira")? `₦${quizConfig.minUserCanWithdrawNaira}`: `$${minUserCanWithdraw}`,
 
+      maxUserCanWithdraw: userData?.spaceOne.includes("Naira")? `₦${quizConfig.maxUserCanWithdrawNaira}`: `$${maxUserCanWithdraw}`,
+
+    };
+  
     try {
       const response = await fetch("/api/userWithdrawalForm", {
         method: "POST",
@@ -106,7 +112,7 @@ export default function UserWithdrawalForm({onClose}) {
           </p>
         );
         setLoading(false);
-        setTimeout(() => router.push("/dashboard"), 2000);
+        setTimeout(() => router.reload, 2000);
       }
     } catch (error) {
       setFinalMessage(

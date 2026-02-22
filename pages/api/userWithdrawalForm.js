@@ -95,16 +95,38 @@ async function sendWithdrawalEmails({
 
 /** ---------- Validation ---------- **/
 
-function sanitizeInput({ accountName, accountNumber, bankName, amount }) {
+function sanitizeInput({ accountName, accountNumber, bankName, amount, amountAvailableForUser, minUserCanWithdraw, maxUserCanWithdraw}) {
   return {
     accountName: (accountName ?? "").trim(),
-    accountNumber: Number((accountNumber ?? "")),
+    accountNumber:(accountNumber ?? ""),
     bankName: (bankName ?? "").trim(),
     amount: Number((amount ?? "")),
+    amountAvailableForUser: Number((amountAvailableForUser ?? "")),
+    minUserCanWithdraw ,
+    maxUserCanWithdraw 
   };
 }
 
-function validate({ accountName, accountNumber, bankName, amount }) {
+
+ 
+
+
+function validate({ accountName, accountNumber, bankName, amount , amountAvailableForUser, minUserCanWithdraw, maxUserCanWithdraw}) {
+  
+   
+
+  if (amount > maxUserCanWithdraw)
+    return { ok: false, message: `Amount to withdrawal must NOT be more than ${maxUserCanWithdraw}` };
+
+  if (amount < minUserCanWithdraw)
+    return { ok: false, message: `Amount to withdrawal must be more than ${minUserCanWithdraw}` };
+
+  if (amount > amountAvailableForUser)
+    return { ok: false, message: `Amount to withdrawal should not be more than ${min}` };
+
+  if (amount > amountAvailableForUser)
+    return { ok: false, message: `Amount to withdrawal should not be more than ${min}` };
+
   if (!accountName || accountName.length < 5)
     return { ok: false, message: "Account name is required" };
 
@@ -129,14 +151,20 @@ export default async function handler(req, res) {
 
   try {
     const raw = req.body || {};
-    const { accountName, accountNumber, bankName, amount } =
+    const { accountName, accountNumber, bankName, amount , amountAvailableForUser, minUserCanWithdraw, maxUserCanWithdraw} =
       sanitizeInput(raw);
+
+    console.log({ accountName, accountNumber, bankName, amount , amountAvailableForUser, minUserCanWithdraw, maxUserCanWithdraw})
+   
 
     const verdict = validate({
       accountName,
       accountNumber,
       bankName,
       amount,
+      amountAvailableForUser,
+      minUserCanWithdraw,
+      maxUserCanWithdraw
     });
 
     if (!verdict.ok) {

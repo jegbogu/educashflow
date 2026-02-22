@@ -65,14 +65,7 @@ export default function Dashboard(props) {
 
 
 
-function userFormDisplay(){
-  if(userData?.email.includes("noemail")){
-setFormDisplayed(<UserFormupdate/>)
-  }else{
-    setFormDisplayed(<UserWithdrawalForm onClose={()=>setFormDisplayed(false)}/>)
-  }
-  
-}
+
 
 
 
@@ -249,7 +242,7 @@ function getPercentageChange(data) {
   }
 }
 
-
+ 
 
   let minimumInCurrency;
   if(userData?.spaceOne.includes("Naira")){
@@ -262,6 +255,17 @@ function getPercentageChange(data) {
     </div>
   }
  
+
+
+
+  function userFormDisplay(){
+  if(userData?.email.includes("noemail")){
+setFormDisplayed(<UserFormupdate/>)
+  }else{
+    setFormDisplayed(<UserWithdrawalForm onClose={()=>setFormDisplayed(false)}  min={PendingWithdrawal}/>)
+  }
+  
+}
 
   return (
     <div>
