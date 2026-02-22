@@ -12,9 +12,11 @@ import { cn } from "@/lib/utils";
 import connectDB from "@/utils/connectmongo";
 import Register from "@/model/registerSchema";
 import { quizConfig } from "@/config/quizConfig";
+import UserWithdrawalForm from "@/components/home/userWithdrawalForm";
 
 export default function EarningsPage() {
   const { data: session, status } = useSession();
+  const[userWithdralForm, setuserWithdralForm] = useState(false)
   const userData = session?.user;
     //Withdrawals
    const withdrawalNeededDollar = quizConfig.minimumAmount-userData?.amountMade
@@ -63,9 +65,12 @@ export default function EarningsPage() {
   {quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeededDollar} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`} 
       </div>
     }
-
+function handleFormCloseFnc(){
+  setuserWithdralForm(false)
+}
   return (
     <div>
+      {userWithdralForm && <UserWithdrawalForm onClose={handleFormCloseFnc}/>}
       <Userheader userData={userData} />
       <div className="p-5">
         <Usernavbar />
@@ -118,10 +123,10 @@ export default function EarningsPage() {
               <span className={styles.withdrawalTitle}>
                 Withdrawal Progress
               </span>
-              <span className={styles.withdrawalMin}>Min. ${quizConfig.minimumAmount}</span>
+              <span className={styles.withdrawalMin}>Min. {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${quizConfig?.minimumAmountNaira}`: `$${quizConfig?.minimumAmount}`}</span>
             </div>
 
-           
+          
 
                {minimumInCurrency}
             <ProgressBar progress={90} />
@@ -136,7 +141,7 @@ export default function EarningsPage() {
               Minimum Not Reached
             </button>
             :
-            <button className="bg-blue-900 py-5 px-[30px] text-white w-full mt-5 rounded-md">
+            <button className="bg-blue-900 py-5 px-[30px] text-white w-full mt-5 rounded-md" onClick={()=>setuserWithdralForm(true)}>
             
               Request For Withdrawal
             </button>}
@@ -173,7 +178,7 @@ export async function getServerSideProps() {
 
   const users = await Register.find({}).lean();
    
-console.log(users)
+
   return {
     props: {
       users: JSON.parse(JSON.stringify(users)),

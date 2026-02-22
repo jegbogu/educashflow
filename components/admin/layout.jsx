@@ -32,6 +32,12 @@ const menuItems = [
     icon: CreditCard,
     link: "adminpayment",
   },
+  {
+    id: "adminWithdrawalMgt",
+    label: "Withdrawal",
+    icon: CreditCard,
+    link: "adminWithdrawalMgt",
+  },
   { id: "adminusers", label: "Users", icon: Users, link: "adminusers" },
   // { id: "admincoupons", label: "Coupon", icon: Ticket, link: "admincoupons" },
   {

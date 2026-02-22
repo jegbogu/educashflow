@@ -8,6 +8,7 @@ import Link from "next/link";
   { name: "Payment", icon: PaymentIcon ,link:"/adminpayment"  },
   { name: "Users", icon: UsersIcon,link:"/adminusers"  },
   { name: "Coupon", icon: CouponIcon, link:"/admincoupons" },
+  { name: "Withdrawal Request", icon: CouponIcon, link:"/adminWithdrawalMgt" },
   { name: "Settings", icon: SettingsIcon,link:"/adminsettingss"  },
 ];
 
