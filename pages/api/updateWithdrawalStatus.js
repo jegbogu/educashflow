@@ -2,7 +2,7 @@
 import nodemailer from "nodemailer";
 import Activity from "@/model/recentactivities";
 import connectDB from "@/utils/connectmongo";
-import ConfirmPayment from "@/model/confirmPayment";
+import WithdrawalRequest from "@/model/withdrawalRequest";
 import Register from "@/model/registerSchema";
 
 /** ---------- Helpers ---------- **/
@@ -42,50 +42,53 @@ function createTransporter() {
 /** ---------- EMAIL TEMPLATES ---------- **/
 
 // Email to ADMIN
-async function sendAdminAlertEmail({ fullname, email, packageName, price }) {
+ 
+async function sendAdminAlertEmail({ fullname, email, adminFullname, amount, newStatus }) {
   const transporter = createTransporter();
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
-      <h2 style="color:#2b6cb0;">Educashflow - Payment Successfuly Verified Alert</h2>
-      <p>A user Payment has been Successfully Verified.</p>
+      <h2 style="color:#2b6cb0;">Eduquizzglobal - </h2>
+      <p>A user withdrawal request status has been  Updated.</p>
       <ul>
         <li><b>Name:</b> ${fullname}</li>
         <li><b>Email:</b> ${email}</li>
-        <li><b>Package:</b> ${packageName}</li>
-        <li><b>Amount:</b> ₦${price}</li>
+        <li><b>Status:</b> ${newStatus}</li>
+        <li><b>Amount:</b> ₦${amount}</li>
         <li><b>Request Time:</b> ${getFormattedDateTime()}</li>
       </ul>
-      
-      <p>Educashflow Admin Panel</p>
+      <p>This was done by ${adminFullname}</p>
+      <p>Eduquizzglobal Admin Panel</p>
     </div>
   `;
 
   await transporter.sendMail({
-    from: `"Educashflow" <${process.env.EMAIL_USER}>`,
+    from: `"Eduquizzglobal" <${process.env.EMAIL_USER}>`,
     to: process.env.CHIEF_ADMIN_EMAIL, // add ADMIN_EMAIL in .env
-    subject: `User Payment Verification - ${fullname}`,
+    subject: `User withdrawal request - ${fullname}`,
     html,
   });
 }
 
+
+ 
 // Email to USER
-async function sendUserConfirmationEmail({ fullname, email, packageName, price }) {
+async function sendUserConfirmationEmail({ fullname, email, amount,newStatus }) {
   const transporter = createTransporter();
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
       <h2 style="color:#2b6cb0;">Hello ${fullname},</h2>
-      <p>We’ve Verified your Payment for <b>${packageName}</b> package ($${price}).</p>
-      <p>Thank you for Choosing us. Please ensure to play with in the valid days as there would be no refund if it expries</p>
-      <p>Thank you for using <b>Educashflow</b>.</p>
+      <p>We’ve made payment for the withdrawal requested: <b>${amount}</b> </p>
+       
+      <p>Thank you for using <b>Eduquizzglobal</b>.</p>
       <hr />
-      <p style="font-size: 13px; color: #777;">&copy; ${new Date().getFullYear()} Educashflow. All rights reserved.</p>
+      <p style="font-size: 13px; color: #777;">&copy; ${new Date().getFullYear()} Eduquizz Global Limited. All rights reserved.</p>
     </div>
   `;
 
   await transporter.sendMail({
-    from: `"Educashflow" <${process.env.EMAIL_USER}>`,
+    from: `"Eduquizzglobal" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Payment Verification",
     html,
@@ -101,87 +104,80 @@ export default async function handler(req, res) {
     await connectDB();
 
 
-    const { withdrawalId, newStatus} = req.body;
+  const { withdrawalId, newStatus, adminData} = req.body;
  
-    if (!withdrawalId|| !newStatus) {
+  if (!withdrawalId|| !newStatus || !adminData) {
       return res.status(400).json({ message: "Missing user details" });
     }
 
-    // Update user info
-    //Get the validity of the package
+  const user = await WithdrawalRequest.find({_id:withdrawalId})
 
-
- const user = await Register.findById(userDataId);
-const payment = await ConfirmPayment.findById(confirmPaymentId);
-
-if (!user) throw new Error("User not found");
-
-const lastIndex = user.latestPurchase.length - 1;
-const validDays = user.latestPurchase[lastIndex].validDays;
-
-let expiryDate;
-//DOC : Date of Confirmation
-let DOCdate
-if(newStatus !=="Successful"){
-  expiryDate = " "
-  DOCdate = " "
-}else{
- expiryDate = new Date(Date.now() + validDays * 24 * 60 * 60 * 1000);
- DOCdate = new Date(); 
-}
-
-
-user.paymentConfirmation = newStatus;
-user.membership = packageName;
-user.latestPurchase[lastIndex].status = newStatus;
-user.latestPurchase[lastIndex].DOC = DOCdate
-user.latestPurchase[lastIndex].expiryDate = expiryDate;
-
-// ✅ Tell Mongoose a nested field changed
-user.markModified("latestPurchase");
-
-const updatedPayment = await user.save();
+    if (!user) {
+      return res.status(400).json({ message: "Missing user details" });
+    }
  
-//Making sure we have the right information
- 
-
-
-
     // Log activity
 const activity = new Activity({
   _id: new mongoose.Types.ObjectId(),
-  activity: "Payment confirmation",
-  description: `User with the ID: ${userDataId} and Package: ${packageName} Payment has been set to ${newStatus}.`,
+  activity: "Withdrawal update",
+  description: `User with the fullname: ${user[0].userData.fullname} and transaction ID: ${withdrawalId} withdrawal payment has been set to ${newStatus} by ${adminData.email}.`,
   createdAt: getFormattedDateTime(),
 });
 await activity.save();
 
  
-const updateConfirmation = await ConfirmPayment.findByIdAndUpdate(
-  confirmPaymentId,
+const updateConfirmation = await WithdrawalRequest.findByIdAndUpdate(
+  withdrawalId,
   {
-    $set: { paymentConfirmation: newStatus },
+    $set: { withdrawalConfirmation: newStatus },
     
   },
   { new: true, runValidators: true }
 );
 
+if(newStatus==="Successful"){
+  const foundUser = await Register.find({email:user[0].userData.email})
+    console.log("foundUser", foundUser)
+
+    if (!foundUser) {
+      return res.status(400).json({ message: "Missing user details" });
+    }
+  const currentUseramountMade = foundUser[0].amountMade
+  console.log("currentUseramountMade",currentUseramountMade)
+
+  const newAmount = currentUseramountMade-user[0].amount
+  console.log("newAmount", newAmount)
+
+  const updateUser = await Register.findByIdAndUpdate(
+    user[0].userData._id,
+    {
+        $set: { amountMade: newAmount },
+    
+  },
+  { new: true, runValidators: true }
+    
+  )
+  
+}
 
 
-if(newStatus ==="Successful"){
+
+if(newStatus){
    // Send emails in parallel (non-blocking)
     await Promise.all([
       sendAdminAlertEmail({
-        fullname: user.fullname,
-        email: user.email,
-        packageName,
-         price: payment.price,
+        fullname: user[0].userData.fullname,
+        email: user[0].userData.email,
+        adminFullname:adminData.fullname,
+        amount : user[0].amount,
+        newStatus:newStatus
       }),
       sendUserConfirmationEmail({
-        fullname: user.fullname,
-        email: user.email,
-        packageName,
-        price: payment.price,
+        fullname: user[0].userData.fullname,
+        email: user[0].userData.email,
+     
+        amount : user[0].amount,
+        newStatus:newStatus
       }),
     ]);
 

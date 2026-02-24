@@ -8,7 +8,7 @@ import Link from "next/link";
 import Spinner from "@/components/icons/spinner";
 import RootLayout from "@/components/layout";
 
-export default function Adminregeducashflow() {
+export default function AdminregEduquizz Global Limited() {
   //after clicking on register
   const router = useRouter();
   const [finalReg, setFinalReg] = useState(null);
@@ -230,6 +230,6 @@ text-red-700"
   );
 }
 
-Adminregeducashflow.getLayout = function getLayout(page) {
+AdminregEduquizz Global Limited.getLayout = function getLayout(page) {
   return <RootLayout>{page}</RootLayout>;
 };

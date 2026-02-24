@@ -152,7 +152,7 @@ export default function Login() {
         {/* Register button */}
         <div className="flex justify-center">
           <Link
-            href="/adminregeducashflow"
+            href="/adminregEduquizz Global Limited"
             className="w-full bg-white text-secondary border-2 border-gray-200 p-2 rounded-md md:w-1/2 mt-5 text-center hover:bg-gray-50 hover:border-secondary transition"
           >
             Register

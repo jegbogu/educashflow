@@ -127,7 +127,7 @@ export default function WithdrawalPage({ transactions }) {
 
   const router = useRouter();
   const { data: session, status } = useSession();
-
+  const userData = session?.user;
   /* ===== AUTH PROTECTION ===== */
   useEffect(() => {
     if (status === "authenticated" && session?.user.role !== "admin") {
@@ -208,14 +208,15 @@ export default function WithdrawalPage({ transactions }) {
           : item
       )
     );
-console.log(id, newStatus)
+ 
     try {
       await fetch("/api/updateWithdrawalStatus", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: id,
+          withdrawalId: id,
           newStatus,
+          adminData: userData
         }),
       });
     } catch (error) {

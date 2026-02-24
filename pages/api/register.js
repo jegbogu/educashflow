@@ -48,11 +48,11 @@ async function sendActivationEmail({ email, userId, fullname }) {
   const activationLink = `${baseUrl}/api/activate/${userId}`;
 
   await transporter.sendMail({
-    from: `"Educashflow" <${process.env.EMAIL_USER}>`,
+    from: `"Eduquizz Global Limited" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: "Activate your Educashflow Account",
+    subject: "Activate your Eduquizz Global Limited Account",
     text: `
-Welcome to Educashflow!
+Welcome to Eduquizz Global Limited!
 
 Thank you for registering. To activate your account, click the link below:
 
@@ -61,19 +61,19 @@ ${activationLink}
 If you did not create this account, please ignore this email.
 
 ----------------------
-Educashflow Team
+Eduquizz Global Limited Team
 ${new Date().getFullYear()} © All rights reserved.
 Support: ${process.env.EMAIL_USER}
     `,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden;">
         <div style="background-color: #2b6cb0; color: #fff; padding: 20px; text-align: center;">
-          <h1 style="margin: 0; font-size: 22px;">Educashflow</h1>
+          <h1 style="margin: 0; font-size: 22px;">Eduquizz Global Limited</h1>
         </div>
         <div style="padding: 30px; color: #333;">
           <h2 style="color: #2b6cb0; margin-top: 0;">Welcome, ${fullname || "User"}!</h2>
           <p style="font-size: 15px; line-height: 1.6;">
-            Thank you for registering with <b>Educashflow</b>. To activate your account and get started, 
+            Thank you for registering with <b>Eduquizz Global Limited</b>. To activate your account and get started, 
             please click the button below:
           </p>
           <div style="text-align: center; margin: 30px 0;">
@@ -88,7 +88,7 @@ Support: ${process.env.EMAIL_USER}
           </p>
         </div>
         <div style="background-color: #f8f8f8; padding: 15px; text-align: center; font-size: 13px; color: #777;">
-          <p style="margin: 0;">&copy; ${new Date().getFullYear()} Educashflow. All rights reserved.</p>
+          <p style="margin: 0;">&copy; ${new Date().getFullYear()} Eduquizz Global Limited. All rights reserved.</p>
           <p style="margin: 5px 0;">Need help? <a href="mailto:${process.env.EMAIL_USER}" style="color: #2b6cb0; text-decoration: none;">Contact Support</a></p>
         </div>
       </div>

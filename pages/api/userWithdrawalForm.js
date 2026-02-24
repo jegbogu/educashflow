@@ -44,7 +44,7 @@ async function sendWithdrawalEmails({
 
   // Email to USER
   await transporter.sendMail({
-    from: `"Educashflow" <${process.env.EMAIL_USER}>`,
+    from: `"Eduquizz Global Limited" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Withdrawal Request Received",
     html: `
@@ -62,14 +62,14 @@ async function sendWithdrawalEmails({
 
         <p>Our team will process your request shortly.</p>
         <br/>
-        <small>© ${currentYear} Educashflow. All rights reserved.</small>
+        <small>© ${currentYear} Eduquizz Global Limited. All rights reserved.</small>
       </div>
     `,
   });
 
   // Email to ADMIN
   await transporter.sendMail({
-    from: `"Educashflow" <${process.env.CHIEF_ADMIN_EMAIL}>`,
+    from: `"Eduquizz Global Limited" <${process.env.CHIEF_ADMIN_EMAIL}>`,
     to: adminEmail,
     subject: "New Withdrawal Request",
     html: `

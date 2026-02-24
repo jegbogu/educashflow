@@ -47,7 +47,7 @@ async function sendAdminAlertEmail({ fullname, email, packageName, price }) {
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
-      <h2 style="color:#2b6cb0;">Educashflow - Payment Confirmation Alert</h2>
+      <h2 style="color:#2b6cb0;">Eduquizz Global Limited - Payment Confirmation Alert</h2>
       <p>A user has requested payment confirmation.</p>
       <ul>
         <li><b>Name:</b> ${fullname}</li>
@@ -57,12 +57,12 @@ async function sendAdminAlertEmail({ fullname, email, packageName, price }) {
         <li><b>Request Time:</b> ${getFormattedDateTime()}</li>
       </ul>
       <p>Please review and confirm the payment at your earliest convenience.</p>
-      <p>Educashflow Admin Panel</p>
+      <p>Eduquizz Global Limited Admin Panel</p>
     </div>
   `;
 
   await transporter.sendMail({
-    from: `"Educashflow" <${process.env.EMAIL_USER}>`,
+    from: `"Eduquizz Global Limited" <${process.env.EMAIL_USER}>`,
     to: process.env.CHIEF_ADMIN_EMAIL, // add ADMIN_EMAIL in .env
     subject: `User Awaiting Payment Confirmation - ${fullname}`,
     html,
@@ -78,14 +78,14 @@ async function sendUserConfirmationEmail({ fullname, email, packageName, price }
       <h2 style="color:#2b6cb0;">Hello ${fullname},</h2>
       <p>We’ve received your payment request for the <b>${packageName}</b> package ($${price}).</p>
       <p>Your payment will be confirmed shortly by our admin team. You will be notified once it is verified.</p>
-      <p>Thank you for using <b>Educashflow</b>.</p>
+      <p>Thank you for using <b>Eduquizz Global Limited</b>.</p>
       <hr />
-      <p style="font-size: 13px; color: #777;">&copy; ${new Date().getFullYear()} Educashflow. All rights reserved.</p>
+      <p style="font-size: 13px; color: #777;">&copy; ${new Date().getFullYear()} Eduquizz Global Limited. All rights reserved.</p>
     </div>
   `;
 
   await transporter.sendMail({
-    from: `"Educashflow" <${process.env.EMAIL_USER}>`,
+    from: `"Eduquizz Global Limited" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Payment Confirmation Pending",
     html,

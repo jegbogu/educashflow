@@ -40,33 +40,33 @@ async function sendActivationEmail({ email, fullname }) {
   const transporter = createTransporter();
 
   await transporter.sendMail({
-    from: `"Educashflow" <${process.env.EMAIL_USER}>`,
+    from: `"Eduquizz Global Limited" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Profile Successfully Updated",
     text: `
 Hello ${fullname},
 
-Your Educashflow profile was successfully updated.  
+Your Eduquizz Global Limited profile was successfully updated.  
 
 If you did not request this change, please contact support.
 
 ----------------------
-Educashflow Team
+Eduquizz Global Limited Team
 ${new Date().getFullYear()} © All rights reserved.
 Support: ${process.env.EMAIL_USER}
     `,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
         <div style="background-color: #2b6cb0; color: #fff; padding: 20px; text-align: center;">
-          <h1 style="margin: 0;">Educashflow</h1>
+          <h1 style="margin: 0;">Eduquizz Global Limited</h1>
         </div>
         <div style="padding: 30px; color: #333;">
           <h2>Hello, ${fullname || "User"}!</h2>
-          <p>Your Educashflow profile has been successfully updated.</p>
+          <p>Your Eduquizz Global Limited profile has been successfully updated.</p>
           <p>If you did not make this change, please contact support immediately.</p>
         </div>
         <div style="background-color: #f8f8f8; padding: 15px; text-align: center; font-size: 13px; color: #777;">
-          <p>&copy; ${new Date().getFullYear()} Educashflow. All rights reserved.</p>
+          <p>&copy; ${new Date().getFullYear()} Eduquizz Global Limited. All rights reserved.</p>
           <p>Need help? <a href="mailto:${process.env.EMAIL_USER}" style="color: #2b6cb0;">Contact Support</a></p>
         </div>
       </div>
