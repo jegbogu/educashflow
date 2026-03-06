@@ -377,6 +377,12 @@ text-red-700"
               </p>
             )}
           </div>
+        
+            
+            <div>
+              <input type="checkbox" name="agreement" id="agreement" /><span> I Agree with the <a href="/termsandservice" target="_blank" className="text-blue-500"  >Terms and Service and Privacy Policy </a> of Eduquizz Global Limited</span>
+            </div>
+        
 
           {/* Sign up button */}
           <button
