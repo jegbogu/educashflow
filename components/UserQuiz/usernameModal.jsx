@@ -13,6 +13,7 @@ export default function UsernameModal(props) {
   // --- UI state ---
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [agreement ,  setAgreement] = useState(false)
 
   // --- validation & feedback state (store text, not JSX) ---
   const [usernameError, setUsernameError] = useState("");
@@ -110,6 +111,7 @@ export default function UsernameModal(props) {
         username: usernameRef.current.value.trim(),
         email: `noemail@gmail.com${randomNum}`,
         password: passwordRef.current.value,
+        agreement:agreement
       };
 
       const res = await fetch("/api/register", {
@@ -255,6 +257,15 @@ export default function UsernameModal(props) {
               </p>
             )}
           </div>
+
+           <div className="mt-5">
+              <input type="checkbox"
+              name="agreement" 
+              id="agreement"
+              checked={agreement}
+              onChange={(e)=>setAgreement(e.target.checked)}/>
+              <span> I Agree with the <a href="/termsandservice" target="_blank" className="text-blue-500"  >Terms and Service and Privacy Policy </a> of Eduquizz Global Limited</span>
+            </div>
 
           {/* Submit / Cancel */}
           <div className="flex justify-around mt-6">

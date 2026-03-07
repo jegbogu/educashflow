@@ -98,23 +98,25 @@ Support: ${process.env.EMAIL_USER}
 
 /** ---------- Validation ---------- **/
 
-function sanitizeInput({ fullname, username, email, password }) {
+function sanitizeInput({ fullname, username, email, password,agreement }) {
   // Trim/normalize; keep placeholders intact if they are used intentionally
   const safe = {
     fullname: (fullname ?? "").toString().trim(),
     username: (username ?? "").toString().trim(),
     email: (email ?? "").toString().trim().toLowerCase(),
     password: (password ?? "").toString(),
+    agreement:agreement
   };
   return safe;
 }
 
-function validate({ fullname, username, email, password }) {
+function validate({ fullname, username, email, password, agreement }) {
   // Your placeholders
   const isPlaceholderEmail = email === "noemail@gmail.com";
   const isPlaceholderFullname = fullname === "nofullname";
 
   // Bronze field presence:
+  if (agreement !==true) return { ok: false, message: "You must have to agree with the Terms and Service and Privacy Policy" };
   if (!username) return { ok: false, message: "Username is required" };
   if (!password) return { ok: false, message: "Password is required" };
 
@@ -156,12 +158,12 @@ export default async function handler(req, res) {
 
   try {
     const raw = req.body || {};
-    const { fullname, username, email, password } = sanitizeInput(raw);
-    console.log({ fullname, username, email, password })
-   
+    const { fullname, username, email, password, agreement} = sanitizeInput(raw);
+ console.log({ fullname, username, email, password, agreement})
+ 
 
     // Validate (server-side)
-    const verdict = validate({ fullname, username, email, password });
+    const verdict = validate({ fullname, username, email, password , agreement});
     if (!verdict.ok) {
       res.status(400).json({ message: verdict.message });
       return;

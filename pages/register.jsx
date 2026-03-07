@@ -12,6 +12,7 @@ import Spinner from "@/components/icons/spinner";
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(null);
+  const [agreement, setAgreement] = useState(false)
 
   //after clicking on register
   const router = useRouter();
@@ -28,10 +29,12 @@ export default function Register() {
   const usernameRef = useRef();
   const emailRef = useRef();
   const fullnameRef = useRef();
+ 
 
   function checkPassword() {
     const enteredPassword = passwordRef.current.value;
     const enteredConfirmPassword = confirmPasswordRef.current.value;
+
 
     if (!enteredConfirmPassword) {
       setPasswordMatch(null); // no message until confirm field is typed
@@ -49,6 +52,7 @@ export default function Register() {
     const enteredemail = emailRef.current.value;
     const enteredUsername = usernameRef.current.value;
     const enteredfullname = fullnameRef.current.value;
+   
     if (
       !enteredPassword &&
       !enteredemail &&
@@ -176,7 +180,9 @@ text-green-700"
       username: enteredUsername,
       email: enteredemail,
       password: enteredPassword,
+      agreement: agreement
     };
+    
 
     const response = await fetch("/api/register", {
       body: JSON.stringify(data),
@@ -380,7 +386,12 @@ text-red-700"
         
             
             <div>
-              <input type="checkbox" name="agreement" id="agreement" /><span> I Agree with the <a href="/termsandservice" target="_blank" className="text-blue-500"  >Terms and Service and Privacy Policy </a> of Eduquizz Global Limited</span>
+              <input type="checkbox"
+              name="agreement" 
+              id="agreement"
+              checked={agreement}
+              onChange={(e)=>setAgreement(e.target.checked)}/>
+              <span> I Agree with the <a href="/termsandservice" target="_blank" className="text-blue-500"  >Terms and Service and Privacy Policy </a> of Eduquizz Global Limited</span>
             </div>
         
 
