@@ -199,15 +199,17 @@ async function handler(req, res) {
     }
 
 
-     
+     console.log("latestGamePoints", latestGamePoints)
 
-
-    const newamountMade = (user.points + newUserPoints) * (quizConfig.perPoint);
+    const recentAmoutMade = latestGamePoints * quizConfig.perPoint
+    const newamountMade = user.amountMade + recentAmoutMade;
+    console.log("recentAmoutMade", recentAmoutMade)
+    console.log("newamountMade", newamountMade)
 
 
 
   if(user.membership =="Free plan"){
-      console.log('free play')
+    
   //updating usergames
  const ug = {
    
@@ -271,13 +273,13 @@ async function handler(req, res) {
 let foundPackage
 if(user.membership !="Free plan"){
    foundPackage =  couponPlans.find((el)=>el.name == user.membership)
-   console.log("foundPackage", foundPackage)
+    
 }
 
 
   if(user.membership !="Free plan" && user.latestPurchase.length==1 && user.latestPurchaseGames.length < foundPackage.gameLimit && user.latestPurchaseGames.length +1 != foundPackage.gameLimit ){
   //updating usergames
-  console.log("not free plan" , user.latestPurchaseGames.length, user.latestPurchaseGames.length+1)
+  
   
  const ug = {
    

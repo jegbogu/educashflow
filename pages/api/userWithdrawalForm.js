@@ -179,6 +179,9 @@ export default async function handler(req, res) {
     if (!existingUser) {
       return res.status(404).json({ message: "User not found" });
     }
+    if (existingUser.spaceTwo==='Pending') {
+      return res.status(404).json({ message: "You have a Pending withdrawal, you cannot requesting for another one" });
+    }
 
     // Log activity
     const activity = new Activity({
@@ -204,6 +207,18 @@ export default async function handler(req, res) {
     });
  
     await withdrawalRequest.save();
+
+    //update spaceTwo to pending, and if the spaceTwo is pending then the user cannot request for another payment
+    const updatedUser = await Register.findByIdAndUpdate(
+      existingUser._id,
+      {
+        $set: {
+           spaceTwo:"Pending"
+           
+        },
+      },
+      { new: true }
+    );
 
     // Send Emails
     try {

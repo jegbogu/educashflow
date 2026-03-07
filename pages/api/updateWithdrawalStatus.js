@@ -137,21 +137,21 @@ const updateConfirmation = await WithdrawalRequest.findByIdAndUpdate(
 
 if(newStatus==="Successful"){
   const foundUser = await Register.find({email:user[0].userData.email})
-    console.log("foundUser", foundUser)
+ 
 
     if (!foundUser) {
       return res.status(400).json({ message: "Missing user details" });
     }
   const currentUseramountMade = foundUser[0].amountMade
-  console.log("currentUseramountMade",currentUseramountMade)
+ 
 
   const newAmount = currentUseramountMade-user[0].amount
-  console.log("newAmount", newAmount)
+ console.log("updateWS",newAmount)
 
   const updateUser = await Register.findByIdAndUpdate(
     user[0].userData._id,
     {
-        $set: { amountMade: newAmount },
+        $set: { amountMade: newAmount , spaceTwo: newStatus},
     
   },
   { new: true, runValidators: true }

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import Spinner from "@/components/icons/spinner";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { quizConfig } from "@/config/quizConfig";
 
 export default function UserWithdrawalForm({onClose}) {
@@ -97,6 +97,7 @@ export default function UserWithdrawalForm({onClose}) {
       });
 
       const result = await response.json();
+   
 
       if (!response.ok) {
         setFinalMessage(
@@ -112,7 +113,9 @@ export default function UserWithdrawalForm({onClose}) {
           </p>
         );
         setLoading(false);
-        router.reload();
+        
+            await signOut();
+            router.push("/login");
       }
     } catch (error) {
       setFinalMessage(
