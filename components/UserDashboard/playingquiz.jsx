@@ -138,11 +138,11 @@ export default function Playingquiz({ quiz }) {
 
   async function startFnc(row) {
     // Require auth
-    if (status !== "authenticated" || !session?.user?._id) {
+    if (status !== "authenticated" || !session?.user?.id) {
       router.push("/login");
       return;
+    
     }
-
     const key = `${row.subcategory}__${row.level}`;
     setLoadingKey(key);
 
@@ -151,7 +151,7 @@ export default function Playingquiz({ quiz }) {
 
     // keep payload short & predictable for route param
     const firstCategory = row.categories[0] || "General";
-    const uniqueID = `${rid}-${row.subcategory}-${firstCategory}-${row.level}-${session.user._id}`;
+    const uniqueID = `${rid}-${row.subcategory}-${firstCategory}-${row.level}-${session.user.id}`;
     
 
 
