@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Spinner from "@/components/icons/spinner";
 import { signOut, useSession } from "next-auth/react";
 import { quizConfig } from "@/config/quizConfig";
-
+import styles from "@/styles/userDashboard.module.css";
 export default function UserWithdrawalForm({onClose}) {
  
   const router = useRouter();

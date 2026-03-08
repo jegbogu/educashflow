@@ -36,7 +36,6 @@ export default function Dashboard(props) {
   const userData = session?.user;
     const router = useRouter();
 
-
   // Handle redirects in useEffect
   useEffect(() => {
     if (status === "authenticated" && session?.user.role !== "user") {
@@ -64,6 +63,8 @@ export default function Dashboard(props) {
 
 
 
+console.log("min",quizConfig.minimumAmount)
+console.log("amountMade",userData?.amountMade)
 
 
 

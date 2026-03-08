@@ -10,9 +10,14 @@ import {
   X,
 } from "lucide-react";
 
-export default function Userheader({ userData }) {
+export default function Userheader() {
   const [profileSettings, setProfileSetting] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+    const { data: session, status } = useSession();
+   
+  
+    const userData = session?.user;
+ 
 
   const router = useRouter();
 
@@ -49,7 +54,7 @@ export default function Userheader({ userData }) {
 
             {/* Balance Badge */}
             <div className="bg-blue-300 hidden sm:block px-2 py-1 rounded-full border text-blue-900 font-medium text-sm md:text-base">
-              {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade}`: `$${userData?.amountMade}`}
+              {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(2)}`}
             </div>
 
             {/* Points - hidden on very small screens */}

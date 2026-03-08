@@ -51,14 +51,35 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user }) {
-        return { ...token, ...user };
-    },
-    async session({ session, token, user }) {
-        // Send properties to the client, like an access_token from a provider.
-        session.user = token;
-        return session;
-    },
+  async jwt({ token, user }) {
+    if (user) {
+      token.id = user._id
+      token.email = user.email
+      token.username = user.username
+      token.role = user.role
+      token.spaceOne = user.spaceOne
+      token.amountMade = user.amountMade
+      token.points = user.points
+      token.membership = user.membership
+      token.playedGames = user.playedGames
+    }
+    return token
+  },
+
+  async session({ session, token }) {
+    session.user = {
+      id: token.id,
+      email: token.email,
+      username: token.username,
+      role: token.role,
+      spaceOne: token.spaceOne,
+      amountMade: token.amountMade,
+      points: token.points,
+      membership: token.membership,
+      playedGames: token.playedGames
+    }
+    return session
+  }
 },
   jwt: {
     secret: ' ep&lqwaiFX$R',
