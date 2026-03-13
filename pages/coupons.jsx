@@ -10,6 +10,7 @@ import Userheader from "@/components/UserDashboard/userheader";
 import Usernavbar from "@/components/UserDashboard/usernavbar";
 import { couponPlans } from "@/config/couponConfig";
 import CheckOut from "@/components/home/checkOut";
+import GeneralHeadMeta from "@/components/home/generalheadmeta";
 
 export default function Coupons() {
   const[checkout, setCheckOut] = useState(false)
@@ -52,6 +53,7 @@ function findPlan(plan){
 
   return (
     <div>
+      <GeneralHeadMeta/>
       {checkout && <CheckOut onClose={()=>setCheckOut(false)} plan ={foundPlan} />}
       <Userheader userData={userData} />
       <div className="p-5">

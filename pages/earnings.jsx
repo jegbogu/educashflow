@@ -13,15 +13,17 @@ import connectDB from "@/utils/connectmongo";
 import Register from "@/model/registerSchema";
 import { quizConfig } from "@/config/quizConfig";
 import UserWithdrawalForm from "@/components/home/userWithdrawalForm";
+import Head from "next/head";
+import GeneralHeadMeta from "@/components/home/generalheadmeta";
 
 export default function EarningsPage() {
   const { data: session, status } = useSession();
   const[userWithdralForm, setuserWithdralForm] = useState(false)
   const userData = session?.user;
     //Withdrawals
-   const withdrawalNeededDollar = quizConfig.minimumAmount-userData?.amountMade
+   const withdrawalNeededDollar = (quizConfig.minimumAmount-userData?.amountMade).toFixed(2)
   
-   const withdrawalNeededNaira = quizConfig.minimumAmountNaira-userData?.amountMade
+   const withdrawalNeededNaira = (quizConfig.minimumAmountNaira-userData?.amountMade).toFixed(2)
  
 
   const router = useRouter();
@@ -70,6 +72,9 @@ function handleFormCloseFnc(){
 }
   return (
     <div>
+        <GeneralHeadMeta/>
+
+
       {userWithdralForm && <UserWithdrawalForm onClose={handleFormCloseFnc}/>}
       <Userheader userData={userData} />
       <div className="p-5">
@@ -94,7 +99,7 @@ function handleFormCloseFnc(){
                 </span>
               </div>
                
-                <p className={cn(styles.balanceAmount)}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade}`: `$${userData?.amountMade}`}</p>
+                <p className={cn(styles.balanceAmount)}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(2)}`}</p>
                                        <p className={styles.balanceRate}>
                                           Rate 100pts = {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${quizConfig.perPoint*100}`: `$${quizConfig.perPoint*100}`}
                                         

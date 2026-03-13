@@ -9,6 +9,7 @@ import UserQuizzes from "@/components/UserDashboard/userquizzes";
 import connectDB from "@/utils/connectmongo";
 import Quiz from "../model/quizCreation";
 import CurrencyAndPhone from "@/components/currencyandphone";
+import GeneralHeadMeta from "@/components/home/generalheadmeta";
 
 export default function Quizzes(props) {
   const { data: session, status } = useSession();
@@ -55,6 +56,7 @@ export default function Quizzes(props) {
  
   return (
     <div>
+      <GeneralHeadMeta/>
       <Userheader userData={userData} />
       <div className="p-5">
         <Usernavbar />

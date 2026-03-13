@@ -27,6 +27,7 @@ import { quizConfig } from "@/config/quizConfig";
  
 import connectDB from "@/utils/connectmongo";
 import Quiz from "../model/quizCreation";
+import GeneralHeadMeta from "@/components/home/generalheadmeta";
 
 export default function Dashboard(props) {
   const { data: session, status } = useSession();
@@ -62,18 +63,16 @@ export default function Dashboard(props) {
   }
 
 
-
-console.log("min",quizConfig.minimumAmount)
-console.log("amountMade",userData?.amountMade)
+ 
 
 
 
 
 
   //Withdrawals
- const withdrawalNeededDollar = quizConfig.minimumAmount-userData?.amountMade
+ const withdrawalNeededDollar = (quizConfig.minimumAmount-userData?.amountMade).toFixed(2)
 
- const withdrawalNeededNaira = quizConfig.minimumAmountNaira-userData?.amountMade
+ const withdrawalNeededNaira =(quizConfig.minimumAmountNaira-userData?.amountMade).toFixed(2)
   const PendingWithdrawal = (Math.abs(quizConfig.minimumAmount-userData?.amountMade)).toFixed(2)
 
 //Hadling the amount of games played
@@ -270,6 +269,7 @@ setFormDisplayed(<UserFormupdate/>)
 
   return (
     <div>
+      <GeneralHeadMeta/>
       {formDisplayed}
       <Userheader userData={userData} />
       <div className="p-5">
@@ -308,7 +308,7 @@ setFormDisplayed(<UserFormupdate/>)
 
               {/* Earnings */}
               <StatsCard title="Earnings">
-                <div className={styles.statNumber}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade}`: `$${userData?.amountMade}`}</div>
+                <div className={styles.statNumber}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(2)}`}</div>
                 <p className={styles.statDescription}>Amount Made</p>
            
               </StatsCard>
@@ -359,7 +359,7 @@ setFormDisplayed(<UserFormupdate/>)
                       >
                         <p className={styles.balanceLabel}>Available Balance</p>
                         
-                        <p className={cn(styles.balanceAmount)}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade}`: `$${userData?.amountMade}`}</p>
+                        <p className={cn(styles.balanceAmount)}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(2)}`}</p>
                         <p className={styles.balanceRate}>
                            Rate 100pts = {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${quizConfig.perPoint*100}`: `$${quizConfig.perPoint*100}`}
                          
@@ -373,7 +373,7 @@ setFormDisplayed(<UserFormupdate/>)
                       >
                         <p className={styles.balanceLabel}>This Month</p>
                         <p className={cn(styles.balanceAmount)}>
-                          {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${amountinThisMonth?? amountinThisMonth.toFixed(2)}`: `$${amountinThisMonth?? amountinThisMonth.toFixed(2)}`}
+                          {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${amountinThisMonth.toFixed(2)?? amountinThisMonth.toFixed(2)}`: `$${amountinThisMonth.toFixed(2)?? amountinThisMonth.toFixed(2)}`}
                            </p>
 
 
@@ -393,7 +393,7 @@ setFormDisplayed(<UserFormupdate/>)
                                    <span className={styles.withdrawalMin}>Min.
 
 
-                                     {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? ` ₦${quizConfig.minimumAmountNaira}`: ` $${quizConfig.minimumAmount}`}
+                                     {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? ` ₦${quizConfig.minimumAmountNaira.toFixed(2)}`: ` $${quizConfig.minimumAmount.toFixed(2)}`}
                                     
                                    </span>
                                  </div>
@@ -431,7 +431,7 @@ setFormDisplayed(<UserFormupdate/>)
       key={index}
       title={activity.subcategory}  // or activity.category or activity.timestamp
       timeAgo={timeAgoFromTimestamp(activity.timestamp)}
-      amount={`₦${activity.amountMade}`} // or plain activity.amountMade
+      amount={`₦${activity.amountMade.toFixed(2)}`} // or plain activity.amountMade
       status={activity.amountMade > 0 ? "completed" : "failed"}
     />
   ))}
