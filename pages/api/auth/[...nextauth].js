@@ -55,8 +55,11 @@ export const authOptions = {
     if (user) {
       token.id = user._id
       token.email = user.email
+      token.fullname = user.fullname
       token.username = user.username
       token.role = user.role
+      token.activate = user.activate
+      token.createdAt = user.createdAt
       token.spaceOne = user.spaceOne
       token.amountMade = user.amountMade
       token.points = user.points
@@ -71,8 +74,11 @@ export const authOptions = {
     session.user = {
       id: token.id,
       email: token.email,
+      fullname: token.fullname,
       username: token.username,
       role: token.role,
+      activate: token.activate,
+      createdAt: token.createdAt,
       spaceOne: token.spaceOne,
       amountMade: token.amountMade,
       points: token.points,

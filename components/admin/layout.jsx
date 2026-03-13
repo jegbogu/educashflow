@@ -60,6 +60,7 @@ export default function DashboardLayout({ children, onPageChange }) {
 
   const [activeItem, setActiveItem] = useState(pathName ?? "dashboard");
   const { data: session } = useSession();
+  console.log(session?.user)
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
