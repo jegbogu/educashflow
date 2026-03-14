@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
@@ -9,19 +9,67 @@ import {
   SettingsIcon,
   X,
 } from "lucide-react";
+import Link from "next/link";
+import CheckOut from "../home/checkOut";
+
+ 
 
 export default function Userheader() {
   const [profileSettings, setProfileSetting] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-    const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
    
+  const[checkout, setCheckOut] = useState(false)
+   const userData = session?.user;
+  if (status === "loading") {
+  return null; // or a loader
+}
   
-    const userData = session?.user;
- 
+   
 
   const router = useRouter();
+////////////////////////////////////  ///
+const [userInfo, setUserInfo] = useState([])
+    const allNotification = [
+    {
+        key:"coupon", 
+        msg: "Playing without a coupon limits your earnings. Buy one to unlock full rewards and earn faster",
+        link: '/coupons',
+        userBtn: 'Buy Coupon'
+        
+    },
+    {
+        key:"activate", 
+        msg: "You must activate your account for you to have all benefits",
+        link: 'activate',
+        userBtn: 'Activate Your Account',
+    },
+    {
+        key:"fullname", 
+        msg: "Update Your fullname and email",
+        link: '#',
+        userBtn: 'Update Now'
+    },
+    ]
+    useEffect(()=>{
+       const userNotifications =[]
+        if(userData?.membership==='Free plan'){
+            userNotifications.push(allNotification[0])
+        }
+        if(userData?.activate==='false'){
+            userNotifications.push(allNotification[1])
+        }
+        if(userData?.email.includes("noemail")){
+            userNotifications.push(allNotification[2])
+        }
+        setUserInfo(userNotifications)
 
-  function toggleProfile() {
+    },[userData])
+
+ 
+
+
+function toggleProfile() {
     setProfileSetting((prev) => !prev);
   }
   function toggleNotifications() {
@@ -35,6 +83,7 @@ export default function Userheader() {
 
   return (
     <div className="w-full">
+      {checkout && <CheckOut onClose={()=>setCheckOut(false)}  />}
       {/* HEADER BAR */}
       <div className="bg-white shadow-md mb-5">
         <div className=" flex flex-wrap justify-between items-center px-4 py-3 md:py-2 max-w-7xl mx-auto gap-3">
@@ -71,41 +120,64 @@ export default function Userheader() {
                 className="w-8 h-8 text-gray-700"
               />
               <span className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full leading-none">
-                0
+              {userInfo.length}
               </span>
 
-              {showNotifications && (
-                <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-xl shadow-xl w-80 max-h-[70vh] overflow-y-auto p-5 relative animate-fade-in">
-                    {/* Header */}
-                    <div className="flex justify-between mb-3">
-                      <h2 className="text-lg font-semibold text-gray-800">
-                        Notifications
-                      </h2>
-                      
-                    </div>
+               {showNotifications && (
+  <div
+    className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+    onClick={() => setShowNotifications(false)}
+  >
+    {/* Modal */}
+    <div
+      className="bg-white rounded-2xl shadow-xl w-[360px] max-h-[75vh] overflow-y-auto p-5 relative animate-fade-in"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4 border-b pb-2">
+        <h2 className="text-lg font-semibold text-gray-800">
+          Notifications
+        </h2>
 
-                    {/* Notifications List */}
-                    <div className="space-y-3">
-                      {userData.notifications &&
-                      userData.notifications.length > 0 ? (
-                        userData.notifications.map((note, i) => (
-                          <div
-                            key={i}
-                            className="p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700"
-                          >
-                            {note}
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-gray-500 text-sm text-center">
-                          No new notifications 🎉
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
+        <button
+          onClick={() => setShowNotifications(false)}
+          className="text-gray-400 hover:text-red-500 transition"
+        >
+          <X size={20} />
+        </button>
+      </div>
+
+      {/* Notifications */}
+      <div className="space-y-3">
+        {userInfo && userInfo.length > 0 ? (
+          userInfo.map((el) => (
+            <div
+              key={el.key}
+              className="p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 hover:shadow-sm transition"
+            >
+              <p className="leading-relaxed">{el.msg}</p>
+
+              {el.link==='#'?
+              <button className="mt-4 w-full bg-blue-900 hover:bg-blue-800 text-white text-sm font-medium py-2 rounded-lg transition" onClick={()=>{setCheckOut(true);   setShowNotifications(false)}}>
+                  {el.userBtn}
+                </button>:
+              <Link href={el.link}>
+                <button className="mt-4 w-full bg-blue-900 hover:bg-blue-800 text-white text-sm font-medium py-2 rounded-lg transition">
+                  {el.userBtn}
+                </button>
+              </Link>
+                }
+            </div>
+          ))
+        ) : (
+          <div className="text-center py-6 text-gray-500 text-sm">
+            No new notifications 🎉
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+)}
             </div>
 
             {/* User Info - hidden on small screens */}

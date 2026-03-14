@@ -199,12 +199,11 @@ async function handler(req, res) {
     }
 
 
-     console.log("latestGamePoints", latestGamePoints)
+    
 
     const recentAmoutMade = latestGamePoints * quizConfig.perPoint
     const newamountMade = user.amountMade + recentAmoutMade;
-    console.log("recentAmoutMade", recentAmoutMade)
-    console.log("newamountMade", newamountMade)
+    
 
 
 
