@@ -26,9 +26,10 @@ const adminSchema = new Schema({
   role: {
     type: String,
   },
-  activate: {
-    type: String,
-  },
+ activate: {
+  type: Boolean,
+  default: false
+},
   createdAt: {
     type: String,
     
