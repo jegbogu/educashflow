@@ -66,7 +66,7 @@ const [userInfo, setUserInfo] = useState([])
 
     },[userData])
 
-   
+   console.log(userData)
     //this is for those that click activate
 async function activateUser(){
 const response = await fetch('api/activateUser',{

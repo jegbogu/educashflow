@@ -58,6 +58,7 @@ export const authOptions = {
       token.fullname = user.fullname
       token.username = user.username
       token.role = user.role
+      token.level = user.level
       token.activate = user.activate
       token.createdAt = user.createdAt
       token.spaceOne = user.spaceOne
@@ -77,6 +78,7 @@ export const authOptions = {
       fullname: token.fullname,
       username: token.username,
       role: token.role,
+      level: token.level,
       activate: token.activate,
       createdAt: token.createdAt,
       spaceOne: token.spaceOne,
