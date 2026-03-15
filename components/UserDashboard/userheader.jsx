@@ -66,6 +66,19 @@ const [userInfo, setUserInfo] = useState([])
 
     },[userData])
 
+   
+    //this is for those that click activate
+async function activateUser(){
+const response = await fetch('api/activateUser',{
+  method:'POST',
+  body: JSON.stringify({userData}),
+  headers:{"Content-Type":"application/json"},
+});
+let resData = await response.json()
+alert(resData.message)
+await signOut()
+router.push('/login')
+}
  
 
 
@@ -161,6 +174,11 @@ function toggleProfile() {
               <button className="mt-4 w-full bg-blue-900 hover:bg-blue-800 text-white text-sm font-medium py-2 rounded-lg transition" onClick={()=>{setCheckOut(true);   setShowNotifications(false)}}>
                   {el.userBtn}
                 </button>:
+                el.link==='activate'?
+              <button className="mt-4 w-full bg-blue-900 hover:bg-blue-800 text-white text-sm font-medium py-2 rounded-lg transition" onClick={()=>{activateUser()}}>
+                  {el.userBtn}
+                </button>:
+
               <Link href={el.link}>
                 <button className="mt-4 w-full bg-blue-900 hover:bg-blue-800 text-white text-sm font-medium py-2 rounded-lg transition">
                   {el.userBtn}
