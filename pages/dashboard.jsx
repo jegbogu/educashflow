@@ -153,11 +153,12 @@ function timeAgoFromTimestamp(timestamp) {
 
 
 //getting the amount in a month
+console.log(userData)
 const amountinThisMonth = getAmountMadeThisMonth(userData?.usergames)
 function getAmountMadeThisMonth(records) {
  
   if(!records || records.length===0){
-    return "No amount made"
+    return 0
   }
   const now = new Date();
   const currentMonth = now.getMonth(); // 0 = Jan
