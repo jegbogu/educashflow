@@ -7,12 +7,12 @@ export default function Footer() {
     <footer className="">
       <section className="max-w-7xl mx-auto p-4 py-8">
         <div className="flex flex-col md:flex-row">
-          <div className="max-w-72 w-full min-h-32">
+          <div className="hidden sm: block max-w-72 w-full min-h-32">
             <Link href={'/'} ><img src="logo.jpg" className="border rounded-md" width={180}/></Link>
           </div>
           <div className="links-groups">
             <div className="capitalize">
-              <h5>Quick Links</h5>
+              <h5 className="text-orange-400">Quick Links</h5>
               <ul>
                 <li>
                   <Link href={"/#"}>Home</Link>
@@ -29,7 +29,7 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h5>Contact Info</h5>
+              <h5 className="text-orange-400">Contact Info</h5>
               <ul>
                 <li>
                   Email:{" "}
@@ -45,7 +45,7 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h5>Socials</h5>
+              <h5 className="text-orange-400">Socials</h5>
               <span className="flex gap-4">
                 <Link href={"#"}>
                   <Image
@@ -82,7 +82,7 @@ export default function Footer() {
             <Link href={"#"}>Terms of Service</Link>
             <Link href={"#"}>Privacy Policy</Link>
           </div>
-          <Link href="https://www.mediaplur.com/" target="_blank">
+          <Link href="https://www.mediaplur.com/" target="_blank" className="mt-[30px] sm:mt-0">
             <div class=" flex items-center space-x-2">
               <p>Designed by Mediaplur</p>
               <span>
