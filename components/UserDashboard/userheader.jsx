@@ -76,8 +76,15 @@ const response = await fetch('api/activateUser',{
 });
 let resData = await response.json()
 alert(resData.message)
-await signOut()
-router.push('/login')
+if(userData.email.includes('noemail') || userData.fullname.includes('noemail')){
+ 
+  router.refresh()
+  
+}else{
+  await signOut()
+  router.push('/login')
+}
+
 }
  
 

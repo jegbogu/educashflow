@@ -23,7 +23,7 @@ export default function EarningsPage() {
     //Withdrawals
    const withdrawalNeededDollar = (quizConfig.minimumAmount-userData?.amountMade).toFixed(2)
   
-   const withdrawalNeededNaira = (quizConfig.minimumAmountNaira-userData?.amountMade).toFixed(2)
+   
  
 
   const router = useRouter();
@@ -54,19 +54,37 @@ export default function EarningsPage() {
    router.replace("/login");
   }
 
-  const withdrawalNeeded = quizConfig.minimumAmount-userData.amountMade
-  const PendingWithdrawal = (Math.abs(quizConfig.minimumAmount-userData.amountMade)).toFixed(2)
+   
 
-   let minimumInCurrency;
-    if(userData?.spaceOne.includes("Naira")){
-      minimumInCurrency = <div>
-    {quizConfig.minimumAmountNaira> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`₦${PendingWithdrawal} Available in your account for withdrawal`}
-      </div>
-    }else{
-     minimumInCurrency = <div>
-  {quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeededDollar} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`} 
-      </div>
-    }
+ const withdrawalNeededNaira =(Math.abs(quizConfig.minimumAmountNaira-userData?.amountMade)).toFixed(2)
+  const PendingWithdrawal = (Math.abs(quizConfig.minimumAmount-userData?.amountMade)).toFixed(2)
+ 
+
+  let minimumInCurrency;
+  if(userData?.spaceOne.includes("Naira")){
+    minimumInCurrency = <div>
+  {quizConfig.minimumAmountNaira>= userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`₦${PendingWithdrawal} Available in your account for withdrawal`}
+    </div>
+  }else{
+   minimumInCurrency = <div>
+{quizConfig.minimumAmount> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`$${withdrawalNeededDollar} more needed`}</div>:`$${PendingWithdrawal} Available in your account for withdrawal`} 
+    </div>
+  }
+ 
+let configMinAmount
+if (userData?.spaceOne.includes('Naira')){
+  configMinAmount = quizConfig?.minimumAmountNaira
+}else{
+  configMinAmount = quizConfig.minimumAmount
+}
+
+let percentageScore 
+
+if (userData?.spaceOne.includes('Naira')){
+  percentageScore = (userData?.amountMade / quizConfig?.minimumAmountNaira)* 100
+}else{
+   percentageScore = (userData?.amountMade / quizConfig?.minimumAmount)* 100
+}
 function handleFormCloseFnc(){
   setuserWithdralForm(false)
 }
@@ -134,11 +152,18 @@ function handleFormCloseFnc(){
           
 
                {minimumInCurrency}
-            <ProgressBar progress={90} />
+            <ProgressBar progress={100-percentageScore} />
 
             
 
-           { quizConfig.minimumAmount>= userData?.amountMade?<button
+           { userData?.spaceTwo === "Pending"?<button
+                                   className={cn(disabled && styles.btnDisabled, styles.btn)}
+                                   disabled={disabled}
+                                 >
+                                   <Clock className={styles.btnIcon} />
+                                   You have a pending withdrawal
+                                 </button>:
+                                 configMinAmount > userData?.amountMade?<button
               className={cn(disabled && styles.btnDisabled, styles.btn)}
               disabled={disabled}
             >

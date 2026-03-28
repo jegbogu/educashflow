@@ -5,29 +5,26 @@ import WithdrawalRequest from "@/model/withdrawalRequest";
 import mongoose from "mongoose";
 import nodemailer from "nodemailer";
 
-/** ---------- Helpers ---------- **/
-
 function getFormattedDateTime() {
+
   const now = new Date();
   const pad = (n) => String(n).padStart(2, "0");
-  return `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(
-    now.getHours()
-  )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+  return `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 }
 
 function createTransporter() {
+
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST || "smtp.gmail.com",
     port: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 587,
     secure: process.env.SMTP_SECURE === "true",
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
+      pass: process.env.EMAIL_PASS
+    }
   });
 }
-
-/** ---------- Email Function ---------- **/
 
 async function sendWithdrawalEmails({
   fullname,
@@ -35,211 +32,154 @@ async function sendWithdrawalEmails({
   accountName,
   accountNumber,
   bankName,
-  amount,
+  amount
 }) {
+
   const transporter = createTransporter();
   const adminEmail = process.env.CHIEF_ADMIN_EMAIL;
 
-  const currentYear = new Date().getFullYear();
-
-  // Email to USER
   await transporter.sendMail({
     from: `"Eduquizz Global Limited" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Withdrawal Request Received",
     html: `
-      <div style="font-family: Arial; max-width:600px; margin:auto;">
-        <h2>Hello ${fullname},</h2>
-        <p>Your withdrawal request has been received successfully.</p>
-
-        <h3>Withdrawal Details:</h3>
-        <ul>
-          <li><strong>Bank Name:</strong> ${bankName}</li>
-          <li><strong>Account Name:</strong> ${accountName}</li>
-          <li><strong>Account Number:</strong> ${accountNumber}</li>
-          <li><strong>Amount:</strong> ₦${amount}</li>
-        </ul>
-
-        <p>Our team will process your request shortly.</p>
-        <br/>
-        <small>© ${currentYear} Eduquizz Global Limited. All rights reserved.</small>
-      </div>
-    `,
+    <h2>Hello ${fullname}</h2>
+    <p>Your withdrawal request has been received.</p>
+    <ul>
+    <li>Bank: ${bankName}</li>
+    <li>Account Name: ${accountName}</li>
+    <li>Account Number: ${accountNumber}</li>
+    <li>Amount: ₦${amount}</li>
+    </ul>`
   });
 
-  // Email to ADMIN
   await transporter.sendMail({
-    from: `"Eduquizz Global Limited" <${process.env.CHIEF_ADMIN_EMAIL}>`,
+    from: `"Eduquizz Global Limited" <${process.env.EMAIL_USER}>`,
     to: adminEmail,
     subject: "New Withdrawal Request",
     html: `
-      <div style="font-family: Arial; max-width:600px; margin:auto;">
-        <h2>New Withdrawal Request</h2>
-
-        <p><strong>User:</strong> ${fullname}</p>
-        <p><strong>Email:</strong> ${email}</p>
-
-        <h3>Withdrawal Details:</h3>
-        <ul>
-          <li><strong>Bank Name:</strong> ${bankName}</li>
-          <li><strong>Account Name:</strong> ${accountName}</li>
-          <li><strong>Account Number:</strong> ${accountNumber}</li>
-          <li><strong>Amount:</strong> ₦${amount}</li>
-        </ul>
-
-        <small>Request Time: ${getFormattedDateTime()}</small>
-      </div>
-    `,
+    <h2>New Withdrawal Request</h2>
+    <p>User: ${fullname}</p>
+    <p>Email: ${email}</p>
+    <p>Amount: ₦${amount}</p>
+    <p>Time: ${getFormattedDateTime()}</p>`
   });
 }
 
-/** ---------- Validation ---------- **/
-
-function sanitizeInput({ accountName, accountNumber, bankName, amount, amountAvailableForUser, minUserCanWithdraw, maxUserCanWithdraw}) {
-  return {
-    accountName: (accountName ?? "").trim(),
-    accountNumber:(accountNumber ?? ""),
-    bankName: (bankName ?? "").trim(),
-    amount: Number((amount ?? "")),
-    amountAvailableForUser: Number((amountAvailableForUser ?? "")),
-    minUserCanWithdraw ,
-    maxUserCanWithdraw 
-  };
-}
-
-
- 
-
-
-function validate({ accountName, accountNumber, bankName, amount , amountAvailableForUser, minUserCanWithdraw, maxUserCanWithdraw}) {
-  
-   
-
-  if (amount > maxUserCanWithdraw)
-    return { ok: false, message: `Amount to withdrawal must NOT be more than ${maxUserCanWithdraw}` };
-
-  if (amount < minUserCanWithdraw)
-    return { ok: false, message: `Amount to withdrawal must be more than ${minUserCanWithdraw}` };
-
-  if (amount > amountAvailableForUser)
-    return { ok: false, message: `Amount to withdrawal should not be more than ${amountAvailableForUser}` };
- 
-
-  if (!accountName || accountName.length < 5)
-    return { ok: false, message: "Account name is required" };
-
-  if (!accountNumber || accountNumber.length < 10)
-    return { ok: false, message: "Valid account number is required" };
-
-  if (!bankName || bankName.length < 3)
-    return { ok: false, message: "Bank name is required" };
-
-  if (!amount || isNaN(amount))
-    return { ok: false, message: "Valid amount is required" };
-
-  return { ok: true };
-}
-
-/** ---------- Handler ---------- **/
-
 export default async function handler(req, res) {
+
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
   try {
-    const raw = req.body || {};
-    const { accountName, accountNumber, bankName, amount , amountAvailableForUser, minUserCanWithdraw, maxUserCanWithdraw} =
-      sanitizeInput(raw);
 
-     
-  
-    const verdict = validate({
+    const {
       accountName,
       accountNumber,
       bankName,
       amount,
-      amountAvailableForUser,
+      userData,
       minUserCanWithdraw,
       maxUserCanWithdraw
-    });
+    } = req.body;
 
-    if (!verdict.ok) {
-      return res.status(400).json({ message: verdict.message });
-    }
+    const withdrawalAmount = Number(amount);
+
+    if (!accountName || accountName.length < 3)
+      return res.status(400).json({ message: "Account name is required" });
+
+    if (!accountNumber || accountNumber.length < 6)
+      return res.status(400).json({ message: "Account number is invalid" });
+
+    if (!bankName || bankName.length < 3)
+      return res.status(400).json({ message: "Bank name is required" });
+
+    if (!withdrawalAmount || isNaN(withdrawalAmount))
+      return res.status(400).json({ message: "Invalid amount" });
+
+    if (withdrawalAmount > maxUserCanWithdraw)
+      return res.status(400).json({
+        message: `Amount cannot exceed ${maxUserCanWithdraw}`
+      });
+
+    if (withdrawalAmount < minUserCanWithdraw)
+      return res.status(400).json({
+        message: `Minimum withdrawal is ${minUserCanWithdraw}`
+      });
 
     await connectDB();
 
-    const { userData } = raw;
-
     const existingUser = await Register.findOne({
-      username: userData?.username,
+      username: userData?.username
     });
 
-    if (!existingUser) {
+    if (!existingUser)
       return res.status(404).json({ message: "User not found" });
-    }
-    if (existingUser.spaceTwo==='Pending') {
-      return res.status(404).json({ message: "You have a Pending withdrawal, you cannot requesting for another one" });
-    }
 
-    // Log activity
+    if (withdrawalAmount > existingUser.amountMade)
+      return res.status(400).json({ message: "Insufficient funds" });
+
+    if (existingUser.spaceTwo === "Pending")
+      return res.status(400).json({
+        message: "You already have a pending withdrawal"
+      });
+
     const activity = new Activity({
       _id: new mongoose.Types.ObjectId(),
       activity: "Withdrawal Request",
-      description: `Withdrawal of ₦${amount} requested by ${existingUser.username}`,
-      createdAt: getFormattedDateTime(),
+      description: `Withdrawal of ₦${withdrawalAmount} requested by ${existingUser.username}`,
+      createdAt: getFormattedDateTime()
     });
 
     await activity.save();
 
     const withdrawalRequest = new WithdrawalRequest({
       _id: new mongoose.Types.ObjectId(),
-      fullname: userData?.fullname ,
-  email: userData?.email ,
-  accountName ,
-  bankName ,
-  accountNumber ,
-  amount ,
-  withdrawalConfirmation:"Pending" ,
-  userData ,
- 
+      fullname: existingUser.fullname,
+      email: existingUser.email,
+      accountName,
+      bankName,
+      accountNumber,
+      amount: withdrawalAmount,
+      withdrawalConfirmation: "Pending",
+      userData
     });
- 
+
     await withdrawalRequest.save();
 
-    //update spaceTwo to pending, and if the spaceTwo is pending then the user cannot request for another payment
-    const updatedUser = await Register.findByIdAndUpdate(
+    await Register.findByIdAndUpdate(
       existingUser._id,
-      {
-        $set: {
-           spaceTwo:"Pending"
-           
-        },
-      },
+      { $set: { spaceTwo: "Pending" } },
       { new: true }
     );
 
-    // Send Emails
     try {
+
       await sendWithdrawalEmails({
         fullname: existingUser.fullname,
         email: existingUser.email,
         accountName,
         accountNumber,
         bankName,
-        amount
-        
+        amount: withdrawalAmount
       });
-    } catch (err) {
-      console.error("Email error:", err.message);
+
+    } catch (emailError) {
+
+     
     }
 
     return res.status(200).json({
-      message: "Withdrawal request submitted successfully",
+      message: "Withdrawal request submitted successfully"
     });
+
   } catch (err) {
+
     console.log("Server error:", err);
-    return res.status(500).json({ message: "Server error" });
+
+    return res.status(500).json({
+      message: "Server error"
+    });
   }
 }

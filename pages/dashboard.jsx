@@ -62,6 +62,8 @@ export default function Dashboard(props) {
    router.replace("/login");
   }
 
+  
+
 
  
 
@@ -69,11 +71,7 @@ export default function Dashboard(props) {
 
 
 
-  //Withdrawals
- const withdrawalNeededDollar = (quizConfig.minimumAmount-userData?.amountMade).toFixed(2)
-
- const withdrawalNeededNaira =(quizConfig.minimumAmountNaira-userData?.amountMade).toFixed(2)
-  const PendingWithdrawal = (Math.abs(quizConfig.minimumAmount-userData?.amountMade)).toFixed(2)
+ 
 
 //Hadling the amount of games played
 const gamesStatus = amountOfGamesLeft(userData?.latestPurchase, userData?.latestPurchaseGames)
@@ -103,6 +101,7 @@ function amountOfGamesProgress(latestPurchase, latestPurchaseGames){
   return (remainingAmountOfGames/planGamesNumber)*100
 
 }
+
 
    
 
@@ -153,7 +152,7 @@ function timeAgoFromTimestamp(timestamp) {
 
 
 //getting the amount in a month
-console.log(userData)
+ 
 const amountinThisMonth = getAmountMadeThisMonth(userData?.usergames)
 function getAmountMadeThisMonth(records) {
  
@@ -243,12 +242,18 @@ function getPercentageChange(data) {
   }
 }
 
+
+ //Withdrawals
+ const withdrawalNeededDollar = (quizConfig.minimumAmount-userData?.amountMade).toFixed(2)
+
+ const withdrawalNeededNaira =(quizConfig.minimumAmountNaira-userData?.amountMade).toFixed(2)
+  const PendingWithdrawal = (Math.abs(quizConfig.minimumAmount-userData?.amountMade)).toFixed(2)
  
 
   let minimumInCurrency;
   if(userData?.spaceOne.includes("Naira")){
     minimumInCurrency = <div>
-  {quizConfig.minimumAmountNaira> userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`₦${PendingWithdrawal} Available in your account for withdrawal`}
+  {quizConfig.minimumAmountNaira>= userData?.amountMade?<div className={styles.withdrawalNeeded}>{`₦${withdrawalNeededNaira} more needed`}</div>:`₦${PendingWithdrawal} Available in your account for withdrawal`}
     </div>
   }else{
    minimumInCurrency = <div>
@@ -256,8 +261,20 @@ function getPercentageChange(data) {
     </div>
   }
  
+let configMinAmount
+if (userData?.spaceOne.includes('Naira')){
+  configMinAmount = quizConfig?.minimumAmountNaira
+}else{
+  configMinAmount = quizConfig.minimumAmount
+}
 
+let percentageScore 
 
+if (userData?.spaceOne.includes('Naira')){
+  percentageScore = (userData?.amountMade / quizConfig?.minimumAmountNaira)* 100
+}else{
+   percentageScore = (userData?.amountMade / quizConfig?.minimumAmount)* 100
+}
 
   function userFormDisplay(){
   if(userData?.email.includes("noemail")){
@@ -399,9 +416,18 @@ setFormDisplayed(<UserFormupdate/>)
                                    </span>
                                  </div>
                                   {minimumInCurrency}
-                            <ProgressBar progress={90} />
+                            <ProgressBar progress={100-percentageScore} />
                      
-                                { quizConfig.minimumAmount>= userData?.amountMade?<button
+                                {  userData?.spaceTwo === "Pending"?<button
+                                   className={cn(disabled && styles.btnDisabled, styles.btn)}
+                                   disabled={disabled}
+                                 >
+                                   <Clock className={styles.btnIcon} />
+                                   You have a pending withdrawal
+                                 </button>:
+                                
+                                
+                                configMinAmount> userData?.amountMade?<button
                                    className={cn(disabled && styles.btnDisabled, styles.btn)}
                                    disabled={disabled}
                                  >
@@ -409,6 +435,7 @@ setFormDisplayed(<UserFormupdate/>)
                                    Minimum Not Reached
                                  </button>
                                  :
+                                 
                                  <button className="bg-blue-900 py-5 px-[30px] text-white w-full mt-5 rounded-md hover:bg-green-900" onClick={userFormDisplay}>
                                  
                                    Request For Withdrawal
@@ -423,7 +450,7 @@ setFormDisplayed(<UserFormupdate/>)
                         <h3 className={styles.activityTitle}>
                           <Recent /> Recent Activity
                         </h3>
-                        <button className={styles.btnGhost}>View All</button>
+                        {/* <button className={styles.btnGhost}>View All</button> */}
                       </div>
 
                        <div className={styles.activityList}>
