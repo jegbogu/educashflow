@@ -26,7 +26,10 @@ export default function Home(props) {
      <GeneralHeadMeta/>
       <div className="relative bg-gradient-to-r from-[#0b1220] via-[#1a1f3c] to-primary-dark">
         <Navbar />
-        <CssParticles />
+        <div className="block sm:hidden">
+          <CssParticles />
+        </div>
+       
         <Banner allQuestions={allQuestions} />
         {modal && (
           <UsersQuiz

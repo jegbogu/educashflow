@@ -25,7 +25,7 @@ export default function Banner(props) {
   });
   return (
     <section className={style.banner}>
-      <animated.div className="space-y-8 w-full my-8" style={{ ...springs }}>
+      <div className="space-y-8 w-full my-8" style={{ ...springs }}>
         <h1 className={style.bTitle}>
           answer
           <br />
@@ -57,7 +57,7 @@ export default function Banner(props) {
           )}
         </div>
 
-        <animated.div className="landing-features " style={{ ...features }}>
+        <div className="landing-features " style={{ ...features }}>
           <span>
             <span>
               <Image
@@ -92,9 +92,9 @@ export default function Banner(props) {
             </span>
             Instant Wallet Point
           </span>
-        </animated.div>
-      </animated.div>
-      <animated.div className="img my-12 lg:my-0" style={{ ...img }}>
+        </div>
+      </div>
+      <div className="img my-12 lg:my-0" style={{ ...img }}>
         <Image
           src="/home-img.png"
           width={400}
@@ -102,8 +102,8 @@ export default function Banner(props) {
           alt="home image"
           className="w-full h-full object-cover"
         />
-      </animated.div>
-      <animated.div className="sm landing-features" style={{ ...features }}>
+      </div>
+      <div className="sm landing-features" style={{ ...features }}>
         <span>
           <span>
             <Image
@@ -137,7 +137,7 @@ export default function Banner(props) {
           </span>
           Instant Wallet Point
         </span>
-      </animated.div>
+      </div>
     </section>
   );
 }
