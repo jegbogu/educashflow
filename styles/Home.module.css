@@ -9,5 +9,5 @@
 }
 
 .bTitle {
-  @apply capitalize text-5xl md:text-7xl md:leading-normal font-bold text-white leading-normal;
+  @apply capitalize text-5xl leading-[1px] md:text-7xl md:leading-normal font-bold text-white leading-normal;
 }
