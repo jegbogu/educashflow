@@ -81,6 +81,7 @@ export default function Footer() {
             </p>
             <Link href={"#"}>Terms of Service</Link>
             <Link href={"#"}>Privacy Policy</Link>
+            <Link href={"/DISCLAIMER"}>Disclaimer</Link>
           </div>
           <Link href="https://www.mediaplur.com/" target="_blank" className="mt-[30px] sm:mt-0">
             <div class=" flex items-center space-x-2">

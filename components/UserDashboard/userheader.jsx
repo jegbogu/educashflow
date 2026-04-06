@@ -250,8 +250,7 @@ function toggleProfile() {
 
                     <div className="flex justify-between text-sm text-gray-700">
                       <span className="flex items-center gap-2">
-                        <Coins className="w-4 h-4 text-yellow-500" />$
-                        {userData?.amountMade}
+                        <Coins className="w-4 h-4 text-yellow-500" />{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(2)}`}
                       </span>
                     </div>
                   </div>

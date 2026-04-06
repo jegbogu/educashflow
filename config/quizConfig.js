@@ -91,7 +91,7 @@ export const quizConfig = {
   ],
   levels: ["Beginner", "Intermediate", "Advanced"],
   perQuestionTime: 12,
-  perQuestionPoint:5,
+  perQuestionPoint:10,
   BronzePointPerQuestion: 10, //2x earning
   SilverPointPerQuestion: 20, //4x earning
   proPointPerQuestion: 40, //8x earning
