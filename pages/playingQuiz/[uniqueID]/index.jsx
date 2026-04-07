@@ -1,6 +1,7 @@
 import connectDB from "@/utils/connectmongo";
 import Quiz from "@/model/quizCreation";
 import Playingrealquiz from "@/components/realQuiz/playingrealquiz";
+import { quizConfig } from "@/config/quizConfig";
 
 /**
  * URL shape produced earlier:
@@ -60,16 +61,16 @@ export async function getServerSideProps(ctx) {
     }
 
     // Pick 5 pseudo-random, no-repeat
-    const pickFiveRandom = (arr) => {
+    const pickRandom = (arr) => {
       const copy = [...arr];
       for (let i = copy.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [copy[i], copy[j]] = [copy[j], copy[i]];
       }
-      return copy.slice(0, Math.min(5, copy.length));
+      return copy.slice(0, Math.min(quizConfig.constantNumberofRandomQuestions, copy.length));
     };
 
-    const randomFive = pickFiveRandom(all);
+    const randomFive = pickRandom(all);
     
 
     return {

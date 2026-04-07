@@ -26,7 +26,7 @@ function getFormattedDateTime() {
         await connectDB()
  
         const{email, password, role} = req.body
-        console.log({email, password, role})
+        
        
         if(role==='admin'){
             
@@ -63,6 +63,8 @@ function getFormattedDateTime() {
             res.status(403).json({message:'Password or Email is not correct'})
           return;
          }
+
+         
          //saving activities for record sake
           const newActivity = new Activity({
                  _id: new mongoose.Types.ObjectId(),

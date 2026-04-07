@@ -71,7 +71,12 @@ export async function getServerSideProps() {
   await connectDB();
   const quizList = await Quiz.find({}).lean();
 
+ 
   const subcategories = [...new Set(quizList.map((el) => el.subcategory))];
+   
+ 
+
+
   const levels = [...new Set(quizList.map((el) => el.level))];
 
   const quizBeginner = subcategories.map((sub) => {
@@ -130,6 +135,7 @@ export async function getServerSideProps() {
   });
 
   const quiz = quizBeginner.concat(quizIntermediate, quizAdvanced);
+ 
 
   return {
     props: {

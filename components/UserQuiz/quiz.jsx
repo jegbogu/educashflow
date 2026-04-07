@@ -18,7 +18,7 @@ export default function UsersQuiz(props) {
 
   // Filter once when allQuestions changes
   const landingPageQuestions = useMemo(
-    () => allQuestions.filter((el) => el.category !== "Bible" && el.level === "Beginner"),
+    () => allQuestions.filter((el) =>  el.level === "Beginner"),
     [allQuestions]
   );
 

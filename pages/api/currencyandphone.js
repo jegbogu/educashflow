@@ -26,6 +26,13 @@ await connectDB()
          countryData,
          userData
     } = req.body;
+
+    console.log({
+         currency,
+         phone,
+         countryData,
+         userData
+  })
      
 if(currency !=="Naira" && currency!=="Dollar"){
     return res.status(400).json({message:"You must choose a currency"})
@@ -35,7 +42,7 @@ if(phone.length < 10 || phone== "" || countryData == null){
 }
  
  const updatePhoneAndCurrency = await Register.findByIdAndUpdate(
-  userData._id,
+  userData.id,
   {
     $set: { 
     spaceOne: `${currency}-${countryData.name}`, 

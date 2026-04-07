@@ -26,19 +26,19 @@ export default function Playingquiz({ quiz }) {
   //setting points
   let points;
   if (session?.user?.membership === "Free plan") {
-    points = quizConfig.constantNumberofQuestions * quizConfig.perQuestionPoint;
+    points = quizConfig.constantNumberofRandomQuestions * quizConfig.perQuestionPoint;
   }
   if (session?.user?.membership === "Bronze Pack") {
     points =
-      quizConfig.constantNumberofQuestions * quizConfig.BronzePointPerQuestion;
+      quizConfig.constantNumberofRandomQuestions * quizConfig.BronzePointPerQuestion;
   }
   if (session?.user?.membership === "Silver Pack") {
     points =
-      quizConfig.constantNumberofQuestions * quizConfig.SilverPointPerQuestion;
+      quizConfig.constantNumberofRandomQuestions * quizConfig.SilverPointPerQuestion;
   }
   if (session?.user?.membership === "Gold Pack") {
     points =
-      quizConfig.constantNumberofQuestions * quizConfig.proPointPerQuestion;
+      quizConfig.constantNumberofRandomQuestions * quizConfig.proPointPerQuestion;
   }
 
   // 1) Flatten to rows = one card per (subcategory, level)
@@ -287,10 +287,10 @@ export default function Playingquiz({ quiz }) {
                         className="w-4 h-4"
                         alt=""
                       />
-                      <span>{r.minutes.toFixed(0)} mins</span>
+                      <span>{(quizConfig.constantNumberofRandomQuestions * quizConfig.perQuestionTime)/60} mins</span>
                     </div>
                     <span>
-                      {quizConfig.constantNumberofQuestions} questions
+                      {quizConfig.constantNumberofRandomQuestions} questions
                     </span>
                     {/* <span className="font-medium">
                       +{" "}

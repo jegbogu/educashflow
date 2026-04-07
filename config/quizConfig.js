@@ -107,7 +107,7 @@ export const quizConfig = {
 
   perPoint: 0.02, //Standard earning
 
-  constantNumberofQuestions:20,
+  constantNumberofRandomQuestions:10,
   extraPointsBeginner:0, //Beginners get 0 extra points
   extraPointsIntermediate: 4, //Intermediate gets 4 extra points
   extraPointsAdvanced: 8 //Advanced get extra 8 points

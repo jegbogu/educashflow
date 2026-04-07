@@ -7,52 +7,59 @@ import EyeIcon from "@/components/icons/eyeicon";
 import EyeOffIcon from "@/components/icons/eyeofficon";
 import Link from "next/link";
 import Spinner from "@/components/icons/spinner";
- 
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(null);
-  const [agreement, setAgreement] = useState(false)
+  const [agreement, setAgreement] = useState(false);
 
-  //after clicking on register
   const router = useRouter();
-  const [finalReg, setFinalReg] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  //this is for all fields check, when a user clicks submit, it checks all the fields
   const [showNoUsername, setShowNoUsername] = useState(false);
   const [showNoemail, setshowNoemail] = useState(false);
   const [showNopassword, setshowNopassword] = useState(false);
   const [showNofullname, setshowNofullname] = useState(false);
+
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const usernameRef = useRef();
   const emailRef = useRef();
   const fullnameRef = useRef();
- 
+
+  // ALERT STATES
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [afterOkAction, setAfterOkAction] = useState(null);
+
+  function showCustomAlert(message, action = null) {
+    setAlertMessage(message);
+    setAfterOkAction(() => action);
+    setShowAlert(true);
+  }
 
   function checkPassword() {
     const enteredPassword = passwordRef.current.value;
     const enteredConfirmPassword = confirmPasswordRef.current.value;
 
-
     if (!enteredConfirmPassword) {
-      setPasswordMatch(null); // no message until confirm field is typed
+      setPasswordMatch(null);
     } else if (enteredConfirmPassword === enteredPassword) {
       setPasswordMatch(true);
     } else {
       setPasswordMatch(false);
     }
   }
+
   async function submitHandler(event) {
     setLoading(true);
-
     event.preventDefault();
+
     const enteredPassword = passwordRef.current.value;
     const enteredemail = emailRef.current.value;
     const enteredUsername = usernameRef.current.value;
     const enteredfullname = fullnameRef.current.value;
-   
+
     if (
       !enteredPassword &&
       !enteredemail &&
@@ -60,106 +67,72 @@ export default function Register() {
       !enteredfullname
     ) {
       setshowNofullname(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
-text-red-700"
-        >
+        <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
           Fullname is required
         </p>
       );
       setShowNoUsername(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
-text-red-700"
-        >
+        <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
           Username is required
         </p>
       );
       setshowNoemail(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
-text-red-700"
-        >
+        <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
           Email is required
         </p>
       );
       setshowNopassword(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
-text-red-700"
-        >
+        <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
           Password is required
         </p>
       );
     }
 
-    //this is for fullname
     if (enteredfullname.trim().length < 5) {
       setshowNofullname(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
-text-red-700"
-        >
+        <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
           Fullname must be more than 5 characters
         </p>
       );
     } else {
       setshowNofullname(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100
-text-green-700"
-        >
+        <p className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100 text-green-700">
           Correct Fullname
         </p>
       );
     }
 
-    //this is for username
     if (enteredUsername.trim().length < 3) {
       setShowNoUsername(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
-text-red-700"
-        >
+        <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
           Username must be more than 3 characters
         </p>
       );
     } else {
       setShowNoUsername(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100
-text-green-700"
-        >
+        <p className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100 text-green-700">
           Correct Username
         </p>
       );
     }
 
-    // this is for email
     if (enteredemail.trim().length < 5) {
       setshowNoemail(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
-text-red-700"
-        >
+        <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
           Email must be more than 5 characters
         </p>
       );
     } else {
       setshowNoemail(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100
-text-green-700"
-        >
-          Correct Email{" "}
+        <p className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100 text-green-700">
+          Correct Email
         </p>
       );
     }
 
-    // Define the regex once
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
 
-    // Check password
     if (!passwordRegex.test(enteredPassword)) {
       setshowNopassword(
         <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
@@ -174,15 +147,14 @@ text-green-700"
         </p>
       );
     }
-    //sending the data to the backend
+
     const data = {
       fullname: enteredfullname,
       username: enteredUsername,
       email: enteredemail,
       password: enteredPassword,
-      agreement: agreement
+      agreement: agreement,
     };
-    
 
     const response = await fetch("/api/register", {
       body: JSON.stringify(data),
@@ -196,48 +168,33 @@ text-green-700"
     let newPostData = await response.json();
 
     if (!response.ok) {
-      setFinalReg(
-        <p
-          className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
-text-red-700"
-        >
-          {newPostData.message}
-        </p>
-      );
-      setLoading(false); // Reset if error
+      showCustomAlert(newPostData.message || "Something went wrong");
+      setLoading(false);
     } else {
-      setFinalReg(
-        <p className="border-2 p-2 mt-2 rounded-2xl border-green-200 bg-green-100 text-green-700">
-          {newPostData.message}
-        </p>
-      );
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      router.push("/login");
+      showCustomAlert(newPostData.message, () => {
+        router.push("/login");
+      });
     }
   }
 
   return (
     <div className="p-6">
-     
- <Link
-  href="/"
-  className="inline-flex items-center text-secondary p-2 rounded-md hover:bg-gray-50 transition"
->
-  ← Home
-</Link>
+      <Link
+        href="/"
+        className="inline-flex items-center text-secondary p-2 rounded-md hover:bg-gray-50 transition"
+      >
+        ← Home
+      </Link>
+
       <div className="max-w-xl mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
-        {/* Header */}
         <h1 className="text-center p-2 text-2xl font-bold text-gray-800">
           Sign Up
         </h1>
 
         <form className="mt-6 space-y-5" onSubmit={submitHandler}>
-          {/* Email */}
+          {/* Fullname */}
           <div>
-            <label
-              htmlFor="fullname"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label className="block text-sm font-medium text-gray-700">
               Full Name
             </label>
             <div className="relative mt-1">
@@ -246,20 +203,17 @@ text-red-700"
               </span>
               <input
                 type="text"
-                name="fullname"
-                id="fullname"
                 ref={fullnameRef}
                 placeholder="Enter your fullname"
-                className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
+                className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full"
               />
             </div>
-            <div>{showNofullname}</div>
+            {showNofullname}
           </div>
+
+          {/* Username */}
           <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label className="block text-sm font-medium text-gray-700">
               Username
             </label>
             <div className="relative mt-1">
@@ -268,20 +222,17 @@ text-red-700"
               </span>
               <input
                 type="text"
-                name="username"
-                id="username"
                 ref={usernameRef}
                 placeholder="Enter your username"
-                className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
+                className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full"
               />
             </div>
-            <div>{showNoUsername}</div>
+            {showNoUsername}
           </div>
+
+          {/* Email */}
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label className="block text-sm font-medium text-gray-700">
               Email Address
             </label>
             <div className="relative mt-1">
@@ -290,41 +241,36 @@ text-red-700"
               </span>
               <input
                 type="email"
-                name="email"
-                id="email"
                 ref={emailRef}
                 placeholder="Enter your email"
-                className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
+                className="pl-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full"
               />
             </div>
-            <div>{showNoemail}</div>
+            {showNoemail}
           </div>
 
           {/* Password */}
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <div className="relative mt-1">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
                 <LockIcon className="w-5 h-5" />
               </span>
+
               <input
                 type={showPassword ? "text" : "password"}
-                name="password"
-                id="password"
                 ref={passwordRef}
                 onChange={checkPassword}
                 placeholder="Enter your password"
-                className="pl-10 pr-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
+                className="pl-10 pr-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full"
               />
+
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                className="absolute inset-y-0 right-0 flex items-center pr-3"
               >
                 {showPassword ? (
                   <EyeOffIcon className="w-5 h-5" />
@@ -333,103 +279,99 @@ text-red-700"
                 )}
               </button>
             </div>
-            <div>{showNopassword}</div>
+            {showNopassword}
           </div>
 
           {/* Confirm Password */}
           <div>
-            <label
-              htmlFor="confirmpassword"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label className="block text-sm font-medium text-gray-700">
               Confirm Password
             </label>
-            <div className="relative mt-1">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-                <LockIcon className="w-5 h-5" />
-              </span>
-              <input
-                type={showPassword ? "text" : "password"}
-                name="confirmpassword"
-                id="confirmpassword"
-                ref={confirmPasswordRef}
-                onChange={checkPassword}
-                placeholder="Confirm your password"
-                className="pl-10 pr-10 border border-gray-200 p-2 rounded-md bg-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
-              >
-                {showPassword ? (
-                  <EyeOffIcon className="w-5 h-5" />
-                ) : (
-                  <EyeIcon className="w-5 h-5" />
-                )}
-              </button>
-            </div>
 
-            {/* Password Match Message */}
+            <input
+              type={showPassword ? "text" : "password"}
+              ref={confirmPasswordRef}
+              onChange={checkPassword}
+              placeholder="Confirm your password"
+              className="border border-gray-200 p-2 rounded-md bg-gray-100 w-full"
+            />
+
             {passwordMatch === true && (
               <p className="text-green-600 text-sm mt-1">✅ Passwords match</p>
             )}
             {passwordMatch === false && (
-              <p
-                className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100
-text-red-700"
-              >
+              <p className="border-2 p-2 mt-2 rounded-2xl border-red-200 bg-red-100 text-red-700">
                 ❌ Passwords do not match
               </p>
             )}
           </div>
-        
-            
-            <div>
-              <input type="checkbox"
-              name="agreement" 
-              id="agreement"
-              checked={agreement}
-              onChange={(e)=>setAgreement(e.target.checked)}/>
-              <span> I Agree with the <a href="/termsandservice" target="_blank" className="text-blue-500"  >Terms and Service and Privacy Policy </a> of Eduquizz Global Limited</span>
-            </div>
-        
 
-          {/* Sign up button */}
+          {/* Agreement */}
+          <div>
+            <input
+              type="checkbox"
+              checked={agreement}
+              onChange={(e) => setAgreement(e.target.checked)}
+            />
+            <span>
+              {" "}
+              I Agree with the{" "}
+              <a
+                href="/termsandservice"
+                target="_blank"
+                className="text-blue-500"
+              >
+                Terms and Service and Privacy Policy
+              </a>
+            </span>
+          </div>
+
           <button
             type="submit"
-            disabled={loading} // Prevent multiple clicks
-            className={`p-2 rounded-md w-full mt-4 transition flex items-center justify-center 
-        ${
-          loading
-            ? "bg-secondary/70 cursor-not-allowed"
-            : "bg-secondary hover:bg-secondary/90 text-white"
-        }`}
+            disabled={loading}
+            className={`p-2 rounded-md w-full mt-4 flex justify-center ${
+              loading
+                ? "bg-secondary/70 cursor-not-allowed"
+                : "bg-secondary text-white"
+            }`}
           >
-            {loading ? (
-              // Spinner
-              <Spinner className="w-5 h-5" />
-            ) : (
-              "Sign Up"
-            )}
+            {loading ? <Spinner className="w-5 h-5" /> : "Sign Up"}
           </button>
-          <div>{finalReg}</div>
         </form>
 
-        {/* Divider */}
         <div className="flex items-center mt-6">
           <hr className="flex-grow border-gray-300" />
           <span className="px-3 text-gray-500 text-sm">OR</span>
           <hr className="flex-grow border-gray-300" />
         </div>
 
-        {/* Register button */}
         <div className="flex justify-center">
-          <button className=" w-full bg-white text-secondary border-2 border-gray-200 p-2 rounded-md sm:w-1/2 mt-5 hover:bg-gray-50 hover:border-secondary transition">
+          <button className="w-full bg-white text-secondary border-2 border-gray-200 p-2 rounded-md sm:w-1/2 mt-5 hover:bg-gray-50 hover:border-secondary transition">
             <Link href="/login">Login</Link>
           </button>
         </div>
       </div>
+
+      {/* ALERT POPUP */}
+      {showAlert && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-sm text-center">
+            <p className="mb-6 text-gray-800">{alertMessage}</p>
+
+            <button
+              onClick={async () => {
+                setShowAlert(false);
+                if (afterOkAction) {
+                  await afterOkAction();
+                }
+              }}
+              className="bg-secondary text-white px-6 py-2 rounded-md hover:bg-white hover:text-secondary border border-secondary transition"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

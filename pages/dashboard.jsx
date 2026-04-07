@@ -459,7 +459,10 @@ setFormDisplayed(<UserFormupdate/>)
       key={index}
       title={activity.subcategory}  // or activity.category or activity.timestamp
       timeAgo={timeAgoFromTimestamp(activity.timestamp)}
-      amount={`₦${activity.amountMade.toFixed(2)}`} // or plain activity.amountMade
+     
+
+
+      amount= {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${activity?.amountMade.toFixed(2)}`: `$${activity?.amountMade.toFixed(2)}`}
       status={activity.amountMade > 0 ? "completed" : "failed"}
     />
   ))}

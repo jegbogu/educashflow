@@ -21,8 +21,8 @@ export default function Playingrealquiz({
   const router = useRouter();
 
   // ---- quiz config (fallbacks) ----
-  const perQSeconds = Number(quizConfig?.perQuestionTime ?? 15);
-  const pointsPerQuestion = Number(quizConfig?.perQuestionPoint ?? 5);
+  const perQSeconds = Number(quizConfig?.perQuestionTime ?? 8);
+  const pointsPerQuestion = Number(quizConfig?.perQuestionPoint ?? 10);
 
   // ---- lifecycle gates / fullscreen ----
   const [started, setStarted] = useState(false);

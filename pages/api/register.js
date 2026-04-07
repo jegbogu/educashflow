@@ -159,7 +159,7 @@ export default async function handler(req, res) {
   try {
     const raw = req.body || {};
     const { fullname, username, email, password, agreement} = sanitizeInput(raw);
- console.log({ fullname, username, email, password, agreement})
+ 
  
 
     // Validate (server-side)
