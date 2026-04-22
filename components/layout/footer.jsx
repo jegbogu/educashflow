@@ -47,7 +47,7 @@ export default function Footer() {
             <div>
               <h5 className="text-orange-400">Socials</h5>
               <span className="flex gap-4">
-                <Link href={"#"}>
+                <Link href={"https://www.facebook.com/profile.php?id=61570815691404"} target="self">
                   <Image
                     src="facebook.svg"
                     alt="Facebook"
@@ -55,18 +55,18 @@ export default function Footer() {
                     height={24}
                   />
                 </Link>
-                <Link href={"#"}>
+                {/* <Link href={"#"}>
                   <Image src="x.svg" alt="Facebook" width={24} height={24} />
-                </Link>
-                <Link href={"#"}>
+                </Link> */}
+                <Link href={"https://www.instagram.com/limitededuquizzglobal/"}>
                   <Image src="ig.svg" alt="Facebook" width={24} height={24} />
                 </Link>
-                <Link href={"#"}>
+                <Link href={"https://wa.me/2348163394086"}>
                   <Image
-                    src="linkedin.svg"
+                    src="/whatsapp.png"
                     alt="Facebook"
                     width={24}
-                    height={24}
+                    height={34}
                   />
                 </Link>
               </span>
