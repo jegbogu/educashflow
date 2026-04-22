@@ -79,8 +79,8 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} Eduquizz Global Limited. All rights
               reserved.
             </p>
-            <Link href={"#"}>Terms of Service</Link>
-            <Link href={"#"}>Privacy Policy</Link>
+            <Link href={"/tosap"}>Terms of Service</Link>
+            <Link href={"/tosap"}>Privacy Policy</Link>
             <Link href={"/DISCLAIMER"}>Disclaimer</Link>
           </div>
           <Link href="https://www.mediaplur.com/" target="_blank" className="mt-[30px] sm:mt-0">
