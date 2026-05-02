@@ -264,7 +264,7 @@ export default function UsernameModal(props) {
               id="agreement"
               checked={agreement}
               onChange={(e)=>setAgreement(e.target.checked)}/>
-              <span> I Agree with the <a href="/termsandservice" target="_blank" className="text-blue-500"  >Terms and Service and Privacy Policy </a> of Eduquizz Global Limited</span>
+              <span> I Agree with the <a href="/tosap" target="_blank" className="text-blue-500"  >Terms of Service, Privacy Policy and DISCLAIMER </a> of Eduquizz Global Limited</span>
             </div>
 
           {/* Submit / Cancel */}

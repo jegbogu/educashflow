@@ -317,11 +317,11 @@ export default function Register() {
               {" "}
               I Agree with the{" "}
               <a
-                href="/termsandservice"
+                href="/tosap"
                 target="_blank"
                 className="text-blue-500"
               >
-                Terms and Service and Privacy Policy
+                Terms of Service, Privacy Policy and Disclaimer
               </a>
             </span>
           </div>

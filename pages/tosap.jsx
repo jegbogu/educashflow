@@ -1,7 +1,10 @@
 import RootLayout from "@/components/layout";
+import GeneralHeadMeta from "@/components/home/generalheadmeta";
 
 export default function DisclaimerPage() {
   return (
+    <>
+     <GeneralHeadMeta/>
     <div className="max-w-5xl mx-auto px-6 py-16 text-gray-700 leading-relaxed">
 
       {/* Header */}
@@ -12,6 +15,7 @@ export default function DisclaimerPage() {
         <p className="text-lg text-gray-600">
           Policy Statement, Terms & Conditions of Payment and Reward System
         </p>
+        <p> <a href="/DISCLAIMER" target="_blank" className="text-red-800 mt-5 font-bold">Read our DISCLAIMER</a></p>
       </div>
 
       <Section title="1. Introduction">
@@ -38,22 +42,22 @@ export default function DisclaimerPage() {
       <Section title="3. Quiz Structure & Game Mechanics">
         <ul className="list-disc pl-6 space-y-1">
           <li>Levels: Beginner, Intermediate, Advanced</li>
-          <li>20 questions per quiz</li>
+          <li>10 questions per quiz</li>
           <li>12 seconds per question</li>
-          <li>10 base points per question</li>
+          <li>5 base points per question</li>
         </ul>
 
         <h4 className="font-semibold mt-4">Bonus Points:</h4>
         <ul className="list-disc pl-6">
           <li>Beginner – 0 extra points</li>
-          <li>Intermediate – +4 points</li>
-          <li>Advanced – +8 points</li>
+          <li>Intermediate – +2 points</li>
+          <li>Advanced – +3 points</li>
         </ul>
       </Section>
 
       <Section title="4. Point & Reward System">
         <p className="mb-2">
-          Each point earned equals <strong>$0.02</strong>.
+          Each point earned equals <strong>0.02 IN YOUR PREFERED CURRENCY</strong>.
         </p>
         <ul className="list-disc pl-6">
           <li>Bronze – 10 points (2x earning)</li>
@@ -168,6 +172,7 @@ export default function DisclaimerPage() {
       </Section>
 
     </div>
+    </>
   );
 }
 

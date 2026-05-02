@@ -15,7 +15,7 @@ export const quizConfig = {
 ],
   levels: ["Beginner", "Intermediate", "Advanced"],
   perQuestionTime: 12,
-  perQuestionPoint:10,
+  perQuestionPoint:5,
   BronzePointPerQuestion: 10, //2x earning
   SilverPointPerQuestion: 20, //4x earning
   proPointPerQuestion: 40, //8x earning
@@ -33,8 +33,8 @@ export const quizConfig = {
 
   constantNumberofRandomQuestions:10,
   extraPointsBeginner:0, //Beginners get 0 extra points
-  extraPointsIntermediate: 4, //Intermediate gets 4 extra points
-  extraPointsAdvanced: 8 //Advanced get extra 8 points
+  extraPointsIntermediate: 2, //Intermediate gets 4 extra points
+  extraPointsAdvanced: 3 //Advanced get extra 8 points
 };
 
  
