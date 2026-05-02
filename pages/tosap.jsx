@@ -50,8 +50,8 @@ export default function DisclaimerPage() {
         <h4 className="font-semibold mt-4">Bonus Points:</h4>
         <ul className="list-disc pl-6">
           <li>Beginner – 0 extra points</li>
-          <li>Intermediate – +2 points</li>
-          <li>Advanced – +3 points</li>
+          <li>Intermediate – +1 points</li>
+          <li>Advanced – +2 points</li>
         </ul>
       </Section>
 

@@ -33,8 +33,8 @@ export const quizConfig = {
 
   constantNumberofRandomQuestions:10,
   extraPointsBeginner:0, //Beginners get 0 extra points
-  extraPointsIntermediate: 2, //Intermediate gets 4 extra points
-  extraPointsAdvanced: 3 //Advanced get extra 8 points
+  extraPointsIntermediate: 1, //Intermediate gets 4 extra points
+  extraPointsAdvanced: 2 //Advanced get extra 8 points
 };
 
  
