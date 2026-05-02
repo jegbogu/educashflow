@@ -73,6 +73,31 @@ export default function QuizBuilderPage(props) {
       return null;
     }
 
+     
+    //this is for the caegories, subcategories, and levels
+   const categories = Object.values(
+  questions.reduce((acc, { category, subcategory }) => {
+    if (!acc[category]) {
+      acc[category] = {
+        name: category,
+        subcategories: new Set()
+      };
+    }
+
+    acc[category].subcategories.add(subcategory);
+
+    return acc;
+  }, {})
+).map((item) => ({
+  name: item.name,
+  subcategories: [...item.subcategories]
+}));
+
+ 
+ 
+
+
+
   // Filtering
   const filteredQuestions = questions
  
@@ -111,7 +136,7 @@ export default function QuizBuilderPage(props) {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-console.log("paginatedQuestions", paginatedQuestions)
+ 
   // // Open for adding new
   // const handleAddQuestion = () => {
   //   setSelectedQuestion(null);
@@ -283,7 +308,7 @@ const bulkDeleteItems = {
               }
             >
               <option value="">Category</option>
-              {quizConfig.categories.map((cat) => (
+              {categories.map((cat) => (
                 <option key={cat.name} value={cat.name}>
                   {cat.name}
                 </option>
@@ -299,7 +324,7 @@ const bulkDeleteItems = {
                 }
               >
                 <option value="">Subcategory</option>
-                {quizConfig.categories
+                {categories
                   .find((cat) => cat.name === filters.category)
                   ?.subcategories.map((sub) => (
                     <option key={sub} value={sub}>

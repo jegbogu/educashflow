@@ -2,6 +2,25 @@ import { useState } from "react"
 
 export default function Learn(){
     const [mobile, SetMobile] = useState(false)
+
+
+
+
+   async function runQuery() {
+  try {
+    console.log("hello");
+
+    const res = await fetch("/api/hello", {
+      method: "POST", // ✅ FIXED
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+  } catch (error) {
+    console.error("Error running query:", error);
+  }
+}
     return(
         <div className="min-h-screen bg-gray-400">
             {/* desktop */}
@@ -44,6 +63,26 @@ export default function Learn(){
 
             <div className="mt-4 bg-gray-700 p-5">
                 <h2 className="text-4xl text-white font-bold">How to learn</h2>
+
+ <button className="bg-red-800 p-3 text-lg rounded-md mt-5 mb-5" onClick={()=>{runQuery()}}>Stay Here</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <p className="text-gray-200 mt-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quibusdam sint vitae! Expedita voluptas voluptatibus animi debitis magni tempore eos, ullam optio nulla corrupti dolorem dolores recusandae quis vero, provident repellendus dolore magnam molestiae, dolor aspernatur. Alias eligendi harum magnam sequi hic, odio molestias eaque ullam dolorum! Officiis a minus eveniet soluta vero tempora numquam molestiae provident, quam doloremque odit cupiditate voluptatum vel dignissimos iusto fugit aut aliquid?   distinctio nisi.</p>
     <button className="bg-white p-3 text-lg text-black rounded-md mt-5 hover:bg-gray-300 hover:text-white hover:scale-109 transition-all" >Stay Here</button>
             </div>
@@ -82,7 +121,7 @@ export default function Learn(){
 <div className="px-10 mt-5 grid sm:grid-cols-3 gap-5">
     <div className="w-[100%] border h-[200px] rounded col-span-2 p-5">
                     <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis nam ipsam, impedit totam labore facere modi enim ipsa porro sunt est dolorem reprehenderit, perferendis voluptas illo libero minima! Quod neque quo fugit, ratione expedita accusantium sed, doloribus voluptas eum unde nihil? Qui a earum provident veritatis? Possimus enim repellendus exercitationem.</p>
-                    <button className="bg-white p-3 text-lg rounded-md mt-5 mb-5" >Stay Here</button>
+                    <button className="bg-red-800 p-3 text-lg rounded-md mt-5 mb-5" onClick={()=>{runQuery()}}>Stay Here</button>
                 </div>
     <div className="w-[100%] border h-[200px] rounded">
                     <img src="https://images.unsplash.com/photo-1773754767059-d645ebf55539?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="pics"  className="h-[100%] w-[100%]"/>

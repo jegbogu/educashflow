@@ -1,94 +1,18 @@
 // config/quizConfig.js
 
 export const quizConfig = {
-  categories: [
-     {
-    name: "Commerce",
-    subcategories: ["Trade"]
-  },
-  {
-    name: "Accounting",
-    subcategories: ["Financial Statements"]
-  },
-  {
-    name: "Astrology",
-    subcategories: ["Zodiac Signs"]
-  },
-  {
-    name: "Sociology",
-    subcategories: ["Social Institutions"]
-  },
-  {
-    name: "GMAT",
-    subcategories: ["Quantitative Reasoning"]
-  },
-  {
-      name: "Math",
-      subcategories: ["Algebra", "Geometry", "Calculus", "Statistics"]
-    },
-  {
-      name: "Science",
-      subcategories: ["Physics", "Chemistry", "Biology", "Astronomy"]
-    },
-    {
-      name: "History",
-      subcategories: ["Ancient", "Medieval", "Modern", "World Wars"]
-    },
-    {
-      name: "Programming",
-      subcategories: ["JavaScript", "Python", "Java", "C++"]
-    },
-    {
-      name: "English",
-      subcategories: ["Grammar", "Vocabulary", "Literature", "Comprehension"]
-    },
-    {
-      name: "Bible",
-      subcategories: ["Old Testament", "New Testament", "Parables", "Prophets"]
-    },
-    {
-      name: "Current Affairs",
-      subcategories: ["Politics", "Economy", "Sports", "Technology"]
-    },
-    {
-    name: "Geography",
-    subcategories: ["Map Reading"]
-  },
-  {
-    name: "Government",
-    subcategories: ["Constitution"]
-  },
-  {
-    name: "Civic Education",
-    subcategories: ["Citizenship"]
-  },
-  {
-    name: "Agricultural Science",
-    subcategories: ["Crop Production"]
-  },
-  {
-    name: "Fisheries",
-    subcategories: ["Aquaculture"]
-  },
-  {
-    name: "Economics",
-    subcategories: ["Demand and Supply"]
-  },
-  {
-    name: "Data Processing",
-    subcategories: ["Data Storage"]
-  },
-  {
-    name: "General Knowledge",
-    subcategories: ["Everyday Facts"]
-  },
-  {
-    name: "Sports",
-    subcategories: ["Olympics"]
-  }
- 
-
-  ],
+  categories:  [
+  { name: "General Knowledge", subcategories: ["Everyday Facts"] },
+  { name: "English", subcategories: ["Fundamentals of English Language"] },
+  { name: "Math", subcategories: ["General Mathematics"] },
+  { name: "Programming", subcategories: ["Software Development"] },
+  { name: "Science", subcategories: ["Fundamentals of Science"] },
+  { name: "Geography", subcategories: ["Fundamentals of Geography"] },
+  { name: "GMAT", subcategories: ["Quantitative Reasoning"] },
+  { name: "Commerce And Accounting", subcategories: ["Fundamentals of Commerce And Accounting"] },
+  { name: "Sociology And Economics", subcategories: ["Fundamentals of Sociology And Economics"] },
+  { name: "Astrology", subcategories: ["Fundamentals of Astrology"] }
+],
   levels: ["Beginner", "Intermediate", "Advanced"],
   perQuestionTime: 12,
   perQuestionPoint:10,
