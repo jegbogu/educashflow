@@ -70,6 +70,30 @@ export default function Quizzes(props) {
 export async function getServerSideProps() {
   await connectDB();
   const quizList = await Quiz.find({}).lean();
+ 
+//this is for getting the Subcategories, level and the number of questions preseent, so that thos e that are not upto 300 will be set aside
+const result = Object.values(
+  quizList.reduce((acc, curr) => {
+    const key = `${curr.subcategory}_${curr.level}`;
+
+    if (!acc[key]) {
+      acc[key] = {
+        subcategory: curr.subcategory,
+        level: curr.level,
+        numberofquestions: 0
+      };
+    }
+
+    acc[key].numberofquestions += 1;
+
+    return acc;
+  }, {})
+);
+
+ 
+//those les that 300
+const thoselesserthan = result.filter(el=>el.numberofquestions < 300).map(el=>el.subcategory)
+ 
 
  
   const subcategories = [...new Set(quizList.map((el) => el.subcategory))];
@@ -134,7 +158,14 @@ export async function getServerSideProps() {
     };
   });
 
-  const quiz = quizBeginner.concat(quizIntermediate, quizAdvanced);
+  const allquiz = quizBeginner.concat(quizIntermediate, quizAdvanced);
+ 
+
+  //SENDING IN ONLY THOSE THAT HAVE MORE THAN 300 QUESTIONS
+  
+
+  const quiz = allquiz.filter(el=>!thoselesserthan.includes(el.subcategory))
+  
  
 
   return {

@@ -4,7 +4,7 @@ return(
     <>
      <Head>
         
-        <title>Educash Flow | Answer Questions, Earn Rewards & Win Cash</title>
+<title>Educash Flow | Answer Questions, Earn Rewards & Win Cash</title>
 
 <meta name="description" content="Educash Flow lets you answer quiz questions, earn rewards, and win real points. Register today, activate your coupon, and start playing quizzes to earn money in your wallet." />
 
