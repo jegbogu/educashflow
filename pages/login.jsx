@@ -7,45 +7,58 @@ import EyeOffIcon from "@/components/icons/eyeofficon";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import RootLayout from "@/components/layout";
+import { useSession } from "next-auth/react";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { data: session, status } = useSession();
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const router = useRouter();
 
   async function submitHandler(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const enteredEmail = emailInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value;
+  
 
-    setLoading(true);
-    setError("");
+  const enteredEmail = emailInputRef.current.value;
+  const enteredPassword = passwordInputRef.current.value;
 
-    try {
-      const result = await signIn("credentials", {
-        redirect: false,
-        email: enteredEmail,
-        password: enteredPassword,
-        role: "user",
-      });
+  setLoading(true);
+  setError("");
 
-      console.log("result", result)
+  try {
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: enteredEmail,
+      password: enteredPassword,
+      role: "user",
+    });
 
-      if (!result || result.error) {
-        throw new Error("Invalid Username or Password");
-      }
+    console.log("result",result)
 
-      router.push("/quizzes");
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    }
+    // SAME BROWSER + ACTIVE SESSION
+  if (result?.error =='User already logged in' && session?.user) {
+    router.push("/quizzes");
+    return;
   }
+
+    if (result?.error) {
+      setError(result.error);
+      setLoading(false);
+      return;
+    }
+
+    router.push("/quizzes");
+
+  } catch (err) {
+    setError(err.message);
+    setLoading(false);
+  }
+}
 
   return (
     <div className="p-6">

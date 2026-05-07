@@ -28,6 +28,37 @@ export default function Settings({ userData }) {
     }));
   };
 
+   // =========================
+    // LOGOUT FUNCTION
+    // =========================
+    async function logout() {
+      try {
+        // backend logout
+        await fetch("/api/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: userData?.id,
+          }),
+        });
+  
+        // next-auth logout
+        await signOut({
+          callbackUrl: "/login",
+        });
+  
+      } catch (error) {
+        console.error("Logout failed:", error);
+  
+        // fallback logout
+        await signOut({
+          callbackUrl: "/login",
+        });
+      }
+    }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,8 +100,7 @@ export default function Settings({ userData }) {
         password: "",
         confirmPassword: ""
       });
-      await signOut()
-      await router.push('/login')
+       await logout();
 
     } catch (error) {
 

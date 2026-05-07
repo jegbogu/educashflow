@@ -142,6 +142,7 @@ Need help? <a href="mailto:eduquizz5457@gmail.com">Contact Support</a>
   try {
 
     const { id } = req.query;
+    console.log("id", id)
 
     await connectDB();
 
@@ -159,6 +160,7 @@ Need help? <a href="mailto:eduquizz5457@gmail.com">Contact Support</a>
     }
 
     const user = await Register.findById(id);
+    console.log("ac", user)
 
     if (!user) {
       return res.send(
@@ -170,7 +172,7 @@ Need help? <a href="mailto:eduquizz5457@gmail.com">Contact Support</a>
       );
     }
 
-    if (user.activate?.useractivated=== 'true') {
+    if (user.activate.useractivated=== 'true') {
       return res.send(
         renderPage({
           title: "Account Already Activated",
@@ -178,9 +180,10 @@ Need help? <a href="mailto:eduquizz5457@gmail.com">Contact Support</a>
         })
       );
     }
-
+ 
     // Activate account
-     user.activate?.useractivated=== 'true';
+    user.activate.useractivated='true';
+ 
     await user.save();
 
     return res.send(

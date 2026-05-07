@@ -17,34 +17,38 @@ export const authOptions = {
         email: { label: "ali@gmail.com", type: "text", placeholder: "ali@gmail.com" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials, req) {
-        try {
-          const { email, password, role } = credentials
-   
-          const response = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
-            method: 'POST',
-            body: JSON.stringify({ email, password, role}),
-            headers: {
-              'Content-type': 'application/json'
-            },
-  
-          });
-          if(!response.ok){
-            throw new Error('Password Or Email is not Correct')
-            
-          }
-          let user = await response.json()
-  
-          if (response.ok && user) {
-            return user;
-          } else return null;
-        } catch (error) {
-         
-          return;
-        }
-       
+      async authorize(credentials) {
+  try {
+    const { email, password, role } = credentials;
 
-      },
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          role,
+        }),
+      }
+    );
+
+    const user = await response.json();
+
+    // IMPORTANT
+    if (!response.ok) {
+      throw new Error(user.message);
+    }
+
+    return user;
+
+  } catch (error) {
+    throw new Error(error.message || "Login failed");
+  }
+},
     }),
 
 

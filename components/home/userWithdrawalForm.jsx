@@ -30,6 +30,40 @@ export default function UserWithdrawalForm({ onClose }) {
     ? quizConfig.maxUserCanWithdrawNaira
     : quizConfig.maxUserCanWithdraw;
 
+
+
+// =========================
+  // LOGOUT FUNCTION
+  // =========================
+  async function logout() {
+    try {
+      // backend logout
+      await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userData?.id,
+        }),
+      });
+
+      // next-auth logout
+      await signOut({
+        callbackUrl: "/login",
+      });
+
+    } catch (error) {
+      console.error("Logout failed:", error);
+
+      // fallback logout
+      await signOut({
+        callbackUrl: "/login",
+      });
+    }
+  }
+
+
   async function submitHandler(event) {
 
     event.preventDefault();
@@ -110,9 +144,7 @@ export default function UserWithdrawalForm({ onClose }) {
 
         setLoading(false);
 
-        await signOut();
-
-        router.push("/login");
+         await logout();
       }
 
     } catch (error) {

@@ -21,7 +21,7 @@ export default function Userheader() {
    
   const[checkout, setCheckOut] = useState(false)
    const userData = session?.user;
-   console.log(userData)
+   
    
   if (status === "loading") {
   return null; // or a loader
@@ -58,7 +58,7 @@ const [userInfo, setUserInfo] = useState([])
         if(userData?.membership==='Free plan'){
             userNotifications.push(allNotification[0])
         }
-        if(userData.activate?.useractivated==='false'){
+        if(userData?.activate?.useractivated=='false'){
             userNotifications.push(allNotification[1])
         }
         if(userData?.email.includes("noemail")){
@@ -83,8 +83,7 @@ if(userData.email.includes('noemail') || userData.fullname.includes('noemail')){
   router.refresh()
   
 }else{
-  await signOut()
-  router.push('/login')
+   await logout()
 }
 
 }

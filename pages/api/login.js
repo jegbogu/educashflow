@@ -55,7 +55,7 @@ async function handler(req, res) {
       $or: [{ email }, { username: email }],
     });
 
-    console.log(user)
+   
 
     if (!user) {
       return res.status(403).json({
@@ -77,7 +77,7 @@ async function handler(req, res) {
     // =====================================
     // PREVENT MULTIPLE LOGIN
     // =====================================
-    if (user.activate?.userloggedin === "true") {
+    if (user.activate.userloggedin === "true") {
       return res.status(403).json({
         message: "User already logged in",
       });
