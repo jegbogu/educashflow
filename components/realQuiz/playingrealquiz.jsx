@@ -134,34 +134,7 @@ export default function Playingrealquiz({
  // =========================
   // LOGOUT FUNCTION
   // =========================
-
-   async function logout() {
-    try {
-      // backend logout
-      await fetch("/api/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: userData?.id,
-        }),
-      });
-
-      // next-auth logout
-      await signOut({
-        callbackUrl: "/login",
-      });
-
-    } catch (error) {
-      console.error("Logout failed:", error);
-
-      // fallback logout
-      await signOut({
-        callbackUrl: "/login",
-      });
-    }
-  }
+ 
 
 
   // -------------- Start --------------
@@ -209,7 +182,31 @@ if(!response.ok){
   }
   //---------------- When user is done with the quiz, it log him out so that he can login again, this would help the user to have a new points
   async function userLogOut(){
-    await logout()
+   try {
+      // backend logout
+      await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userData?.id,
+        }),
+      });
+
+      // next-auth logout
+      await signOut({
+        callbackUrl: "/login",
+      });
+
+    } catch (error) {
+      console.error("Logout failed:", error);
+
+      // fallback logout
+      await signOut({
+        callbackUrl: "/login",
+      });
+    }
   }
 
   // -------------- Per question handlers --------------
