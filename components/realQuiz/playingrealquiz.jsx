@@ -131,6 +131,39 @@ export default function Playingrealquiz({
     router.replace("/quizzes");
   }
 
+ // =========================
+  // LOGOUT FUNCTION
+  // =========================
+
+   async function logout() {
+    try {
+      // backend logout
+      await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userData?.id,
+        }),
+      });
+
+      // next-auth logout
+      await signOut({
+        callbackUrl: "/login",
+      });
+
+    } catch (error) {
+      console.error("Logout failed:", error);
+
+      // fallback logout
+      await signOut({
+        callbackUrl: "/login",
+      });
+    }
+  }
+
+
   // -------------- Start --------------
   async function handleStart() {
 
@@ -176,8 +209,7 @@ if(!response.ok){
   }
   //---------------- When user is done with the quiz, it log him out so that he can login again, this would help the user to have a new points
   async function userLogOut(){
-  await signOut({ redirect: false });
-    router.push("/login");
+    await logout()
   }
 
   // -------------- Per question handlers --------------
