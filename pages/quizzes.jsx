@@ -29,7 +29,7 @@ export default function Quizzes(props) {
 
  useEffect(()=>{
   
- if(userData?.spaceOne =="Null" ){
+ if(userData?.spaceOne ==null ){
     setCurrencyandPhone(true)
   }else if(userData?.spaceOne.includes("Naira") || userData?.spaceOne.includes("Dollar")  ) {
     setCurrencyandPhone(false)

@@ -27,12 +27,7 @@ await connectDB()
          userData
     } = req.body;
 
-    console.log({
-         currency,
-         phone,
-         countryData,
-         userData
-  })
+    
      
 if(currency !=="Naira" && currency!=="Dollar"){
     return res.status(400).json({message:"You must choose a currency"})

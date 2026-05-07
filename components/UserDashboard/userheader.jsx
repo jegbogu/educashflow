@@ -21,6 +21,8 @@ export default function Userheader() {
    
   const[checkout, setCheckOut] = useState(false)
    const userData = session?.user;
+   console.log(userData)
+   
   if (status === "loading") {
   return null; // or a loader
 }
@@ -95,11 +97,36 @@ function toggleProfile() {
   function toggleNotifications() {
     setShowNotifications((prev) => !prev);
   }
+ 
 
-  function logout() {
-    signOut();
+
+  async function logout() {
+  try {
+    // call your backend logout API
+    await fetch("/api/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: userData?.id,  
+      }),
+    });
+
+    // clear frontend session (if using next-auth or similar)
+    await signOut({ redirect: false });
+
+    // redirect after everything is clean
+    router.replace("/login");
+
+  } catch (error) {
+    console.error("Logout failed:", error);
+
+    // fallback: still logout frontend
+    await signOut({ redirect: false });
     router.replace("/login");
   }
+}
 
   return (
     <div className="w-full">
@@ -123,7 +150,7 @@ function toggleProfile() {
 
             {/* Balance Badge */}
             <div className="bg-blue-300 hidden sm:block px-2 py-1 rounded-full border text-blue-900 font-medium text-sm md:text-base">
-              {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(2)}`}
+              {userData?.spaceOne == null? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(2)}`}
             </div>
 
             {/* Points - hidden on very small screens */}

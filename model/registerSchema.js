@@ -88,6 +88,27 @@ const registerSchema = new Schema({
   spaceThree: {
     type: Number,
   },
+  spaceFour: {
+    type: Number,
+  },
+  spaceFive: {
+    type: String,
+  },
+  spaceSix: {
+    type: String,
+  },
+  isLoggedIn: {
+    type: String,
+  },
+ userlocation: {
+  ip: String,
+  city: String,
+  region: String,
+  country: String,
+  latitude: Number,
+  longitude: Number,
+  updatedAt: Date
+}
 });
 
 // Avoid model overwrite error in Next.js

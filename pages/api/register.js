@@ -195,35 +195,54 @@ export default async function handler(req, res) {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Create user (store real Date; you can also keep formatted string if your schema needs it)
-    const userId = new mongoose.Types.ObjectId();
-    const newUser = new Register({
-      _id: userId,
-      fullname,
-      username,
-      email,
-      password: hashedPassword,
-      activate: false,                 // boolean, not string
-      createdAt: new Date(),  
-      level: 0,
-      amountMade: 0,
-      points: 0,
-      coupon :"Null",
-  paymentConfirmation : "Null",
-      membership:"Free plan",
-      role: "user",
-       playedGames:[],
-  usedCoupons:[],
+     const userId = new mongoose.Types.ObjectId();
 
-  latestPurchase:[],
-   latestPurchaseGames:[],
-       spaceOne: "Null",
-  spaceTwo: "Null",
-  spaceThree: 0,
+      const newUser = new Register({
+        _id: userId,
+        fullname,
+        username,
+        email,
+        password: hashedPassword,
 
+        activate: false,
+        createdAt: new Date(),
 
-    });
+        level: 0,
+        amountMade: 0,
+        points: 0,
 
-    await newUser.save();
+        coupon: null,
+        paymentConfirmation: null,
+        membership: "Free plan",
+        role: "user",
+
+        playedGames: [],
+        usedCoupons: [],
+        latestPurchase: [],
+        latestPurchaseGames: [],
+
+        spaceOne: null,
+        spaceTwo: null,
+        spaceThree: 0,
+        spaceFour: 0,
+        spaceFive: null,
+        spaceSix: null,
+
+        isloggedin: false,
+
+        // ✅ initialize location (empty)
+        userlocation: {
+          ip: null,
+          city: null,
+          region: null,
+          country: null,
+          latitude: null,
+          longitude: null,
+          updatedAt: null
+        }
+      });
+
+      await newUser.save();
 
     // Log activity
     const activity = new Activity({
