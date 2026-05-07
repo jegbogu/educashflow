@@ -182,6 +182,7 @@ if(!response.ok){
   }
   //---------------- When user is done with the quiz, it log him out so that he can login again, this would help the user to have a new points
   async function userLogOut(){
+    console.log("here")
    try {
       // backend logout
       await fetch("/api/logout", {
@@ -190,7 +191,7 @@ if(!response.ok){
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: userData?.id,
+          id: userID,
         }),
       });
 
