@@ -34,7 +34,7 @@ async function handler(req, res) {
     // =======================
     // CHECK IF ALREADY LOGGED OUT
     // =======================
-    if (!user.isloggedin) {
+    if (!user.activate?.userloggedin==="false") {
       return res.status(400).json({ message: "User already logged out" });
     }
 
@@ -43,7 +43,11 @@ async function handler(req, res) {
     // =======================
     const updatedUser = await Register.findByIdAndUpdate(
       id,
-      { $set: { isloggedin: false } },
+      {
+        $set: {
+          "activate.userloggedin": "false",
+        },
+      },
       { new: true }
     );
 

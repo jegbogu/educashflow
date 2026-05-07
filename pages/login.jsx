@@ -34,6 +34,8 @@ export default function Login() {
         role: "user",
       });
 
+      console.log("result", result)
+
       if (!result || result.error) {
         throw new Error("Invalid Username or Password");
       }

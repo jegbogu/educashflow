@@ -58,7 +58,7 @@ const [userInfo, setUserInfo] = useState([])
         if(userData?.membership==='Free plan'){
             userNotifications.push(allNotification[0])
         }
-        if(userData?.activate==='false'){
+        if(userData.activate?.useractivated==='false'){
             userNotifications.push(allNotification[1])
         }
         if(userData?.email.includes("noemail")){

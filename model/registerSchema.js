@@ -32,9 +32,12 @@ const registerSchema = new Schema({
   role: {
     type: String,
   },
+   
   activate: {
-    type: String,
-  },
+  useractivated: String,
+  userloggedin: String,
+  
+},
   createdAt: {
     type: String,
     
@@ -97,17 +100,28 @@ const registerSchema = new Schema({
   spaceSix: {
     type: String,
   },
-  isLoggedIn: {
-    type: String,
-  },
+  
  userlocation: {
+
   ip: String,
+
   city: String,
+
   region: String,
+
   country: String,
+
   latitude: Number,
+
   longitude: Number,
-  updatedAt: Date
+
+  timezone: String,
+
+  isp: String,
+
+  org: String,
+
+  updatedAt: Date,
 }
 });
 

@@ -170,7 +170,7 @@ Need help? <a href="mailto:eduquizz5457@gmail.com">Contact Support</a>
       );
     }
 
-    if (user.activate === 'true') {
+    if (user.activate?.useractivated=== 'true') {
       return res.send(
         renderPage({
           title: "Account Already Activated",
@@ -180,7 +180,7 @@ Need help? <a href="mailto:eduquizz5457@gmail.com">Contact Support</a>
     }
 
     // Activate account
-    user.activate = true;
+     user.activate?.useractivated=== 'true';
     await user.save();
 
     return res.send(

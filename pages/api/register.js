@@ -204,7 +204,12 @@ export default async function handler(req, res) {
         email,
         password: hashedPassword,
 
-        activate: false,
+        activate: {
+        useractivated: "false",
+        userloggedin: "false",
+  
+         },
+
         createdAt: new Date(),
 
         level: 0,
@@ -228,7 +233,7 @@ export default async function handler(req, res) {
         spaceFive: null,
         spaceSix: null,
 
-        isloggedin: false,
+        
 
         // ✅ initialize location (empty)
         userlocation: {
