@@ -161,47 +161,45 @@ export default async function handler(req, res) {
       });
     }
 
-    // Ensure latestPurchase exists
-    if (
-      !user.latestPurchase ||
-      !Array.isArray(user.latestPurchase) ||
-      user.latestPurchase.length === 0
-    ) {
-      return res.status(400).json({
-        message: "No latest purchase found for this user",
-      });
-    }
+let latestPurchaseItem = null;
+let validDays = 0;
+let expiryDate = "";
+let DOCdate = "";
 
-    const lastIndex = user.latestPurchase.length - 1;
+// Always update user
+user.paymentConfirmation = newStatus;
+user.membership = packageName;
 
-    const latestPurchaseItem = user.latestPurchase[lastIndex];
+// Check if latestPurchase exists
+if (
+  user.latestPurchase &&
+  Array.isArray(user.latestPurchase) &&
+  user.latestPurchase.length > 0
+) {
+  const lastIndex = user.latestPurchase.length - 1;
 
-    // Safe fallback
-    const validDays = latestPurchaseItem?.validDays || 0;
+  latestPurchaseItem = user.latestPurchase[lastIndex];
 
-    let expiryDate = "";
-    let DOCdate = "";
+  validDays = latestPurchaseItem?.validDays || 0;
 
-    if (newStatus === "Successful") {
-      expiryDate = new Date(
-        Date.now() + validDays * 24 * 60 * 60 * 1000
-      );
+  if (newStatus === "Successful") {
+    expiryDate = new Date(
+      Date.now() + validDays * 24 * 60 * 60 * 1000
+    );
 
-      DOCdate = new Date();
-    }
+    DOCdate = new Date();
+  }
 
-    // Update user
-    user.paymentConfirmation = newStatus;
-    user.membership = packageName;
+  // Update latest purchase item
+  latestPurchaseItem.status = newStatus;
+  latestPurchaseItem.DOC = DOCdate;
+  latestPurchaseItem.expiryDate = expiryDate;
 
-    latestPurchaseItem.status = newStatus;
-    latestPurchaseItem.DOC = DOCdate;
-    latestPurchaseItem.expiryDate = expiryDate;
+  user.markModified("latestPurchase");
+}
 
-    user.markModified("latestPurchase");
-
-    await user.save();
-
+// Save user
+await user.save();
     // Log activity
     const activity = new Activity({
       _id: new mongoose.Types.ObjectId(),
