@@ -159,7 +159,7 @@ export default function Login() {
             )}
           </button>
         </form>
-<span className="mt-5">You will not be able to login with multiple devices at the same</span>
+{/* <span className="mt-5">You will not be able to login with multiple devices at the same</span> */}
         {/* Divider */}
         <div className="flex items-center mt-6">
           <hr className="flex-grow border-gray-300" />
