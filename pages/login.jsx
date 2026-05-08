@@ -71,7 +71,7 @@ export default function Login() {
       <div className="max-w-xl mx-auto border-4 border-gray-100 p-8 rounded-2xl mt-12 mb-10 bg-white shadow-md">
         <h1 className="text-center text-2xl font-bold text-gray-800 p-2">Login</h1>
 
-        <form className="mt-6 space-y-5" onSubmit={submitHandler}>
+        <form className="mt-6 mb-5 space-y-5" onSubmit={submitHandler}>
           {/* Email */}
           <div>
             <label
@@ -159,10 +159,11 @@ export default function Login() {
             )}
           </button>
         </form>
-
+<span className="mt-5">You will not be able to login with multiple devices at the same</span>
         {/* Divider */}
         <div className="flex items-center mt-6">
           <hr className="flex-grow border-gray-300" />
+          
           <span className="px-3 text-gray-500 text-sm">OR</span>
           <hr className="flex-grow border-gray-300" />
         </div>

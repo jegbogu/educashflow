@@ -79,7 +79,7 @@ async function handler(req, res) {
     // =====================================
     if (user.activate.userloggedin === "true") {
       return res.status(403).json({
-        message: "User already logged in",
+        message: "User already logged into the application from another browser or device",
       });
     }
 
