@@ -77,11 +77,11 @@ async function handler(req, res) {
     // =====================================
     // PREVENT MULTIPLE LOGIN
     // =====================================
-    if (user.activate.userloggedin === "true") {
-      return res.status(403).json({
-        message: "User already logged into the application from another browser or device",
-      });
-    }
+    // if (user.activate.userloggedin === "true") {
+    //   return res.status(403).json({
+    //     message: "User already logged into the application from another browser or device",
+    //   });
+    // }
 
      // =====================================
 // GET REAL USER IP
