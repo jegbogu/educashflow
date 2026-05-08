@@ -198,6 +198,7 @@ const router = useRouter()
         p._id === id ? { ...p, paymentConfirmation: newStatus } : p
       )
     );
+    console.log(userData)
      
     const data = {
       confirmPaymentId: id,
@@ -205,7 +206,7 @@ const router = useRouter()
       packageName: packageName,
       newStatus: newStatus,
     };
-
+console.log("data", data)
     
 
     try {
