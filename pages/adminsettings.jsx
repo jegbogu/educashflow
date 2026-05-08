@@ -83,7 +83,7 @@ export default function SettingsPage() {
       
         
   async function updateProfile(){
- console.log(profile)
+ 
   try {
     
       const response = await fetch('/api/updateAdminProfile',{

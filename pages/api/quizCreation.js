@@ -11,7 +11,7 @@ async function handler(req, res) {
   if (req.method === "POST") {
     try {
       const { question, correctAnswer, options,category, subcategory, level} = req.body;
-      console.log({ question, correctAnswer, options,category, subcategory, level} )
+       
        
       if( !question|| correctAnswer===undefined || correctAnswer===null || !options ||!category ||!subcategory ||  !level){
          return res.status(402).json({success:"false", message:"All fileds are required"})

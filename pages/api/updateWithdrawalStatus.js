@@ -146,7 +146,7 @@ if(newStatus==="Successful"){
  
 
   const newAmount = currentUseramountMade-user[0].amount
- console.log("updateWS",newAmount)
+ 
 
   const updateUser = await Register.findByIdAndUpdate(
     user[0].userData._id,

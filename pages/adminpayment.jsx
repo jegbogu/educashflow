@@ -198,12 +198,15 @@ const router = useRouter()
         p._id === id ? { ...p, paymentConfirmation: newStatus } : p
       )
     );
+     
     const data = {
       confirmPaymentId: id,
-      userDataId: userData._id,
+      userDataId: userData.id,
       packageName: packageName,
       newStatus: newStatus,
     };
+
+    
 
     try {
       const res = await fetch("/api/updatePaymentStatus", {

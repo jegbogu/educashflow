@@ -38,7 +38,7 @@ export default function Login() {
       role: "user",
     });
 
-    console.log("result",result)
+    
 
     // SAME BROWSER + ACTIVE SESSION
   if (result?.error =='User already logged in' && session?.user) {

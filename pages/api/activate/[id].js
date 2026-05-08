@@ -142,7 +142,7 @@ Need help? <a href="mailto:eduquizz5457@gmail.com">Contact Support</a>
   try {
 
     const { id } = req.query;
-    console.log("id", id)
+   
 
     await connectDB();
 
@@ -160,7 +160,7 @@ Need help? <a href="mailto:eduquizz5457@gmail.com">Contact Support</a>
     }
 
     const user = await Register.findById(id);
-    console.log("ac", user)
+   
 
     if (!user) {
       return res.send(

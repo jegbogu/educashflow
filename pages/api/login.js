@@ -102,7 +102,7 @@ if (ip.includes("::ffff:")) {
   ip = ip.replace("::ffff:", "");
 }
 
-console.log("USER IP:", ip);
+ 
 
 // =====================================
 // GET USER LOCATION

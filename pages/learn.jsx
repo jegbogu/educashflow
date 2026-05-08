@@ -8,14 +8,14 @@ export default function Learn(){
 
    async function runQuery() {
   try {
-    console.log("hello");
+  
 
     const res = await fetch("/api/hello", {
       method: "POST", // ✅ FIXED
     });
 
     const data = await res.json();
-    console.log(data);
+   
 
   } catch (error) {
     console.error("Error running query:", error);
