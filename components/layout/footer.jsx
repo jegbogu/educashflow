@@ -33,8 +33,8 @@ export default function Footer() {
               <ul>
                 <li>
                   Email:{" "}
-                  <Link href={"mailto:eduquizz5457@gmail.com"}>
-                     eduquizz5457@gmail.com 
+                  <Link href={"mailto:Eduquizzgloballimited@gmail.com"}>
+                    Eduquizzgloballimited@gmail.com
 
                   </Link>
                 </li>
