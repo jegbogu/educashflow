@@ -57,7 +57,7 @@ export default function DisclaimerPage() {
 
       <Section title="4. Point & Reward System">
         <p className="mb-2">
-          Each point earned equals <strong>0.02 IN YOUR PREFERED CURRENCY</strong>.
+          Each point earned equals <strong>0.02 IN Naira CURRENCY and 0.0000146 IN Dollar CURRENCY</strong>.
         </p>
         <ul className="list-disc pl-6">
           <li>Bronze – 10 points (2x earning)</li>

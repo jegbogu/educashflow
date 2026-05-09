@@ -198,10 +198,15 @@ async function handler(req, res) {
       }
     }
 
-
+    let perPoint
+    if(user.spaceOne.includes("Naira")){
+      perPoint = quizConfig.perPoint
+    }else{
+      perPoint = quizConfig.perPointDollars
+    }
     
 
-    const recentAmoutMade = latestGamePoints * quizConfig.perPoint
+    const recentAmoutMade = latestGamePoints * perPoint
     const newamountMade = user.amountMade + recentAmoutMade;
     
 
@@ -219,7 +224,7 @@ async function handler(req, res) {
       level:level,
       correctCount: correctCount,
         pointsMade: latestGamePoints,
-   amountMade:  latestGamePoints * quizConfig.perPoint ,
+   amountMade:  latestGamePoints * perPoint ,
   membership: user.membership
  }
  //add it to array of general games played
@@ -289,7 +294,7 @@ if(user.membership !="Free plan"){
       level:level,
       correctCount: correctCount,
         pointsMade: latestGamePoints,
-   amountMade:  latestGamePoints * quizConfig.perPoint ,
+   amountMade:  latestGamePoints * perPoint ,
   membership: user.membership
  }
  //add it to array of general games played
@@ -356,7 +361,7 @@ if(user.membership !=="Free plan" && user.latestPurchase.length == 1 && user.lat
       level:level,
       correctCount: correctCount,
         pointsMade: latestGamePoints,
-   amountMade:  latestGamePoints * quizConfig.perPoint ,
+   amountMade:  latestGamePoints * perPoint ,
   membership: user.membership
  }
  //add it to array of general games played
@@ -447,7 +452,7 @@ if(user.membership !=="Free plan" && user. latestPurchase.length > 1 && user.lat
       level:level,
       correctCount: correctCount,
         pointsMade: latestGamePoints,
-   amountMade:  latestGamePoints * quizConfig.perPoint ,
+   amountMade:  latestGamePoints * perPoint ,
   membership: user.membership
  }
  //add it to array of general games played
@@ -522,7 +527,7 @@ if(user.membership !=="Free plan" && user. latestPurchase.length > 1 && user.lat
       level:level,
       correctCount: correctCount,
         pointsMade: latestGamePoints,
-   amountMade:  latestGamePoints * quizConfig.perPoint ,
+   amountMade:  latestGamePoints * perPoint ,
   membership: user.membership
  }
  //add it to array of general games played

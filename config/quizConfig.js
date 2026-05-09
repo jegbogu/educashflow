@@ -29,7 +29,8 @@ export const quizConfig = {
   maxUserCanWithdraw: 10,
   maxUserCanWithdrawNaira: 5000,
 
-  perPoint: 0.02, //Standard earning
+  perPoint: 0.02, //Standard earning for Naira
+  perPointDollars:0.0000146, //Standard earning for Dollars
 
   constantNumberofRandomQuestions:10,
   extraPointsBeginner:0, //Beginners get 0 extra points
