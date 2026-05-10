@@ -71,6 +71,8 @@ export const authOptions = {
       token.membership = user.membership
       token.playedGames = user.playedGames
       token.usergames = user.usergames
+      token.latestPurchase = user.latestPurchase
+      token.latestPurchaseGames = user.latestPurchaseGames
       token.spaceTwo = user.spaceTwo
     }
     return token
@@ -92,6 +94,8 @@ export const authOptions = {
       membership: token.membership,
       playedGames: token.playedGames,
       usergames: token.usergames,
+      latestPurchase: token.latestPurchase,
+      latestPurchaseGames: token.latestPurchaseGames,
       spaceTwo: token.spaceTwo
     }
     return session

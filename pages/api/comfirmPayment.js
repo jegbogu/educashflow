@@ -101,6 +101,8 @@ export default async function handler(req, res) {
     await connectDB();
 
     const { packageName, price, userData ,  gameLimit, validDays,earningRate} = req.body;
+    console.log("yy",{ packageName, price, userData ,  gameLimit, validDays,earningRate})
+
     if (!userData?.email || !userData?.fullname) {
       return res.status(400).json({ message: "Missing user details" });
     }
@@ -138,7 +140,7 @@ const userRecentPurchase = {
 };
 
 const updatedPayment = await Register.findByIdAndUpdate(
-  userData._id,
+  userData.id,
   {
     $set: { paymentConfirmation: "Pending" },
     $push: { latestPurchase: userRecentPurchase },

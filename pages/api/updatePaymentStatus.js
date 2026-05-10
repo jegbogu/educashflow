@@ -60,7 +60,7 @@ async function sendAdminAlertEmail({
         <li><b>Name:</b> ${fullname}</li>
         <li><b>Email:</b> ${email}</li>
         <li><b>Package:</b> ${packageName}</li>
-        <li><b>Amount:</b> ₦${price}</li>
+        <li><b>Amount:</b> ${price}</li>
         <li><b>Request Time:</b> ${getFormattedDateTime()}</li>
       </ul>
 

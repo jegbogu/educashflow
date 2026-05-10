@@ -64,6 +64,7 @@ export default function CheckOut({ onClose, plan }) {
         price: price,
         userData: userData,
       };
+      console.log("data", data)
 
       const response = await fetch("/api/comfirmPayment", {
         method: "POST",

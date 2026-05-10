@@ -86,7 +86,7 @@ export default function DisclaimerPage() {
               "Valid for 14 days",
               "4x earning rate",
               "Priority support",
-              "Bonus challenges"
+             
             ]}
           />
           <PlanCard
@@ -97,8 +97,7 @@ export default function DisclaimerPage() {
               "Valid for 30 days",
               "6x earning rate",
               "VIP support",
-              "Exclusive quizzes",
-              "Weekly bonuses"
+              
             ]}
           />
         </div>

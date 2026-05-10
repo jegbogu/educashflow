@@ -12,7 +12,7 @@
       ],
       buttonStyle: "planButtonBronze",
       popular: false,
-      gameLimit:3,
+      gameLimit:10,
       validDays: 7,
       earningRate:2
 
@@ -26,12 +26,12 @@
         "Valid for 14 days",
         "4x earning rate",
         "Priority Support",
-        "Bonus Challenges",
+       
       ],
       buttonStyle: "planButtonSilver",
       popular: true, // has badge "Most Popular"
       badgeText: "Most Popular",
-       gameLimit:5,
+       gameLimit:25,
       validDays: 14,
       earningRate:4
     },
@@ -44,8 +44,7 @@
         "Valid for 30 days",
         "6x earning rate",
         "VIP Support",
-        "Exclusive Quizzes",
-        "Weekly Bonuses",
+
       ],
       buttonStyle: "planButtonBronze",
       popular: false, 

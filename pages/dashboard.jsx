@@ -74,6 +74,7 @@ export default function Dashboard(props) {
  
 
 //Hadling the amount of games played
+  
 const gamesStatus = amountOfGamesLeft(userData?.latestPurchase, userData?.latestPurchaseGames)
 
 function amountOfGamesLeft(latestPurchase, latestPurchaseGames){
