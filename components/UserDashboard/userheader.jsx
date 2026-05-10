@@ -149,7 +149,7 @@ function toggleProfile() {
 
             {/* Balance Badge */}
             <div className="bg-blue-300 hidden sm:block px-2 py-1 rounded-full border text-blue-900 font-medium text-sm md:text-base">
-              {userData?.spaceOne == null? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(2)}`}
+              {userData?.spaceOne == null? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(5)}`}
             </div>
 
             {/* Points - hidden on very small screens */}
