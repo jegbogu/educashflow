@@ -119,7 +119,7 @@ function handleFormCloseFnc(){
                
                 <p className={cn(styles.balanceAmount)}>{userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${userData?.amountMade.toFixed(2)}`: `$${userData?.amountMade.toFixed(2)}`}</p>
                                        <p className={styles.balanceRate}>
-                                          Rate 100pts = {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${quizConfig.perPoint*100}`: `$${quizConfig.perPoint*100}`}
+                                          Rate 100pts = {userData?.spaceOne == "Null"? "No Currency":userData?.spaceOne.includes("Naira")? `₦${quizConfig.perPoint*100}`: `$${(quizConfig.perPointDollars*100).toFixed(4)}`}
                                         
                                        </p>
 
