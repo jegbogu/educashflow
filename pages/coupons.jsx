@@ -18,6 +18,8 @@ export default function Coupons() {
   const { data: session, status } = useSession();
   const userData = session?.user;
 
+ 
+
   const router = useRouter();
 
   // Handle redirects in useEffect
@@ -71,7 +73,7 @@ function findPlan(plan){
                 <div className={styles.couponStatus}>
                   <div className={styles.couponInfo}>
                     <span className={styles.couponText}>
-                      {userData?.paymentConfirmation==="Successful"?userData?.membership:"You are on a free plan buy a coupon to earn faster!"}
+                      {userData?.membership!=="Free plan"?`Current Plan: ${userData?.membership}`:"You are on a free plan buy a coupon to earn faster!"}
                     </span>
                   </div>
                    
