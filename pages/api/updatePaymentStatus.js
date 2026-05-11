@@ -90,7 +90,7 @@ async function sendUserConfirmationEmail({
 
       <p>
         We’ve verified your payment for
-        <b>${packageName}</b> package (₦${price}).
+        <b>${packageName}</b> package (${price}).
       </p>
 
       <p>
@@ -138,12 +138,7 @@ export default async function handler(req, res) {
       newStatus,
     } = req.body;
 
-    console.log({
-      confirmPaymentId,
-      userDataId,
-      packageName,
-      newStatus,
-    });
+     
 
     if (!confirmPaymentId || !userDataId) {
       return res.status(400).json({

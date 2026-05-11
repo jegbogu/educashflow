@@ -53,7 +53,7 @@ async function sendAdminAlertEmail({ fullname, email, packageName, price }) {
         <li><b>Name:</b> ${fullname}</li>
         <li><b>Email:</b> ${email}</li>
         <li><b>Package:</b> ${packageName}</li>
-        <li><b>Amount:</b> ₦${price}</li>
+        <li><b>Amount:</b> ${price}</li>
         <li><b>Request Time:</b> ${getFormattedDateTime()}</li>
       </ul>
       <p>Please review and confirm the payment at your earliest convenience.</p>
@@ -76,7 +76,7 @@ async function sendUserConfirmationEmail({ fullname, email, packageName, price }
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
       <h2 style="color:#2b6cb0;">Hello ${fullname},</h2>
-      <p>We’ve received your payment request for the <b>${packageName}</b> package ($${price}).</p>
+      <p>We’ve received your payment request for the <b>${packageName}</b> package (${price}).</p>
       <p>Your payment will be confirmed shortly by our admin team. You will be notified once it is verified.</p>
       <p>Thank you for using <b>Eduquizz Global Limited</b>.</p>
       <hr />
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
     await connectDB();
 
     const { packageName, price, userData ,  gameLimit, validDays,earningRate} = req.body;
-    console.log("yy",{ packageName, price, userData ,  gameLimit, validDays,earningRate})
+    
 
     if (!userData?.email || !userData?.fullname) {
       return res.status(400).json({ message: "Missing user details" });
