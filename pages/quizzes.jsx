@@ -69,47 +69,44 @@ export default function Quizzes(props) {
 
 export async function getServerSideProps() {
   await connectDB();
+
   const quizList = await Quiz.find({}).lean();
- 
-//this is for getting the Subcategories, level and the number of questions preseent, so that thos e that are not upto 300 will be set aside
-const result = Object.values(
-  quizList.reduce((acc, curr) => {
-    const key = `${curr.subcategory}_${curr.level}`;
 
-    if (!acc[key]) {
-      acc[key] = {
-        subcategory: curr.subcategory,
-        level: curr.level,
-        numberofquestions: 0
-      };
-    }
+  // Count questions per subcategory + level
+  const grouped = Object.values(
+    quizList.reduce((acc, curr) => {
+      const key = `${curr.subcategory}_${curr.level}`;
 
-    acc[key].numberofquestions += 1;
+      if (!acc[key]) {
+        acc[key] = {
+          subcategory: curr.subcategory,
+          level: curr.level,
+          numberofquestions: 0,
+        };
+      }
 
-    return acc;
-  }, {})
-);
+      acc[key].numberofquestions += 1;
 
- 
-//those les that 300
-const thoselesserthan = result.filter(el=>el.numberofquestions < 300).map(el=>el.subcategory)
- 
+      return acc;
+    }, {})
+  );
 
- 
-  const subcategories = [...new Set(quizList.map((el) => el.subcategory))];
-   
- 
+  // Keep only groups with 300+ questions
+  const validGroups = grouped.filter(
+    (el) => el.numberofquestions >= 300
+  );
 
-
-  const levels = [...new Set(quizList.map((el) => el.level))];
-
-  const quizBeginner = subcategories.map((sub) => {
+  // Build final quiz array
+  const quiz = validGroups.map((group) => {
     const found = quizList.filter(
-      (el) => el.subcategory === sub && el.level == levels[0]
+      (el) =>
+        el.subcategory === group.subcategory &&
+        el.level === group.level
     );
-    return {
-      subcategory: sub,
 
+    return {
+      subcategory: group.subcategory,
+      level: group.level,
       quizzes: found.map((el) => ({
         id: el._id,
         category: el.category,
@@ -121,52 +118,6 @@ const thoselesserthan = result.filter(el=>el.numberofquestions < 300).map(el=>el
       })),
     };
   });
-  const quizIntermediate = subcategories.map((sub) => {
-    const found = quizList.filter(
-      (el) => el.subcategory === sub && el.level == levels[1]
-    );
-    return {
-      subcategory: sub,
-
-      quizzes: found.map((el) => ({
-        id: el._id,
-        category: el.category,
-        question: el.question,
-        options: el.options,
-        correctAnswer: el.correctAnswer,
-        level: el.level,
-        createdAt: el.createdAt,
-      })),
-    };
-  });
-  const quizAdvanced = subcategories.map((sub) => {
-    const found = quizList.filter(
-      (el) => el.subcategory === sub && el.level == levels[2]
-    );
-    return {
-      subcategory: sub,
-
-      quizzes: found.map((el) => ({
-        id: el._id,
-        category: el.category,
-        question: el.question,
-        options: el.options,
-        correctAnswer: el.correctAnswer,
-        level: el.level,
-        createdAt: el.createdAt,
-      })),
-    };
-  });
-
-  const allquiz = quizBeginner.concat(quizIntermediate, quizAdvanced);
- 
-
-  //SENDING IN ONLY THOSE THAT HAVE MORE THAN 300 QUESTIONS
-  
-
-  const quiz = allquiz.filter(el=>!thoselesserthan.includes(el.subcategory))
-  
- 
 
   return {
     props: {
